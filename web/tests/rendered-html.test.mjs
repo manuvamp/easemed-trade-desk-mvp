@@ -51,6 +51,10 @@ test("starter preview assets and dependency are removed", async () => {
   assert.match(page, /useState/);
   assert.match(page, /activeRole/);
   assert.match(page, /activeSection/);
+  assert.match(page, /sectionsForRole/);
+  assert.match(page, /SimpleOverviewSection/);
+  assert.match(page, /Create order/);
+  assert.match(page, /sectionLabel/);
   assert.match(layout, /EaseMed\.ai Trade Desk/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview|_sites-preview/);

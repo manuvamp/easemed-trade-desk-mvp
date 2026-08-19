@@ -8,6 +8,9 @@ The current MVP lives in [`web/`](web/) and is intentionally demo-first:
 
 - populated dummy trade packs, document readiness, activity, and connector data;
 - one-click switching between business owner, sales, warehouse, and logistics views;
+- abbreviated role views: non-owner users see Home and Orders, while only the
+  owner sees the full document master and connector workspace;
+- a simple Create order action for every role;
 - quick switching between overview, documents, transactions, and carrier connectors;
 - a demo document-pack form that shows the future workflow without persisting data;
 - an optional, publishable-key-only Supabase client boundary in `web/lib/supabase.ts`;

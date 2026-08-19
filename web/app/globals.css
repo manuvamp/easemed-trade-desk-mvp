@@ -555,6 +555,10 @@ h3 {
   margin-top: 25px;
 }
 
+.compact-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .metric-card,
 .stat-card {
   border: 1px solid var(--line);
@@ -649,6 +653,71 @@ h3 {
 
 .lower-grid {
   grid-template-columns: minmax(0, 1.5fr) minmax(285px, 0.5fr);
+}
+
+.simple-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.simple-action-panel {
+  display: flex;
+  min-height: 214px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 25px;
+}
+
+.simple-action-panel h2 {
+  margin-bottom: 8px;
+}
+
+.simple-action-panel p:not(.eyebrow) {
+  max-width: 290px;
+  margin-bottom: 18px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.simple-orders-panel {
+  overflow: hidden;
+}
+
+.simple-order-list {
+  padding: 0 13px 10px;
+}
+
+.simple-order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid #edf0ec;
+  padding: 13px 9px;
+}
+
+.simple-order-row:first-child {
+  border-top: 0;
+}
+
+.simple-order-row strong,
+.simple-order-row div span {
+  display: block;
+}
+
+.simple-order-row strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.simple-order-row div span {
+  margin-top: 4px;
+  color: #899694;
+  font-size: 10px;
 }
 
 .panel {
@@ -1548,7 +1617,8 @@ label select {
   }
 
   .overview-grid,
-  .lower-grid {
+  .lower-grid,
+  .simple-overview-grid {
     grid-template-columns: 1fr;
   }
 

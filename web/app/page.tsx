@@ -68,9 +68,8 @@ const roles: Role[] = [
     label: "Sales",
     short: "SA",
     eyebrow: "Commercial desk",
-    heading: "Move buyers from enquiry to a complete pack.",
-    description:
-      "Create the first transaction record, keep the commercial documents together, and hand over a clean pack to operations.",
+    heading: "Create and follow up on orders.",
+    description: "Create an order, then hand it to operations.",
     metrics: [
       { label: "Active enquiries", value: "11", change: "+3 since Monday", tone: "teal" },
       { label: "Quotes awaiting reply", value: "06", change: "2 due today", tone: "blue" },
@@ -83,9 +82,8 @@ const roles: Role[] = [
     label: "Warehouse",
     short: "WH",
     eyebrow: "Warehouse execution",
-    heading: "Know what is arriving, moving, and waiting.",
-    description:
-      "A focused queue for receipts, batch evidence, packing instructions, dispatch documents, and stock exceptions.",
+    heading: "Work the next order.",
+    description: "See what needs receiving, packing, or dispatch.",
     metrics: [
       { label: "Inbound today", value: "08", change: "2 need inspection", tone: "teal" },
       { label: "Ready to dispatch", value: "17", change: "6 priority orders", tone: "blue" },
@@ -98,9 +96,8 @@ const roles: Role[] = [
     label: "Logistics",
     short: "LO",
     eyebrow: "Logistics desk",
-    heading: "Track the handoff across every carrier.",
-    description:
-      "A multi-carrier workspace for booking, airway bills, bills of lading, tracking events, exceptions, and proof of delivery.",
+    heading: "Keep deliveries moving.",
+    description: "See open shipments and carrier exceptions.",
     metrics: [
       { label: "Shipments in motion", value: "18", change: "4 arriving today", tone: "teal" },
       { label: "On-time forecast", value: "94%", change: "+2.4% vs last month", tone: "blue" },
@@ -116,6 +113,21 @@ const sections: { id: SectionId; label: string; icon: string }[] = [
   { id: "transactions", label: "Transactions", icon: "↗" },
   { id: "connectors", label: "Carrier connectors", icon: "⌁" },
 ];
+
+function sectionsForRole(role: RoleId) {
+  return sections.filter((section) => {
+    if (section.id === "documents") return role === "owner";
+    if (section.id === "connectors") return role === "owner" || role === "logistics";
+    return true;
+  });
+}
+
+function sectionLabel(section: SectionId, role: RoleId) {
+  if (section === "overview" && role !== "owner") return "Home";
+  if (section === "transactions" && role !== "owner") return "Orders";
+  if (section === "connectors" && role === "logistics") return "Carriers";
+  return sections.find((item) => item.id === section)?.label ?? section;
+}
 
 const documentRecords: DocumentRecord[] = [
   {
@@ -292,6 +304,7 @@ export default function Home() {
   const [notice, setNotice] = useState("");
 
   const role = roles.find((item) => item.id === activeRole) ?? roles[0];
+  const visibleSections = sectionsForRole(activeRole);
   const isSupabaseReady = isSupabaseConfigured;
 
   const filteredDocuments = useMemo(() => {
@@ -312,8 +325,15 @@ export default function Home() {
   function handleCreatePack(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setShowPackModal(false);
-    setNotice("Demo pack created — connect Supabase to persist it.");
+    setNotice("Demo order created — connect Supabase to persist it.");
     setActiveSection("transactions");
+  }
+
+  function handleRoleChange(nextRole: RoleId) {
+    setActiveRole(nextRole);
+    if (!sectionsForRole(nextRole).some((section) => section.id === activeSection)) {
+      setActiveSection("overview");
+    }
   }
 
   return (
@@ -329,7 +349,7 @@ export default function Home() {
 
         <div className="sidebar-label">Workspace</div>
         <nav className="sidebar-nav" aria-label="Primary navigation">
-          {sections.map((section) => (
+          {visibleSections.map((section) => (
             <button
               className={
                 activeSection === section.id ? "nav-item active" : "nav-item"
@@ -341,7 +361,7 @@ export default function Home() {
               <span className="nav-icon" aria-hidden="true">
                 {section.icon}
               </span>
-              {section.label}
+              {sectionLabel(section.id, activeRole)}
               {section.id === "documents" ? (
                 <span className="nav-count">48</span>
               ) : null}
@@ -353,12 +373,14 @@ export default function Home() {
         <div className="quick-links">
           <button type="button" onClick={() => setShowPackModal(true)}>
             <span aria-hidden="true">＋</span>
-            New document pack
+            Create order
           </button>
-          <button type="button" onClick={() => setActiveSection("connectors")}>
-            <span aria-hidden="true">⌁</span>
-            Connector registry
-          </button>
+          {visibleSections.some((section) => section.id === "connectors") ? (
+            <button type="button" onClick={() => setActiveSection("connectors")}>
+              <span aria-hidden="true">⌁</span>
+              Carrier setup
+            </button>
+          ) : null}
         </div>
 
         <div className="sidebar-bottom">
@@ -431,7 +453,7 @@ export default function Home() {
               onClick={() => setShowPackModal(true)}
             >
               <span aria-hidden="true">＋</span>
-              Start document pack
+              Create order
             </button>
           </div>
 
@@ -439,7 +461,7 @@ export default function Home() {
             <div>
               <span className="switcher-label">Preview as</span>
               <span className="switcher-hint">
-                Switch roles to explore the same data from a different desk.
+                Choose a role to see only its actions.
               </span>
             </div>
             <div className="role-switcher" aria-label="Switch dashboard role">
@@ -449,7 +471,7 @@ export default function Home() {
                     activeRole === item.id ? "role-tab active" : "role-tab"
                   }
                   key={item.id}
-                  onClick={() => setActiveRole(item.id)}
+                  onClick={() => handleRoleChange(item.id)}
                   type="button"
                 >
                   <span className="role-initials">{item.short}</span>
@@ -477,6 +499,7 @@ export default function Home() {
             <OverviewSection
               role={role}
               onOpenTransactions={() => setActiveSection("transactions")}
+              onCreateOrder={() => setShowPackModal(true)}
             />
           ) : null}
 
@@ -513,7 +536,7 @@ export default function Home() {
             <div className="modal-heading">
               <div>
                 <p className="eyebrow">Demo workflow</p>
-                <h2 id="pack-title">Start a document pack</h2>
+                <h2 id="pack-title">Create an order</h2>
               </div>
               <button
                 className="close-button"
@@ -525,8 +548,8 @@ export default function Home() {
               </button>
             </div>
             <p className="modal-copy">
-              Create the shell now. Later, this will save to Supabase and
-              generate the required documents from the transaction rules.
+              Add the basic order details now. Later, this will save to Supabase
+              and generate the required workflow automatically.
             </p>
             <form onSubmit={handleCreatePack}>
               <label>
@@ -568,7 +591,7 @@ export default function Home() {
                   Cancel
                 </button>
                 <button className="primary-button" type="submit">
-                  Create demo pack
+                  Create demo order
                 </button>
               </div>
             </form>
@@ -582,10 +605,22 @@ export default function Home() {
 function OverviewSection({
   role,
   onOpenTransactions,
+  onCreateOrder,
 }: {
   role: Role;
   onOpenTransactions: () => void;
+  onCreateOrder: () => void;
 }) {
+  if (role.id !== "owner") {
+    return (
+      <SimpleOverviewSection
+        role={role}
+        onOpenTransactions={onOpenTransactions}
+        onCreateOrder={onCreateOrder}
+      />
+    );
+  }
+
   return (
     <>
       <div className="metrics-grid">
@@ -758,6 +793,75 @@ function OverviewSection({
           <button className="activity-link" type="button">
             Open audit timeline <span aria-hidden="true">↗</span>
           </button>
+        </section>
+      </div>
+    </>
+  );
+}
+
+function SimpleOverviewSection({
+  role,
+  onOpenTransactions,
+  onCreateOrder,
+}: {
+  role: Role;
+  onOpenTransactions: () => void;
+  onCreateOrder: () => void;
+}) {
+  return (
+    <>
+      <div className="metrics-grid compact-metrics">
+        {role.metrics.slice(0, 3).map((metric) => (
+          <article className="metric-card" key={metric.label}>
+            <div className="metric-topline">
+              <span>{metric.label}</span>
+              <span className={"metric-mark " + metric.tone} />
+            </div>
+            <strong>{metric.value}</strong>
+            <span className={"metric-change " + metric.tone}>
+              {metric.change}
+            </span>
+          </article>
+        ))}
+      </div>
+
+      <div className="simple-overview-grid">
+        <section className="panel simple-action-panel">
+          <p className="eyebrow">Quick action</p>
+          <h2>Create an order</h2>
+          <p>
+            Start with the buyer, product, and delivery details. The rest can
+            follow later.
+          </p>
+          <button className="primary-button" type="button" onClick={onCreateOrder}>
+            <span aria-hidden="true">＋</span>
+            Create order
+          </button>
+        </section>
+
+        <section className="panel simple-orders-panel">
+          <div className="panel-heading">
+            <div>
+              <p className="eyebrow">Recent</p>
+              <h2>Orders</h2>
+            </div>
+            <button className="text-button" type="button" onClick={onOpenTransactions}>
+              View all <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div className="simple-order-list">
+            {transactionRecords.slice(0, 3).map((transaction) => (
+              <div className="simple-order-row" key={transaction.id}>
+                <div>
+                  <strong>{transaction.id}</strong>
+                  <span>{transaction.buyer}</span>
+                </div>
+                <span className={"status-chip " + statusClass(transaction.status)}>
+                  {transaction.status}
+                </span>
+              </div>
+            ))}
+          </div>
         </section>
       </div>
     </>

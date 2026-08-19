@@ -450,6 +450,10 @@ The first reviewable MVP is now implemented under `web/`. It is deliberately dem
 
 - Populated dummy trade packs, document readiness, activity, priority queue, and carrier registry data.
 - One-click role preview for business owner, sales, warehouse, and logistics users.
+- Abbreviated role navigation: sales and warehouse users get Home and Orders;
+  logistics gets Home, Orders, and Carriers; the business owner retains the full
+  document and connector workspace.
+- A simple Create order action is the primary entry point for non-owner users.
 - Quick navigation between Overview, Document master, Transactions, and Carrier connectors.
 - A demo “Start a document pack” form that validates the basic intake shape but does not persist data.
 - Supabase-ready client boundary using only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; no service-role key or live schema is required for the demo.
