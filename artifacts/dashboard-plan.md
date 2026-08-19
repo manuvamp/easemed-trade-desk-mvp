@@ -441,3 +441,25 @@ Use the lifecycle active → completed. On completion:
 6. Align database backups, replicas, log retention, and object-storage lifecycle rules with this policy. Keep a legal/accounting exception path for records that must be retained by applicable law or contract.
 
 The exact retained summary fields and any invoice/tax exceptions should be confirmed before schema work. The Digital Personal Data Protection Act requires clear consent and an easy withdrawal path where consent is the basis for processing, and it generally requires erasure when the purpose is no longer served unless retention is required by law. Source: [India DPDP Act, 2023](https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf). This is an implementation input, not legal advice; final retention and consent wording should be reviewed for the business’s exact role and jurisdictions.
+
+## 18. MVP slice implemented
+
+The first reviewable MVP is now implemented under `web/`. It is deliberately demo-first so stakeholders can understand the populated dashboard before the inventory model, carrier credentials, WhatsApp templates, and production auth are finalized.
+
+### Included now
+
+- Populated dummy trade packs, document readiness, activity, priority queue, and carrier registry data.
+- One-click role preview for business owner, sales, warehouse, and logistics users.
+- Quick navigation between Overview, Document master, Transactions, and Carrier connectors.
+- A demo “Start a document pack” form that validates the basic intake shape but does not persist data.
+- Supabase-ready client boundary using only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; no service-role key or live schema is required for the demo.
+- Lint, build, and server-rendered smoke tests; dummy data remains local to the app until the inventory model and retention-approved schema are confirmed.
+
+### Deferred intentionally
+
+- Real inventory reservations, batch/lot/serial logic, and warehouse-level authorization.
+- Live carrier credentials, tracking polling/webhooks, normalized event persistence, and delivery-provider retries.
+- WhatsApp Business API templates, opt-in capture, STOP handling, notification outbox, and message status webhooks.
+- SSO, production authentication, RLS policies, document uploads, and purge jobs.
+
+The next implementation slice should replace the demo arrays with the approved inventory model, then add the smallest Supabase schema and RLS policy set needed for one end-to-end transaction pack. Carrier adapters and WhatsApp should remain behind the connector/outbox boundaries until provider credentials and message wording are approved.
