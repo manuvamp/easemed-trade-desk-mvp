@@ -58,6 +58,12 @@ type OrderLine = {
   quantity: string;
 };
 
+type InventoryImportResult = {
+  records: ProductRecord[];
+  created: number;
+  updated: number;
+};
+
 type OrderDecision = "Approved" | "Denied" | "More info" | "Rerouted";
 
 type ConnectorRecord = {
@@ -364,6 +370,131 @@ function statusClass(status: string) {
   return status.toLowerCase().replaceAll(" ", "-").replaceAll("/", "-");
 }
 
+function parseCsvRows(text: string) {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let value = "";
+  let quoted = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const character = text[index];
+    if (character === '"') {
+      if (quoted && text[index + 1] === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (character === "," && !quoted) {
+      row.push(value.trim());
+      value = "";
+    } else if ((character === "\n" || character === "\r") && !quoted) {
+      if (character === "\r" && text[index + 1] === "\n") index += 1;
+      row.push(value.trim());
+      if (row.some(Boolean)) rows.push(row);
+      row = [];
+      value = "";
+    } else {
+      value += character;
+    }
+  }
+
+  if (value || row.length) {
+    row.push(value.trim());
+    if (row.some(Boolean)) rows.push(row);
+  }
+  return rows;
+}
+
+function parseInventoryCsv(text: string, existing: ProductRecord[]): InventoryImportResult {
+  const rows = parseCsvRows(text);
+  if (rows.length < 2) {
+    throw new Error("CSV needs a header row and at least one product row.");
+  }
+
+  const headers = rows[0].map((header) =>
+    header
+      .replace(/^\uFEFF/, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "_")
+      .replace(/^_|_$/g, ""),
+  );
+  const findColumn = (...names: string[]) =>
+    headers.findIndex((header) => names.includes(header));
+  const nameColumn = findColumn("name", "product", "product_name", "product_title");
+  const skuColumn = findColumn("sku", "product_sku", "code", "item_code");
+  const availableColumn = findColumn(
+    "available",
+    "quantity",
+    "stock",
+    "available_quantity",
+    "on_hand",
+  );
+  const reservedColumn = findColumn("reserved", "allocated", "reserved_quantity");
+  const unitColumn = findColumn("unit", "uom", "units");
+  const warehouseColumn = findColumn(
+    "warehouse",
+    "location",
+    "site",
+    "warehouse_location",
+  );
+
+  if (nameColumn < 0 || skuColumn < 0 || availableColumn < 0 || warehouseColumn < 0) {
+    throw new Error("CSV needs name, SKU, available quantity, and warehouse columns.");
+  }
+
+  const records = [...existing];
+  const indexBySku = new Map(records.map((record, index) => [record.sku.toLowerCase(), index]));
+  let created = 0;
+  let updated = 0;
+
+  rows.slice(1).forEach((row, rowIndex) => {
+    const name = row[nameColumn]?.trim();
+    const sku = row[skuColumn]?.trim();
+    const available = Number(row[availableColumn]?.replaceAll(",", "").trim());
+    const reservedValue = reservedColumn >= 0 ? row[reservedColumn]?.trim() : "0";
+    const reserved = Number(reservedValue?.replaceAll(",", "").trim() || "0");
+    const unit = unitColumn >= 0 ? row[unitColumn]?.trim() || "units" : "units";
+    const warehouse = row[warehouseColumn]?.trim();
+
+    if (
+      !name ||
+      !sku ||
+      !warehouse ||
+      !Number.isInteger(available) ||
+      available < 0 ||
+      !Number.isInteger(reserved) ||
+      reserved < 0
+    ) {
+      throw new Error(`Row ${rowIndex + 2} is missing valid product data.`);
+    }
+
+    const normalizedSku = sku.toLowerCase();
+    const existingIndex = indexBySku.get(normalizedSku);
+    const safeSku = normalizedSku.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `row-${rowIndex + 2}`;
+    const record: ProductRecord = {
+      id: existingIndex === undefined ? `inventory-${safeSku}` : records[existingIndex].id,
+      name,
+      sku,
+      available,
+      reserved,
+      unit,
+      warehouse,
+    };
+
+    if (existingIndex === undefined) {
+      indexBySku.set(normalizedSku, records.length);
+      records.push(record);
+      created += 1;
+    } else {
+      records[existingIndex] = record;
+      updated += 1;
+    }
+  });
+
+  return { records, created, updated };
+}
+
 export default function Home() {
   const [activeRole, setActiveRole] = useState<RoleId>("owner");
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
@@ -375,6 +506,7 @@ export default function Home() {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [inventoryRecords, setInventoryRecords] = useState(productRecords);
+  const [inventoryImportStatus, setInventoryImportStatus] = useState("");
   const [selectedProductId, setSelectedProductId] = useState(productRecords[0].id);
   const [orderLines, setOrderLines] = useState<OrderLine[]>([
     { productId: productRecords[0].id, quantity: "10" },
@@ -513,6 +645,21 @@ export default function Home() {
     );
     setShowInventoryModal(false);
     setErrorMessage("");
+  }
+
+  async function handleInventoryImport(file: File) {
+    try {
+      const result = parseInventoryCsv(await file.text(), inventoryRecords);
+      setInventoryRecords(result.records);
+      setInventoryImportStatus(
+        `${result.created + result.updated} product${result.created + result.updated === 1 ? "" : "s"} imported` +
+          (result.updated ? ` · ${result.updated} updated` : ""),
+      );
+      setErrorMessage("");
+    } catch (error) {
+      setInventoryImportStatus("");
+      setErrorMessage(error instanceof Error ? error.message : "Could not read this CSV file.");
+    }
   }
 
   function handleCreatePayment(event: FormEvent<HTMLFormElement>) {
@@ -744,6 +891,8 @@ export default function Home() {
               onCreateOrder={openPackModal}
               onCreatePayment={() => setShowPaymentModal(true)}
               onUpdateInventory={openInventoryUpdate}
+              inventoryImportStatus={inventoryImportStatus}
+              onImportInventory={handleInventoryImport}
               onDecision={handleOrderDecision}
               onAskForInfo={handleAskForInfo}
               onOpenOrder={openOrderDetails}
@@ -755,6 +904,8 @@ export default function Home() {
               inventory={inventoryRecords}
               canUpdate={canUpdateInventory}
               onUpdateInventory={openInventoryUpdate}
+              importStatus={inventoryImportStatus}
+              onImportInventory={handleInventoryImport}
             />
           ) : null}
 
@@ -1165,6 +1316,8 @@ function OverviewSection({
   onCreateOrder,
   onCreatePayment,
   onUpdateInventory,
+  inventoryImportStatus,
+  onImportInventory,
   onDecision,
   onAskForInfo,
   onOpenOrder,
@@ -1178,6 +1331,8 @@ function OverviewSection({
   onCreateOrder: () => void;
   onCreatePayment?: () => void;
   onUpdateInventory: (productId?: string) => void;
+  inventoryImportStatus: string;
+  onImportInventory: (file: File) => void;
   onDecision: (id: string, decision: OrderDecision) => void;
   onAskForInfo: (id: string) => void;
   onOpenOrder: (id: string) => void;
@@ -1193,6 +1348,8 @@ function OverviewSection({
         onCreatePayment={onCreatePayment}
         onOpenInventory={onOpenInventory}
         onUpdateInventory={onUpdateInventory}
+        inventoryImportStatus={inventoryImportStatus}
+        onImportInventory={onImportInventory}
         onDecision={onDecision}
         onAskForInfo={onAskForInfo}
         onOpenOrder={onOpenOrder}
@@ -1383,6 +1540,8 @@ function SimpleOverviewSection({
   onCreatePayment,
   onOpenInventory,
   onUpdateInventory,
+  inventoryImportStatus,
+  onImportInventory,
   onDecision,
   onAskForInfo,
   onOpenOrder,
@@ -1395,6 +1554,8 @@ function SimpleOverviewSection({
   onCreatePayment?: () => void;
   onOpenInventory: () => void;
   onUpdateInventory: (productId?: string) => void;
+  inventoryImportStatus: string;
+  onImportInventory: (file: File) => void;
   onDecision: (id: string, decision: OrderDecision) => void;
   onAskForInfo: (id: string) => void;
   onOpenOrder: (id: string) => void;
@@ -1523,6 +1684,8 @@ function SimpleOverviewSection({
           inventory={inventory}
           canUpdate={isWarehouse}
           onUpdateInventory={onUpdateInventory}
+          importStatus={inventoryImportStatus}
+          onImportInventory={onImportInventory}
         />
       ) : null}
     </>
@@ -1555,10 +1718,14 @@ function ProductInventoryPanel({
   inventory,
   canUpdate,
   onUpdateInventory,
+  importStatus,
+  onImportInventory,
 }: {
   inventory: ProductRecord[];
   canUpdate: boolean;
   onUpdateInventory: (productId?: string) => void;
+  importStatus?: string;
+  onImportInventory?: (file: File) => void;
 }) {
   return (
     <section className={"panel product-inventory-panel" + (canUpdate ? " can-update" : "")}>
@@ -1567,7 +1734,28 @@ function ProductInventoryPanel({
           <p className="eyebrow">Stock view</p>
           <h2>Product inventory</h2>
         </div>
-        <span className="count-badge">{inventory.length} products</span>
+        <div className="inventory-panel-actions">
+          {canUpdate && importStatus ? (
+            <span className="inventory-import-status" role="status">
+              {importStatus}
+            </span>
+          ) : null}
+          {canUpdate && onImportInventory ? (
+            <label className="secondary-button small file-upload-button">
+              Upload CSV
+              <input
+                type="file"
+                accept=".csv,text/csv"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) onImportInventory(file);
+                  event.target.value = "";
+                }}
+              />
+            </label>
+          ) : null}
+          <span className="count-badge">{inventory.length} products</span>
+        </div>
       </div>
       <div className="product-inventory-list">
         {inventory.map((product) => (

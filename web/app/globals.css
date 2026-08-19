@@ -788,6 +788,30 @@ h3 {
   overflow: hidden;
 }
 
+.inventory-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.file-upload-button {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.file-upload-button input {
+  display: none;
+}
+
+.inventory-import-status {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .product-inventory-list {
   padding: 0 13px 10px;
 }
