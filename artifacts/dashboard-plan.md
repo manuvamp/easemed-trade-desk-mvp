@@ -199,11 +199,13 @@ No large repository has been cloned into the workspace yet. That is deliberate: 
 
 Add a user-facing notification board to the portal and offer WhatsApp as a second channel for the same shipment and order events. The board is the complete history; WhatsApp is the timely delivery channel. A user should be able to see the same status, timestamp, order/shipment link, and next action in both places.
 
-I interpreted “BlueData” in the request as **Blue Dart**. Blue Dart’s official materials describe ShopTrack and PackTrack integrations that can return real-time waybill/order status, and the DHL developer portal exposes an authenticated Blue Dart shipment-tracking API. If a different carrier was intended, the carrier adapter should be swapped without changing the notification model. Sources: [Blue Dart tracking integrations](https://www.bluedart.com/tracking) and [DHL/Blue Dart shipment-tracking API](https://developer.dhl.com/api-reference/shipment-tracking-dhl-ecommerce-india-blue-dart?lang=en&language_content_entity=en).
+Logistics will be carrier-agnostic. The system will support multiple direct carrier connectors and, where useful, one aggregator connector. Blue Dart remains one candidate, not the assumed carrier. Its official materials describe ShopTrack and PackTrack integrations that can return real-time waybill/order status, and the DHL developer portal exposes an authenticated Blue Dart shipment-tracking API. Sources: [Blue Dart tracking integrations](https://www.bluedart.com/tracking) and [DHL/Blue Dart shipment-tracking API](https://developer.dhl.com/api-reference/shipment-tracking-dhl-ecommerce-india-blue-dart?lang=en&language_content_entity=en).
 
 ### Event flow
 
 Carrier API/webhook or scheduled poll → carrier adapter → normalized shipment event → inventory/order/shipment status update → notification rule evaluation → notification outbox → in-app board and WhatsApp template message → WhatsApp delivery/read-status webhook.
+
+Use a carrier connector registry rather than hard-coding one provider into orders. Each shipment stores carrier, service, account, tracking identifier, connector version, and capability flags. The order and notification layers consume only the normalized shipment contract.
 
 The adapter must normalize provider-specific statuses into a small internal vocabulary:
 
@@ -225,8 +227,8 @@ Use the official Meta-hosted WhatsApp Cloud API rather than building an unoffici
 Implementation sequence:
 
 1. Create or connect the Meta Business Portfolio, WhatsApp Business Account, phone number, webhook verification, and server-side access token.
-2. Capture explicit customer opt-in for shipment notifications, record the consent timestamp/source/phone number, and provide STOP/unsubscribe handling.
-3. Submit utility templates for order and delivery updates. Meta’s current pricing page specifically identifies package delivery updates as utility messages and says delivered messages are billed by market and category. It also says a user-initiated conversation opens a 24-hour service window in which service replies are currently not charged. Verify the live rate card and policy again before launch. Source: [WhatsApp Business Platform pricing](https://whatsappbusiness.com/products/platform-pricing/).
+2. Default-enroll a phone number for shipment updates only when the order flow has recorded a lawful shipment-update opt-in. A phone number copied from a PO is not, by itself, proof of WhatsApp consent. Record the consent timestamp, source, message category, and phone number; provide STOP and manage-notifications handling.
+3. Submit utility templates for order and delivery updates. Meta’s Business Messaging Policy requires opt-in, requires businesses to honor opt-out requests, and requires approved templates when initiating conversations outside the 24-hour customer-service window. Meta’s pricing page identifies package delivery updates as utility messages and says delivered messages are billed by market and category. Verify the live policy and rate card again before launch. Sources: [WhatsApp Business Messaging Policy](https://whatsappbusiness.com/policy/) and [WhatsApp Business Platform pricing](https://whatsappbusiness.com/products/platform-pricing/).
 4. Add a server-side WhatsApp sender that reads only from notification_outbox. Never expose Meta tokens, carrier credentials, or service-role database keys to the browser.
 5. Consume WhatsApp status webhooks, store message IDs and delivery/read/failure state, retry transient failures, and route permanent failures to an operations queue.
 6. Add per-user preferences for WhatsApp on/off, event types, language, quiet hours, and fallback to email or in-app-only notifications.
@@ -245,9 +247,22 @@ The in-app board should support unread/read state, severity, filters by order/sh
 
 ### Carrier integration boundary
 
-Define a carrier interface with methods equivalent to get shipment status, get shipment detail, optionally register or receive webhook events, and normalize status. Start with Blue Dart only after confirming account credentials, rate limits, retention rules, test credentials, and whether the contracted API supports polling, push events, or both. The public DHL/Blue Dart documentation describes credential approval, JWT token generation, and a production tracking endpoint, so credentials must remain in a server-side secret store.
+Define a connector contract with capabilities equivalent to authenticate/health-check, serviceability, rate quote, create or manifest shipment, assign AWB, generate label, request pickup, get tracking, cancel, create return or NDR action, receive webhook events, and normalize status. Every connector may implement only the capabilities that its carrier account supports; tracking-only integration is valid.
 
-If Blue Dart does not provide a suitable push webhook, use a scheduled poller with provider-approved frequency, exponential backoff, rate-limit handling, and a dead-letter queue. The UI and WhatsApp sender must depend on normalized internal events, never directly on carrier response formats.
+Store provider credentials, base URL, API version, account identifier, rate-limit policy, webhook secret, and status mappings as connector configuration. Keep credentials in a server-side secret store. Use a provider-specific adapter for authentication and payload shape, but a shared canonical event model for the rest of the application.
+
+### Initial India/subcontinent carrier candidates
+
+| Candidate | Integration information found | Initial role |
+|---|---|---|
+| Delhivery | Official B2C/B2B portals document serviceability, waybill, shipment creation/update/cancellation, labels, pickups, NDR, tracking, and webhook functionality. The tracking API supports waybill/order references and the developer portal provides test/production environments and tokens. | **First direct connector candidate** because the API surface covers both shipment execution and tracking. Sources: [Delhivery developer portal](https://one.delhivery.com/developer-portal/documents) and [Delhivery client developer portal](https://help.delhivery.com/docs/client-developer-portal-1). |
+| Blue Dart | Official materials describe ShopTrack/PackTrack real-time tracking; the DHL developer portal documents authenticated shipment detail/status calls, JWT tokens, and a production endpoint. | Direct tracking connector; validate account access, shipment-creation API scope, polling/webhook options, and rate limits. Sources linked above. |
+| Ecom Express | Official API guide covers AWB generation, pincode serviceability, manifest, tracking, and NDR; access requires credentials and may require server IP allowlisting. | Direct connector when the business has an Ecom Express account. Source: [Ecom Express API developer guide](https://integration.ecomexpress.in/). |
+| Shiprocket | Official API documentation exposes courier selection/serviceability, AWB assignment, pickups, labels, tracking, NDR, returns, and a courier list including Blue Dart, DTDC, Delhivery, Ecom Express, Xpressbees, Ekart, and Shadowfax. | **Long-tail/aggregator connector** when adding many carriers through one commercial integration is cheaper than maintaining every direct adapter. Source: [Shiprocket API documentation](https://apidocs.shiprocket.in/). |
+| ClickPost | Published API documentation covers courier recommendation, manifestation, labels, tracking, cancellation, serviceability/cost/TAT, NDR, return webhooks, and WhatsApp opt-in/opt-out events. | Alternative enterprise aggregator; evaluate commercial pricing and whether it is justified by carrier count/volume. Source: [ClickPost API reference](https://clickpost.github.io/slate/). |
+| DTDC, XpressBees, Ekart, Shadowfax, and regional Nepal/Bangladesh/Bhutan carriers | Public documentation and access quality vary by provider and account. Some are available through aggregators; direct production credentials, limits, and webhook contracts must be obtained from each carrier. | Add through the same connector contract after a credential and sandbox review; do not make the core data model depend on undocumented fields. |
+
+The initial implementation should build one direct connector and one aggregator connector only after comparing account access, total cost, tracking freshness, webhook reliability, label/manifest support, returns/NDR support, and data-processing terms. If a carrier has no webhook, use a scheduled poller with provider-approved frequency, exponential backoff, rate-limit handling, and a dead-letter queue. The UI and WhatsApp sender must depend on normalized internal events, never directly on carrier response formats.
 
 ## 12. Reusable functionality from the shortlisted repositories
 
@@ -400,3 +415,29 @@ CI should run formatting, linting, unit/integration tests, migration checks, dep
 - Add a documented process for removing a secret from history if one is ever committed accidentally; rotating the secret is still required.
 
 The local repository is initialized for this work. Creating and pushing the hosted remote requires an authenticated GitHub session. After authentication, create the private remote, push main, enable branch protection, and add the first issue for the sample-PO proof-of-fit.
+
+## 17. Confirmed personalization decisions
+
+The following decisions are now accepted for the personalized design:
+
+| Area | Decision | Implementation consequence |
+|---|---|---|
+| Users and permissions | Use the proposed role model: sales, warehouse manager/operator, warehouse owner/approver, logistics/operations, and business owner/super admin. | Keep permissions separate from screens; scope every query and action by role, warehouse, buyer, and organization. |
+| Existing systems | Assume none initially. | Design a greenfield system-of-record and keep integrations behind adapters so future ERP/accounting/CRM connections can be added without rewriting the workflow. |
+| Logistics | Carrier-agnostic and multi-carrier. | Use a connector registry, capability flags, canonical tracking events, provider-specific status mappings, and one direct-plus-one-aggregator proof of fit. |
+| WhatsApp enrollment | Default enrollment for shipment updates, but only after a recorded lawful opt-in in the order flow. | Do not infer consent from a phone number alone. Include STOP/manage-notifications instructions in every message, store opt-out suppression, and stop future messages immediately. |
+| SSO | Not required for the first release. | Use application authentication with secure sessions, role-based access, strong admin controls, audit logs, rate limits, and optional MFA for privileged users. Leave an authentication-provider boundary for future SSO. |
+| Retention | Keep detailed operational data only while the order is active; after completion retain an order summary and required history. | Completion triggers an idempotent purge job for non-required raw carrier payloads, detailed scan events, temporary files, message bodies, and operational attachments. Retain only the agreed summary, required financial/tax records, minimal audit/purge evidence, and an opt-out suppression record. |
+
+### Retention lifecycle
+
+Use the lifecycle active → completed. On completion:
+
+1. Freeze the final order summary: internal order/PO reference, buyer or organization reference as needed, final line/quantity summary, financial summary if required, warehouse, carrier/tracking reference, final status, and completion timestamps.
+2. Stop detailed tracking polling and notification retries for that order.
+3. Purge raw carrier responses, detailed scan history, temporary documents, full notification bodies, non-required attachments, and short-lived integration logs.
+4. Retain a minimal suppression record for a WhatsApp opt-out so a future order cannot silently re-enroll that phone number.
+5. Record only that the purge ran, when it ran, and which data classes were removed. Do not retain deleted payloads in application logs.
+6. Align database backups, replicas, log retention, and object-storage lifecycle rules with this policy. Keep a legal/accounting exception path for records that must be retained by applicable law or contract.
+
+The exact retained summary fields and any invoice/tax exceptions should be confirmed before schema work. The Digital Personal Data Protection Act requires clear consent and an easy withdrawal path where consent is the basis for processing, and it generally requires erasure when the purpose is no longer served unless retention is required by law. Source: [India DPDP Act, 2023](https://www.meity.gov.in/writereaddata/files/Digital%20Personal%20Data%20Protection%20Act%202023.pdf). This is an implementation input, not legal advice; final retention and consent wording should be reviewed for the business’s exact role and jurisdictions.
