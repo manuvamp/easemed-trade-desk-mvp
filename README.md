@@ -8,11 +8,13 @@ The current MVP lives in [`web/`](web/) and is intentionally demo-first:
 
 - populated dummy trade packs, document readiness, activity, and connector data;
 - one-click switching between business owner, sales, warehouse, and logistics views;
-- abbreviated role views: non-owner users see Home and Orders, while only the
-  owner sees the full document master and connector workspace;
-- a simple Create order action for every role;
-- quick switching between overview, documents, transactions, and carrier connectors;
-- a demo document-pack form that shows the future workflow without persisting data;
+- role-specific views: the owner is read-only; Sales gets product-first order and
+  payment actions; Warehouse gets row-level inventory updates; Logistics gets
+  inline incoming-order approvals;
+- one- or multi-product Sales order entry with quantity, transport, and warehouse
+  location visibility;
+- decision-colored Logistics rows, inline actions, order details, and note popup;
+- a demo form/state layer that shows the future workflow without persisting data;
 - an optional, publishable-key-only Supabase client boundary in `web/lib/supabase.ts`;
 - a carrier-agnostic connector registry UI ready for future provider adapters.
 

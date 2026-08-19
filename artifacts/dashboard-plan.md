@@ -450,12 +450,21 @@ The first reviewable MVP is now implemented under `web/`. It is deliberately dem
 
 - Populated dummy trade packs, document readiness, activity, priority queue, and carrier registry data.
 - One-click role preview for business owner, sales, warehouse, and logistics users.
-- Abbreviated role navigation: sales and warehouse users get Home and Orders;
-  logistics gets Home, Orders, and Carriers; the business owner retains the full
-  document and connector workspace.
-- A simple Create order action is the primary entry point for non-owner users.
-- Quick navigation between Overview, Document master, Transactions, and Carrier connectors.
-- A demo “Start a document pack” form that validates the basic intake shape but does not persist data.
+- Role-specific navigation and permissions: the owner is read-only; Sales gets
+  Home, Inventory, and Orders with order/payment actions; Warehouse gets Home
+  and Inventory with row-level stock updates; Logistics gets Home and Incoming
+  orders with inline approval actions.
+- A minimal Sales order form supports one or more product lines, quantities,
+  sale type, transport, and visible warehouse/location inventory.
+- Logistics has direct row actions for Approve, Ask for info (with a note
+  popup), Send to warehouse, Deny, and order details; row colors show the
+  decision state.
+- Action-required strips replace routine success notifications, and Logistics
+  omits non-actionable metric cards and duplicate next-action panels.
+- A demo order form and role actions validate the interaction shape but do not
+  persist to a backend yet.
+- Quick navigation between role-relevant Home, Inventory, Document master,
+  Incoming orders/Orders, and Carrier connectors views.
 - Supabase-ready client boundary using only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`; no service-role key or live schema is required for the demo.
 - Lint, build, and server-rendered smoke tests; dummy data remains local to the app until the inventory model and retention-approved schema are confirmed.
 

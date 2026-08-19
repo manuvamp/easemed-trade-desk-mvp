@@ -53,6 +53,17 @@ test("starter preview assets and dependency are removed", async () => {
   assert.match(page, /activeSection/);
   assert.match(page, /sectionsForRole/);
   assert.match(page, /SimpleOverviewSection/);
+  assert.match(page, /ProductInventoryPanel/);
+  assert.match(page, /IncomingOrdersSection/);
+  assert.match(page, /ApprovalActions/);
+  assert.match(page, /showInfoModal/);
+  assert.match(page, /OrderDetailModal/);
+  assert.match(page, /actionAlert/);
+  assert.match(page, /type OrderLine/);
+  assert.match(page, /Add product/);
+  assert.match(page, /approval-/);
+  assert.match(page, /statusClass\(orderDecisions/);
+  assert.match(page, /statusClass\(decision\)/);
   assert.match(page, /Create order/);
   assert.match(page, /sectionLabel/);
   assert.match(layout, /EaseMed\.ai Trade Desk/);

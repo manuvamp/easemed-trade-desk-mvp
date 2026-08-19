@@ -21,11 +21,14 @@ This starter does not use `wrangler.jsonc`.
 ## Included MVP
 
 - switch between Business owner, Sales, Warehouse, and Logistics previews;
-- keep each role focused: non-owner users get Home and Orders, Logistics also
-  gets Carriers, and the full document workspace stays with the owner;
-- switch between Overview, Document master, Transactions, and Carrier connectors;
-- create an order from the primary action without navigating through document
-  setup screens;
+- keep each role focused: the owner is read-only; Sales gets Home, Inventory,
+  and Orders; Warehouse gets Home and Inventory; Logistics gets Home and
+  Incoming orders;
+- create one- or multi-product orders from Sales with visible inventory and
+  warehouse locations;
+- update inventory from individual Warehouse rows;
+- approve, deny, ask for information, or reroute Logistics orders directly in
+  the queue, with decision-colored rows;
 - inspect populated dummy document packs, priorities, activity, and carrier
   capability records;
 - open a demo document-pack form without writing backend data;

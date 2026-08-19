@@ -4,7 +4,12 @@ import { FormEvent, useMemo, useState } from "react";
 import { isSupabaseConfigured } from "../lib/supabase";
 
 type RoleId = "owner" | "sales" | "warehouse" | "logistics";
-type SectionId = "overview" | "documents" | "transactions" | "connectors";
+type SectionId =
+  | "overview"
+  | "inventory"
+  | "documents"
+  | "transactions"
+  | "connectors";
 
 type Role = {
   id: RoleId;
@@ -38,6 +43,23 @@ type TransactionRecord = {
   next: string;
 };
 
+type ProductRecord = {
+  id: string;
+  name: string;
+  sku: string;
+  available: number;
+  reserved: number;
+  unit: string;
+  warehouse: string;
+};
+
+type OrderLine = {
+  productId: string;
+  quantity: string;
+};
+
+type OrderDecision = "Approved" | "Denied" | "More info" | "Rerouted";
+
 type ConnectorRecord = {
   name: string;
   region: string;
@@ -68,8 +90,8 @@ const roles: Role[] = [
     label: "Sales",
     short: "SA",
     eyebrow: "Commercial desk",
-    heading: "Create and follow up on orders.",
-    description: "Create an order, then hand it to operations.",
+    heading: "Create sales and payments.",
+    description: "Choose products, set transport, and record payment.",
     metrics: [
       { label: "Active enquiries", value: "11", change: "+3 since Monday", tone: "teal" },
       { label: "Quotes awaiting reply", value: "06", change: "2 due today", tone: "blue" },
@@ -82,8 +104,8 @@ const roles: Role[] = [
     label: "Warehouse",
     short: "WH",
     eyebrow: "Warehouse execution",
-    heading: "Work the next order.",
-    description: "See what needs receiving, packing, or dispatch.",
+    heading: "Keep inventory accurate.",
+    description: "View stock and update inventory counts.",
     metrics: [
       { label: "Inbound today", value: "08", change: "2 need inspection", tone: "teal" },
       { label: "Ready to dispatch", value: "17", change: "6 priority orders", tone: "blue" },
@@ -95,20 +117,21 @@ const roles: Role[] = [
     id: "logistics",
     label: "Logistics",
     short: "LO",
-    eyebrow: "Logistics desk",
-    heading: "Keep deliveries moving.",
-    description: "See open shipments and carrier exceptions.",
+    eyebrow: "Warehouse approval",
+    heading: "Approve incoming orders.",
+    description: "Review incoming orders and approve or deny them.",
     metrics: [
-      { label: "Shipments in motion", value: "18", change: "4 arriving today", tone: "teal" },
-      { label: "On-time forecast", value: "94%", change: "+2.4% vs last month", tone: "blue" },
-      { label: "Awaiting carrier event", value: "04", change: "Poll again in 40 min", tone: "gold" },
-      { label: "Delivery exceptions", value: "03", change: "1 needs escalation", tone: "coral" },
+      { label: "Incoming orders", value: "08", change: "Review today", tone: "teal" },
+      { label: "Awaiting approval", value: "05", change: "Needs a decision", tone: "blue" },
+      { label: "Approved today", value: "12", change: "Ready for fulfilment", tone: "gold" },
+      { label: "Needs information", value: "02", change: "Send back to sales", tone: "coral" },
     ],
   },
 ];
 
 const sections: { id: SectionId; label: string; icon: string }[] = [
   { id: "overview", label: "Overview", icon: "⌂" },
+  { id: "inventory", label: "Inventory", icon: "▦" },
   { id: "documents", label: "Document master", icon: "▤" },
   { id: "transactions", label: "Transactions", icon: "↗" },
   { id: "connectors", label: "Carrier connectors", icon: "⌁" },
@@ -116,14 +139,21 @@ const sections: { id: SectionId; label: string; icon: string }[] = [
 
 function sectionsForRole(role: RoleId) {
   return sections.filter((section) => {
+    if (section.id === "inventory") {
+      return role === "owner" || role === "sales" || role === "warehouse";
+    }
     if (section.id === "documents") return role === "owner";
-    if (section.id === "connectors") return role === "owner" || role === "logistics";
-    return true;
+    if (section.id === "connectors") return role === "owner";
+    if (section.id === "transactions") {
+      return role === "owner" || role === "sales" || role === "logistics";
+    }
+    return section.id === "overview";
   });
 }
 
 function sectionLabel(section: SectionId, role: RoleId) {
   if (section === "overview" && role !== "owner") return "Home";
+  if (section === "transactions" && role === "logistics") return "Incoming orders";
   if (section === "transactions" && role !== "owner") return "Orders";
   if (section === "connectors" && role === "logistics") return "Carriers";
   return sections.find((item) => item.id === section)?.label ?? section;
@@ -251,6 +281,45 @@ const transactionRecords: TransactionRecord[] = [
   },
 ];
 
+const productRecords: ProductRecord[] = [
+  {
+    id: "diagnostic-kits",
+    name: "Diagnostic kits",
+    sku: "DX-KIT-240",
+    available: 1280,
+    reserved: 220,
+    unit: "kits",
+    warehouse: "Bengaluru",
+  },
+  {
+    id: "surgical-consumables",
+    name: "Surgical consumables",
+    sku: "SC-GCC-118",
+    available: 5400,
+    reserved: 640,
+    unit: "units",
+    warehouse: "Mumbai",
+  },
+  {
+    id: "cold-chain-supplies",
+    name: "Cold-chain supplies",
+    sku: "CC-SUP-072",
+    available: 860,
+    reserved: 180,
+    unit: "cartons",
+    warehouse: "Hyderabad",
+  },
+  {
+    id: "hospital-equipment",
+    name: "Hospital equipment",
+    sku: "HE-NEP-041",
+    available: 46,
+    reserved: 8,
+    unit: "units",
+    warehouse: "Kolkata",
+  },
+];
+
 const connectorRecords: ConnectorRecord[] = [
   {
     name: "Delhivery",
@@ -301,11 +370,53 @@ export default function Home() {
   const [docQuery, setDocQuery] = useState("");
   const [docFamily, setDocFamily] = useState("All families");
   const [showPackModal, setShowPackModal] = useState(false);
-  const [notice, setNotice] = useState("");
+  const [showInventoryModal, setShowInventoryModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [inventoryRecords, setInventoryRecords] = useState(productRecords);
+  const [selectedProductId, setSelectedProductId] = useState(productRecords[0].id);
+  const [orderLines, setOrderLines] = useState<OrderLine[]>([
+    { productId: productRecords[0].id, quantity: "10" },
+  ]);
+  const [inventoryChange, setInventoryChange] = useState("10");
+  const [inventoryChangeType, setInventoryChangeType] = useState<"add" | "remove">("add");
+  const [paymentOrderId, setPaymentOrderId] = useState(transactionRecords[0].id);
+  const [paymentAmount, setPaymentAmount] = useState("1000");
+  const [paymentMethod, setPaymentMethod] = useState("Bank transfer");
+  const [infoOrderId, setInfoOrderId] = useState("");
+  const [infoNote, setInfoNote] = useState("");
+  const [selectedOrderId, setSelectedOrderId] = useState("");
+  const [orderDecisions, setOrderDecisions] = useState<Record<string, OrderDecision>>({});
+  const [approvalNotes, setApprovalNotes] = useState<Record<string, string>>({});
+  const [errorMessage, setErrorMessage] = useState("");
 
   const role = roles.find((item) => item.id === activeRole) ?? roles[0];
   const visibleSections = sectionsForRole(activeRole);
   const isSupabaseReady = isSupabaseConfigured;
+  const selectedProduct =
+    inventoryRecords.find((product) => product.id === selectedProductId) ??
+    inventoryRecords[0];
+  const selectedOrder = transactionRecords.find((order) => order.id === selectedOrderId);
+  const canCreateOrder = activeRole === "sales";
+  const canUpdateInventory = activeRole === "warehouse";
+  const pendingOrders = transactionRecords.filter(
+    (order) => !orderDecisions[order.id],
+  ).length;
+  const actionAlert =
+    activeRole === "logistics" && pendingOrders > 0
+      ? {
+          message: `${pendingOrders} incoming orders need approval.`,
+          action: "Review incoming",
+          onClick: () => setActiveSection("transactions"),
+        }
+      : activeRole === "sales"
+        ? {
+            message: "2 quotes need a reply today.",
+            action: "Review orders",
+            onClick: () => setActiveSection("transactions"),
+          }
+        : null;
 
   const filteredDocuments = useMemo(() => {
     const normalizedQuery = docQuery.trim().toLowerCase();
@@ -324,9 +435,128 @@ export default function Home() {
 
   function handleCreatePack(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const requestedByProduct = new Map<string, number>();
+    for (const line of orderLines) {
+      const quantity = Number(line.quantity);
+      const product = inventoryRecords.find((item) => item.id === line.productId);
+      if (!product || !Number.isInteger(quantity) || quantity < 1) {
+        setErrorMessage("Choose a product and a whole-number quantity for every line.");
+        return;
+      }
+      const requested = (requestedByProduct.get(product.id) ?? 0) + quantity;
+      if (requested > product.available) {
+        setErrorMessage(
+          `${product.name} has ${product.available.toLocaleString()} ${product.unit} available.`,
+        );
+        return;
+      }
+      requestedByProduct.set(product.id, requested);
+    }
     setShowPackModal(false);
-    setNotice("Demo order created — connect Supabase to persist it.");
+    setErrorMessage("");
+    setOrderLines([{ productId: inventoryRecords[0].id, quantity: "10" }]);
     setActiveSection("transactions");
+  }
+
+  function openPackModal() {
+    setErrorMessage("");
+    setOrderLines([{ productId: inventoryRecords[0].id, quantity: "10" }]);
+    setShowPackModal(true);
+  }
+
+  function updateOrderLine(index: number, field: keyof OrderLine, value: string) {
+    setOrderLines((lines) =>
+      lines.map((line, lineIndex) =>
+        lineIndex === index ? { ...line, [field]: value } : line,
+      ),
+    );
+  }
+
+  function addOrderLine() {
+    const nextProduct = inventoryRecords.find(
+      (product) => !orderLines.some((line) => line.productId === product.id),
+    );
+    if (!nextProduct) return;
+    setOrderLines((lines) => [
+      ...lines,
+      { productId: nextProduct.id, quantity: "1" },
+    ]);
+  }
+
+  function removeOrderLine(index: number) {
+    setOrderLines((lines) => lines.filter((_, lineIndex) => lineIndex !== index));
+  }
+
+  function handleInventoryUpdate(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const amount = Number(inventoryChange);
+    if (!Number.isInteger(amount) || amount < 1) {
+      setErrorMessage("Enter a whole number greater than zero.");
+      return;
+    }
+    const current = inventoryRecords.find((product) => product.id === selectedProductId);
+    if (!current) return;
+    if (inventoryChangeType === "remove" && amount > current.available) {
+      setErrorMessage(`Only ${current.available.toLocaleString()} ${current.unit} are available.`);
+      return;
+    }
+    setInventoryRecords((records) =>
+      records.map((product) =>
+        product.id === selectedProductId
+          ? {
+              ...product,
+              available:
+                product.available + (inventoryChangeType === "add" ? amount : -amount),
+            }
+          : product,
+      ),
+    );
+    setShowInventoryModal(false);
+    setErrorMessage("");
+  }
+
+  function handleCreatePayment(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const amount = Number(paymentAmount);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      setErrorMessage("Enter a payment amount greater than zero.");
+      return;
+    }
+    setShowPaymentModal(false);
+    setErrorMessage("");
+  }
+
+  function handleOrderDecision(id: string, decision: OrderDecision) {
+    setOrderDecisions((decisions) => ({ ...decisions, [id]: decision }));
+  }
+
+  function handleAskForInfo(id: string) {
+    setInfoOrderId(id);
+    setInfoNote(approvalNotes[id] ?? "");
+    setShowInfoModal(true);
+  }
+
+  function handleInfoRequest(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const note = infoNote.trim();
+    if (!note) {
+      setErrorMessage("Add a note before requesting information.");
+      return;
+    }
+    setApprovalNotes((notes) => ({ ...notes, [infoOrderId]: note }));
+    setOrderDecisions((decisions) => ({ ...decisions, [infoOrderId]: "More info" }));
+    setShowInfoModal(false);
+    setErrorMessage("");
+  }
+
+  function openInventoryUpdate(productId?: string) {
+    if (productId) setSelectedProductId(productId);
+    setShowInventoryModal(true);
+  }
+
+  function openOrderDetails(id: string) {
+    setSelectedOrderId(id);
+    setShowOrderModal(true);
   }
 
   function handleRoleChange(nextRole: RoleId) {
@@ -371,10 +601,18 @@ export default function Home() {
 
         <div className="sidebar-label">Quick links</div>
         <div className="quick-links">
-          <button type="button" onClick={() => setShowPackModal(true)}>
-            <span aria-hidden="true">＋</span>
-            Create order
-          </button>
+          {canCreateOrder ? (
+            <button type="button" onClick={openPackModal}>
+              <span aria-hidden="true">＋</span>
+              Create order
+            </button>
+          ) : null}
+          {activeRole === "sales" ? (
+            <button type="button" onClick={() => setShowPaymentModal(true)}>
+              <span aria-hidden="true">＋</span>
+              Record payment
+            </button>
+          ) : null}
           {visibleSections.some((section) => section.id === "connectors") ? (
             <button type="button" onClick={() => setActiveSection("connectors")}>
               <span aria-hidden="true">⌁</span>
@@ -420,18 +658,6 @@ export default function Home() {
               <span className="status-dot" />
               MVP demo
             </span>
-            <button
-              className="icon-button"
-              type="button"
-              aria-label="Open notifications"
-              onClick={() =>
-                setNotice(
-                  "Notifications are represented by the demo activity feed.",
-                )
-              }
-            >
-              ♢
-            </button>
             <button className="profile-button" type="button">
               <span className="avatar small">MP</span>
               <span>Manu</span>
@@ -447,14 +673,16 @@ export default function Home() {
               <h1>{role.heading}</h1>
               <p className="page-description">{role.description}</p>
             </div>
-            <button
-              className="primary-button"
-              type="button"
-              onClick={() => setShowPackModal(true)}
-            >
-              <span aria-hidden="true">＋</span>
-              Create order
-            </button>
+            {canCreateOrder ? (
+              <button
+                className="primary-button"
+                type="button"
+                onClick={openPackModal}
+              >
+                <span aria-hidden="true">＋</span>
+                Create order
+              </button>
+            ) : null}
           </div>
 
           <div className="view-switcher-wrap">
@@ -481,14 +709,24 @@ export default function Home() {
             </div>
           </div>
 
-          {notice ? (
-            <div className="notice" role="status">
-              <span>✓</span>
-              {notice}
+          {actionAlert ? (
+            <div className="action-alert" role="status">
+              <span aria-hidden="true">!</span>
+              <strong>{actionAlert.message}</strong>
+              <button type="button" onClick={actionAlert.onClick}>
+                {actionAlert.action} <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+          ) : null}
+
+          {errorMessage ? (
+            <div className="error-banner" role="alert">
+              <span aria-hidden="true">!</span>
+              {errorMessage}
               <button
                 type="button"
-                onClick={() => setNotice("")}
-                aria-label="Dismiss notice"
+                onClick={() => setErrorMessage("")}
+                aria-label="Dismiss error"
               >
                 ×
               </button>
@@ -498,8 +736,25 @@ export default function Home() {
           {activeSection === "overview" ? (
             <OverviewSection
               role={role}
+              inventory={inventoryRecords}
+              orderDecisions={orderDecisions}
               onOpenTransactions={() => setActiveSection("transactions")}
-              onCreateOrder={() => setShowPackModal(true)}
+              onOpenDocuments={() => setActiveSection("documents")}
+              onOpenInventory={() => setActiveSection("inventory")}
+              onCreateOrder={openPackModal}
+              onCreatePayment={() => setShowPaymentModal(true)}
+              onUpdateInventory={openInventoryUpdate}
+              onDecision={handleOrderDecision}
+              onAskForInfo={handleAskForInfo}
+              onOpenOrder={openOrderDetails}
+            />
+          ) : null}
+
+          {activeSection === "inventory" ? (
+            <ProductInventoryPanel
+              inventory={inventoryRecords}
+              canUpdate={canUpdateInventory}
+              onUpdateInventory={openInventoryUpdate}
             />
           ) : null}
 
@@ -510,14 +765,20 @@ export default function Home() {
               family={docFamily}
               onQueryChange={setDocQuery}
               onFamilyChange={setDocFamily}
-              onCreatePack={() => setShowPackModal(true)}
+              onCreatePack={canCreateOrder ? openPackModal : undefined}
             />
           ) : null}
 
           {activeSection === "transactions" ? (
             <TransactionsSection
               transactions={transactionRecords}
-              onCreatePack={() => setShowPackModal(true)}
+              role={activeRole}
+              orderDecisions={orderDecisions}
+              approvalNotes={approvalNotes}
+              onCreatePack={canCreateOrder ? openPackModal : undefined}
+              onDecision={handleOrderDecision}
+              onAskForInfo={handleAskForInfo}
+              onOpenOrder={openOrderDetails}
             />
           ) : null}
 
@@ -556,9 +817,83 @@ export default function Home() {
                 Buyer or importer
                 <input required placeholder="e.g. Northstar Care GmbH" />
               </label>
+              <div className="order-lines">
+                <div className="order-lines-heading">
+                  <span>Products</span>
+                  <span>{orderLines.length} {orderLines.length === 1 ? "line" : "lines"}</span>
+                </div>
+                {orderLines.map((line, index) => {
+                  const lineProduct =
+                    inventoryRecords.find((product) => product.id === line.productId) ??
+                    inventoryRecords[0];
+                  return (
+                    <div className="order-line" key={index}>
+                      <div className="form-grid">
+                        <label>
+                          Product
+                          <select
+                            value={line.productId}
+                            onChange={(event) =>
+                              updateOrderLine(index, "productId", event.target.value)
+                            }
+                          >
+                            {inventoryRecords.map((product) => (
+                              <option
+                                key={product.id}
+                                value={product.id}
+                                disabled={orderLines.some(
+                                  (otherLine, otherIndex) =>
+                                    otherIndex !== index && otherLine.productId === product.id,
+                                )}
+                              >
+                                {product.name} · {product.warehouse} · {product.available.toLocaleString()} {product.unit} available
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          Quantity
+                          <input
+                            required
+                            type="number"
+                            min="1"
+                            max={lineProduct.available}
+                            value={line.quantity}
+                            onChange={(event) =>
+                              updateOrderLine(index, "quantity", event.target.value)
+                            }
+                          />
+                        </label>
+                      </div>
+                      {orderLines.length > 1 ? (
+                        <button
+                          className="row-remove-button"
+                          type="button"
+                          onClick={() => removeOrderLine(index)}
+                        >
+                          Remove
+                        </button>
+                      ) : null}
+                      <div className="inventory-callout compact">
+                        <span>Available inventory</span>
+                        <strong>{lineProduct.available.toLocaleString()} {lineProduct.unit}</strong>
+                        <small>Warehouse: {lineProduct.warehouse} · {lineProduct.sku} · {lineProduct.reserved.toLocaleString()} reserved</small>
+                      </div>
+                    </div>
+                  );
+                })}
+                <button
+                  className="secondary-button small add-product-button"
+                  type="button"
+                  onClick={addOrderLine}
+                  disabled={orderLines.length >= inventoryRecords.length}
+                >
+                  ＋ Add product
+                </button>
+              </div>
               <div className="form-grid">
                 <label>
-                  Transaction type
+                  Sale type
                   <select defaultValue="Export">
                     <option>Export</option>
                     <option>Import</option>
@@ -566,7 +901,7 @@ export default function Home() {
                   </select>
                 </label>
                 <label>
-                  Transport mode
+                  Transport
                   <select defaultValue="Air">
                     <option>Air</option>
                     <option>Sea</option>
@@ -575,13 +910,6 @@ export default function Home() {
                   </select>
                 </label>
               </div>
-              <label>
-                Product or shipment reference
-                <input
-                  required
-                  placeholder="e.g. Diagnostic kits · PO-2025-018"
-                />
-              </label>
               <div className="modal-actions">
                 <button
                   className="secondary-button"
@@ -598,25 +926,276 @@ export default function Home() {
           </div>
         </div>
       ) : null}
+
+      {showInventoryModal ? (
+        <div className="modal-backdrop">
+          <div
+            className="modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="inventory-title"
+          >
+            <div className="modal-heading">
+              <div>
+                <p className="eyebrow">Warehouse action</p>
+                <h2 id="inventory-title">Update inventory</h2>
+              </div>
+              <button
+                className="close-button"
+                type="button"
+                onClick={() => setShowInventoryModal(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <p className="modal-copy">
+              Record a receipt, adjustment, or stock movement for one product.
+            </p>
+            <form onSubmit={handleInventoryUpdate}>
+              <label>
+                Product
+                <select
+                  value={selectedProductId}
+                  onChange={(event) => setSelectedProductId(event.target.value)}
+                >
+                  {inventoryRecords.map((product) => (
+                    <option key={product.id} value={product.id}>
+                      {product.name} · {product.available.toLocaleString()} {product.unit}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="form-grid">
+                <label>
+                  Movement
+                  <select
+                    value={inventoryChangeType}
+                    onChange={(event) =>
+                      setInventoryChangeType(event.target.value as "add" | "remove")
+                    }
+                  >
+                    <option value="add">Add stock</option>
+                    <option value="remove">Remove stock</option>
+                  </select>
+                </label>
+                <label>
+                  Quantity
+                  <input
+                    required
+                    type="number"
+                    min="1"
+                    value={inventoryChange}
+                    onChange={(event) => setInventoryChange(event.target.value)}
+                  />
+                </label>
+              </div>
+              <div className="inventory-callout">
+                <span>Current available</span>
+                <strong>{selectedProduct.available.toLocaleString()} {selectedProduct.unit}</strong>
+                <small>{selectedProduct.warehouse} · {selectedProduct.sku}</small>
+              </div>
+              <div className="modal-actions">
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => setShowInventoryModal(false)}
+                >
+                  Cancel
+                </button>
+                <button className="primary-button" type="submit">
+                  Save inventory
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
+      {showPaymentModal ? (
+        <div className="modal-backdrop">
+          <div
+            className="modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="payment-title"
+          >
+            <div className="modal-heading">
+              <div>
+                <p className="eyebrow">Sales action</p>
+                <h2 id="payment-title">Record payment</h2>
+              </div>
+              <button
+                className="close-button"
+                type="button"
+                onClick={() => setShowPaymentModal(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <p className="modal-copy">Record the payment against the selected order.</p>
+            <form onSubmit={handleCreatePayment}>
+              <label>
+                Order
+                <select
+                  value={paymentOrderId}
+                  onChange={(event) => setPaymentOrderId(event.target.value)}
+                >
+                  {transactionRecords.map((transaction) => (
+                    <option key={transaction.id} value={transaction.id}>
+                      {transaction.id} · {transaction.buyer}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="form-grid">
+                <label>
+                  Amount
+                  <input
+                    required
+                    type="number"
+                    min="1"
+                    value={paymentAmount}
+                    onChange={(event) => setPaymentAmount(event.target.value)}
+                  />
+                </label>
+                <label>
+                  Method
+                  <select
+                    value={paymentMethod}
+                    onChange={(event) => setPaymentMethod(event.target.value)}
+                  >
+                    <option>Bank transfer</option>
+                    <option>Letter of credit</option>
+                    <option>Card</option>
+                    <option>UPI</option>
+                  </select>
+                </label>
+              </div>
+              <div className="modal-actions">
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => setShowPaymentModal(false)}
+                >
+                  Cancel
+                </button>
+                <button className="primary-button" type="submit">
+                  Save payment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
+      {showInfoModal ? (
+        <div className="modal-backdrop">
+          <div
+            className="modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="info-title"
+          >
+            <div className="modal-heading">
+              <div>
+                <p className="eyebrow">Approval action</p>
+                <h2 id="info-title">Ask for information</h2>
+              </div>
+              <button
+                className="close-button"
+                type="button"
+                onClick={() => setShowInfoModal(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+            <p className="modal-copy">
+              Tell Sales or the sending warehouse what is missing for {infoOrderId}.
+            </p>
+            <form onSubmit={handleInfoRequest}>
+              <label>
+                Note
+                <textarea
+                  required
+                  rows={4}
+                  value={infoNote}
+                  onChange={(event) => setInfoNote(event.target.value)}
+                  placeholder="e.g. Add the batch number and delivery date."
+                />
+              </label>
+              <div className="modal-actions">
+                <button
+                  className="secondary-button"
+                  type="button"
+                  onClick={() => setShowInfoModal(false)}
+                >
+                  Cancel
+                </button>
+                <button className="primary-button" type="submit">
+                  Send request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
+      {showOrderModal && selectedOrder ? (
+        <OrderDetailModal
+          order={selectedOrder}
+          decision={orderDecisions[selectedOrder.id]}
+          note={approvalNotes[selectedOrder.id]}
+          onClose={() => setShowOrderModal(false)}
+        />
+      ) : null}
     </main>
   );
 }
 
 function OverviewSection({
   role,
+  inventory,
+  orderDecisions,
   onOpenTransactions,
+  onOpenDocuments,
+  onOpenInventory,
   onCreateOrder,
+  onCreatePayment,
+  onUpdateInventory,
+  onDecision,
+  onAskForInfo,
+  onOpenOrder,
 }: {
   role: Role;
+  inventory: ProductRecord[];
+  orderDecisions: Record<string, OrderDecision>;
   onOpenTransactions: () => void;
+  onOpenDocuments: () => void;
+  onOpenInventory: () => void;
   onCreateOrder: () => void;
+  onCreatePayment?: () => void;
+  onUpdateInventory: (productId?: string) => void;
+  onDecision: (id: string, decision: OrderDecision) => void;
+  onAskForInfo: (id: string) => void;
+  onOpenOrder: (id: string) => void;
 }) {
   if (role.id !== "owner") {
     return (
       <SimpleOverviewSection
         role={role}
+        inventory={inventory}
+        orderDecisions={orderDecisions}
         onOpenTransactions={onOpenTransactions}
         onCreateOrder={onCreateOrder}
+        onCreatePayment={onCreatePayment}
+        onOpenInventory={onOpenInventory}
+        onUpdateInventory={onUpdateInventory}
+        onDecision={onDecision}
+        onAskForInfo={onAskForInfo}
+        onOpenOrder={onOpenOrder}
       />
     );
   }
@@ -625,16 +1204,12 @@ function OverviewSection({
     <>
       <div className="metrics-grid">
         {role.metrics.map((metric) => (
-          <article className="metric-card" key={metric.label}>
-            <div className="metric-topline">
-              <span>{metric.label}</span>
-              <span className={"metric-mark " + metric.tone} />
-            </div>
-            <strong>{metric.value}</strong>
-            <span className={"metric-change " + metric.tone}>
-              {metric.change}
-            </span>
-          </article>
+          <MetricAction
+            key={metric.label}
+            metric={metric}
+            action={metric.label === "Document readiness" ? "Open documents" : "Open queue"}
+            onClick={metric.label === "Document readiness" ? onOpenDocuments : onOpenTransactions}
+          />
         ))}
       </div>
 
@@ -801,70 +1376,226 @@ function OverviewSection({
 
 function SimpleOverviewSection({
   role,
+  inventory,
+  orderDecisions,
   onOpenTransactions,
   onCreateOrder,
+  onCreatePayment,
+  onOpenInventory,
+  onUpdateInventory,
+  onDecision,
+  onAskForInfo,
+  onOpenOrder,
 }: {
   role: Role;
+  inventory: ProductRecord[];
+  orderDecisions: Record<string, OrderDecision>;
   onOpenTransactions: () => void;
   onCreateOrder: () => void;
+  onCreatePayment?: () => void;
+  onOpenInventory: () => void;
+  onUpdateInventory: (productId?: string) => void;
+  onDecision: (id: string, decision: OrderDecision) => void;
+  onAskForInfo: (id: string) => void;
+  onOpenOrder: (id: string) => void;
 }) {
+  const isSales = role.id === "sales";
+  const isWarehouse = role.id === "warehouse";
+  const isLogistics = role.id === "logistics";
+  const metricActions = isSales
+    ? ["View enquiries", "Review quotes", "Open handoffs"]
+    : isWarehouse
+      ? ["Open inventory", "Open inventory", "Open inventory"]
+      : ["Review incoming", "Review incoming", "View approved"];
+  const metricClick = isWarehouse ? onOpenInventory : onOpenTransactions;
+
   return (
     <>
-      <div className="metrics-grid compact-metrics">
-        {role.metrics.slice(0, 3).map((metric) => (
-          <article className="metric-card" key={metric.label}>
-            <div className="metric-topline">
-              <span>{metric.label}</span>
-              <span className={"metric-mark " + metric.tone} />
+      {!isLogistics ? (
+        <div className="metrics-grid compact-metrics">
+          {role.metrics.slice(0, 3).map((metric, index) => (
+            <MetricAction
+              key={metric.label}
+              metric={metric}
+              action={metricActions[index]}
+              onClick={metricClick}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      <div className={"simple-overview-grid" + (isLogistics ? " logistics-overview-grid" : "")}>
+        {!isLogistics ? (
+          <section className="panel simple-action-panel">
+            <p className="eyebrow">Next action</p>
+            <h2>{isSales ? "Create a sale" : "View inventory"}</h2>
+            <p>
+              {isSales
+                ? "Choose products, set transport, and record payment."
+                : "Open a product row when you need to adjust its stock."}
+            </p>
+            <div className="simple-action-buttons">
+              {isSales ? (
+                <>
+                  <button className="primary-button" type="button" onClick={onCreateOrder}>
+                    <span aria-hidden="true">＋</span>
+                    Create order
+                  </button>
+                  <button className="secondary-button" type="button" onClick={onCreatePayment}>
+                    Record payment
+                  </button>
+                </>
+              ) : (
+                <button className="primary-button" type="button" onClick={onOpenInventory}>
+                  View inventory
+                </button>
+              )}
             </div>
-            <strong>{metric.value}</strong>
-            <span className={"metric-change " + metric.tone}>
-              {metric.change}
+          </section>
+        ) : null}
+
+        {!isWarehouse ? (
+          <section className="panel simple-orders-panel">
+            <div className="panel-heading">
+              <div>
+                <p className="eyebrow">{isLogistics ? "Queue" : "Recent"}</p>
+                <h2>{isLogistics ? "Incoming orders" : "Orders"}</h2>
+              </div>
+              <button className="text-button" type="button" onClick={onOpenTransactions}>
+                {isLogistics ? "Review all" : "View all"} <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div className="simple-order-list">
+              {transactionRecords.slice(0, 3).map((transaction) => {
+                const status =
+                  orderDecisions[transaction.id] ??
+                  (isLogistics ? "Awaiting review" : transaction.status);
+                return (
+                  <div
+                    className={
+                      isLogistics
+                        ? "simple-order-row simple-incoming-row" +
+                          (orderDecisions[transaction.id]
+                            ? " approval-" + statusClass(orderDecisions[transaction.id])
+                            : "")
+                        : "simple-order-row"
+                    }
+                    key={transaction.id}
+                  >
+                    <div>
+                      <button
+                        className="simple-order-link"
+                        type="button"
+                        onClick={() => onOpenOrder(transaction.id)}
+                      >
+                        {transaction.id}
+                      </button>
+                      <span>{transaction.buyer}</span>
+                    </div>
+                    <span
+                      className={
+                        "inventory-status " +
+                        (orderDecisions[transaction.id]
+                          ? "decided " + statusClass(orderDecisions[transaction.id])
+                          : "neutral")
+                      }
+                    >
+                      {status}
+                    </span>
+                    {isLogistics ? (
+                      <ApprovalActions
+                        orderId={transaction.id}
+                        compact
+                        onDecision={onDecision}
+                        onAskForInfo={onAskForInfo}
+                      />
+                    ) : null}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        ) : null}
+      </div>
+
+      {isSales || isWarehouse ? (
+        <ProductInventoryPanel
+          inventory={inventory}
+          canUpdate={isWarehouse}
+          onUpdateInventory={onUpdateInventory}
+        />
+      ) : null}
+    </>
+  );
+}
+
+function MetricAction({
+  metric,
+  action,
+  onClick,
+}: {
+  metric: Role["metrics"][number];
+  action: string;
+  onClick: () => void;
+}) {
+  return (
+    <button className="metric-card metric-card-action" type="button" onClick={onClick}>
+      <div className="metric-topline">
+        <span>{metric.label}</span>
+        <span className={"metric-mark " + metric.tone} />
+      </div>
+      <strong>{metric.value}</strong>
+      <span className={"metric-change " + metric.tone}>{metric.change}</span>
+      <span className="metric-action">{action} ↗</span>
+    </button>
+  );
+}
+
+function ProductInventoryPanel({
+  inventory,
+  canUpdate,
+  onUpdateInventory,
+}: {
+  inventory: ProductRecord[];
+  canUpdate: boolean;
+  onUpdateInventory: (productId?: string) => void;
+}) {
+  return (
+    <section className={"panel product-inventory-panel" + (canUpdate ? " can-update" : "")}>
+      <div className="panel-heading">
+        <div>
+          <p className="eyebrow">Stock view</p>
+          <h2>Product inventory</h2>
+        </div>
+        <span className="count-badge">{inventory.length} products</span>
+      </div>
+      <div className="product-inventory-list">
+        {inventory.map((product) => (
+          <div className="product-inventory-row" key={product.id}>
+            <div>
+              <strong>{product.name}</strong>
+              <span>{product.sku} · {product.warehouse}</span>
+            </div>
+            <div className="product-stock-count">
+              <strong>{product.available.toLocaleString()}</strong>
+              <span>{product.unit} available</span>
+            </div>
+            <span className="inventory-status neutral">
+              {product.reserved.toLocaleString()} reserved
             </span>
-          </article>
+            {canUpdate ? (
+              <button
+                className="secondary-button small inventory-update-button"
+                type="button"
+                onClick={() => onUpdateInventory(product.id)}
+              >
+                Update
+              </button>
+            ) : null}
+          </div>
         ))}
       </div>
-
-      <div className="simple-overview-grid">
-        <section className="panel simple-action-panel">
-          <p className="eyebrow">Quick action</p>
-          <h2>Create an order</h2>
-          <p>
-            Start with the buyer, product, and delivery details. The rest can
-            follow later.
-          </p>
-          <button className="primary-button" type="button" onClick={onCreateOrder}>
-            <span aria-hidden="true">＋</span>
-            Create order
-          </button>
-        </section>
-
-        <section className="panel simple-orders-panel">
-          <div className="panel-heading">
-            <div>
-              <p className="eyebrow">Recent</p>
-              <h2>Orders</h2>
-            </div>
-            <button className="text-button" type="button" onClick={onOpenTransactions}>
-              View all <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-          <div className="simple-order-list">
-            {transactionRecords.slice(0, 3).map((transaction) => (
-              <div className="simple-order-row" key={transaction.id}>
-                <div>
-                  <strong>{transaction.id}</strong>
-                  <span>{transaction.buyer}</span>
-                </div>
-                <span className={"status-chip " + statusClass(transaction.status)}>
-                  {transaction.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-    </>
+    </section>
   );
 }
 
@@ -881,7 +1612,7 @@ function DocumentsSection({
   family: string;
   onQueryChange: (value: string) => void;
   onFamilyChange: (value: string) => void;
-  onCreatePack: () => void;
+  onCreatePack?: () => void;
 }) {
   return (
     <>
@@ -894,9 +1625,11 @@ function DocumentsSection({
             isolated files.
           </p>
         </div>
-        <button className="secondary-button" type="button" onClick={onCreatePack}>
-          ＋ Add template
-        </button>
+        {onCreatePack ? (
+          <button className="secondary-button" type="button" onClick={onCreatePack}>
+            ＋ Add template
+          </button>
+        ) : null}
       </div>
       <div className="library-stats">
         <StatCard label="Document types" value="48" note="Across 15 families" />
@@ -973,11 +1706,36 @@ function DocumentsSection({
 
 function TransactionsSection({
   transactions,
+  role,
+  orderDecisions,
+  approvalNotes,
   onCreatePack,
+  onDecision,
+  onAskForInfo,
+  onOpenOrder,
 }: {
   transactions: TransactionRecord[];
-  onCreatePack: () => void;
+  role: RoleId;
+  orderDecisions: Record<string, OrderDecision>;
+  approvalNotes: Record<string, string>;
+  onCreatePack?: () => void;
+  onDecision: (id: string, decision: OrderDecision) => void;
+  onAskForInfo: (id: string) => void;
+  onOpenOrder: (id: string) => void;
 }) {
+  if (role === "logistics") {
+    return (
+      <IncomingOrdersSection
+        transactions={transactions}
+        orderDecisions={orderDecisions}
+        approvalNotes={approvalNotes}
+        onDecision={onDecision}
+        onAskForInfo={onAskForInfo}
+        onOpenOrder={onOpenOrder}
+      />
+    );
+  }
+
   return (
     <>
       <div className="section-heading-row">
@@ -989,9 +1747,11 @@ function TransactionsSection({
             customs, and finance records.
           </p>
         </div>
-        <button className="primary-button" type="button" onClick={onCreatePack}>
-          ＋ New pack
-        </button>
+        {onCreatePack ? (
+          <button className="primary-button" type="button" onClick={onCreatePack}>
+            ＋ Create order
+          </button>
+        ) : null}
       </div>
       <section className="panel full-panel">
         <div className="transaction-toolbar">
@@ -1050,6 +1810,7 @@ function TransactionsSection({
                 className="row-more"
                 type="button"
                 aria-label={"Open " + transaction.id}
+                onClick={() => onOpenOrder(transaction.id)}
               >
                 •••
               </button>
@@ -1072,6 +1833,186 @@ function TransactionsSection({
         </button>
       </div>
     </>
+  );
+}
+
+function IncomingOrdersSection({
+  transactions,
+  orderDecisions,
+  approvalNotes,
+  onDecision,
+  onAskForInfo,
+  onOpenOrder,
+}: {
+  transactions: TransactionRecord[];
+  orderDecisions: Record<string, OrderDecision>;
+  approvalNotes: Record<string, string>;
+  onDecision: (id: string, decision: OrderDecision) => void;
+  onAskForInfo: (id: string) => void;
+  onOpenOrder: (id: string) => void;
+}) {
+  return (
+    <>
+      <div className="section-heading-row">
+        <div>
+          <p className="eyebrow">Warehouse approval</p>
+          <h2>Incoming orders</h2>
+          <p>Open an order, check the request, then approve, deny, ask for information, or reroute it.</p>
+        </div>
+        <span className="count-badge">{transactions.length} to review</span>
+      </div>
+      <section className="panel approval-panel">
+        <div className="approval-list">
+          {transactions.map((transaction) => {
+            const decision = orderDecisions[transaction.id];
+            return (
+              <article
+                className={
+                  "approval-row" +
+                  (decision ? " approval-" + statusClass(decision) : "")
+                }
+                key={transaction.id}
+              >
+                <div className="approval-order">
+                  <strong>{transaction.id}</strong>
+                  <span>{transaction.title}</span>
+                  <small>{transaction.buyer} · {transaction.route}</small>
+                  <button className="order-info-link" type="button" onClick={() => onOpenOrder(transaction.id)}>
+                    View order details
+                  </button>
+                  {approvalNotes[transaction.id] ? (
+                    <small className="approval-note">Note: {approvalNotes[transaction.id]}</small>
+                  ) : null}
+                </div>
+                <span
+                  className={
+                    "inventory-status " +
+                    (decision ? "decided " + statusClass(decision) : "neutral")
+                  }
+                >
+                  {decision ?? "Awaiting approval"}
+                </span>
+                <ApprovalActions
+                  orderId={transaction.id}
+                  onDecision={onDecision}
+                  onAskForInfo={onAskForInfo}
+                />
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function ApprovalActions({
+  orderId,
+  compact = false,
+  onDecision,
+  onAskForInfo,
+}: {
+  orderId: string;
+  compact?: boolean;
+  onDecision: (id: string, decision: OrderDecision) => void;
+  onAskForInfo: (id: string) => void;
+}) {
+  return (
+    <div className={"approval-actions" + (compact ? " compact" : "")}>
+      <button
+        className="approval-button approve"
+        type="button"
+        onClick={() => onDecision(orderId, "Approved")}
+      >
+        Approve
+      </button>
+      <button
+        className="approval-button info"
+        type="button"
+        onClick={() => onAskForInfo(orderId)}
+      >
+        Ask for info
+      </button>
+      <button
+        className="approval-button reroute"
+        type="button"
+        onClick={() => onDecision(orderId, "Rerouted")}
+      >
+        Send to warehouse
+      </button>
+      <button
+        className="approval-button deny"
+        type="button"
+        onClick={() => onDecision(orderId, "Denied")}
+      >
+        Deny
+      </button>
+    </div>
+  );
+}
+
+function OrderDetailModal({
+  order,
+  decision,
+  note,
+  onClose,
+}: {
+  order: TransactionRecord;
+  decision?: OrderDecision;
+  note?: string;
+  onClose: () => void;
+}) {
+  return (
+    <div className="modal-backdrop">
+      <div
+        className="modal-card order-detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="order-detail-title"
+      >
+        <div className="modal-heading">
+          <div>
+            <p className="eyebrow">Order details</p>
+            <h2 id="order-detail-title">{order.id}</h2>
+          </div>
+          <button className="close-button" type="button" onClick={onClose} aria-label="Close">
+            ×
+          </button>
+        </div>
+        <div className="order-detail-summary">
+          <strong>{order.title}</strong>
+          <span>{order.buyer}</span>
+        </div>
+        <div className="order-detail-grid">
+          <DetailItem label="Route" value={order.route} />
+          <DetailItem label="Transport" value={order.mode} />
+          <DetailItem label="Value" value={order.value} />
+          <DetailItem label="Progress" value={`${order.progress}% complete`} />
+          <DetailItem label="Status" value={decision ?? order.status} />
+          <DetailItem label="Next action" value={order.next} />
+        </div>
+        {note ? (
+          <div className="order-detail-note">
+            <span>Information requested</span>
+            <strong>{note}</strong>
+          </div>
+        ) : null}
+        <div className="modal-actions">
+          <button className="primary-button" type="button" onClick={onClose}>
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DetailItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="order-detail-item">
+      <span>{label}</span>
+      <strong>{value}</strong>
+    </div>
   );
 }
 
