@@ -1,0 +1,32 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Audio, model, and transcription runtime artifacts
+*.mp3
+*.wav
+*.m4a
+.whisper-venv/
+artifacts/*-open-whisper.json
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# JavaScript/build output
+node_modules/
+dist/
+build/
+coverage/
+.next/
+
+# Local tooling and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
