@@ -36,6 +36,9 @@ test("server-renders the EaseMed landing page", async () => {
   assert.match(html, /Requirement capture/i);
   assert.match(html, /Intelligent matching/i);
   assert.match(html, /Decision &amp; audit trail|Decision & audit trail/i);
+  assert.match(html, /Illustrative demo partner/i);
+  assert.match(html, /Sample buyer perspective/i);
+  assert.match(html, /About the founder/i);
   assert.match(html, /Open workspace/i);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/i);
   assert.doesNotMatch(html, /react-loading-skeleton|codex-preview/i);

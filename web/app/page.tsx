@@ -44,6 +44,35 @@ const audienceCards = [
   },
 ];
 
+const demoPartners = [
+  "Meditek Gulf",
+  "Northstar Care",
+  "Aster Labs",
+  "Clinova Health",
+  "Kantipur Health",
+];
+
+const testimonials = [
+  {
+    quote:
+      "We can see what is missing before an order becomes urgent. The handoff is finally a shared view, not a chain of follow-ups.",
+    role: "Sample buyer perspective",
+    company: "Health system procurement",
+  },
+  {
+    quote:
+      "A structured request gives our team the context to respond quickly and accurately, without guessing what the facility needs.",
+    role: "Sample supplier perspective",
+    company: "Medical supply partner",
+  },
+  {
+    quote:
+      "Every decision has a next action. That makes routing, approval, and fulfilment much easier to keep moving.",
+    role: "Sample logistics perspective",
+    company: "Operations and fulfilment",
+  },
+];
+
 export default function LandingPage() {
   return (
     <main className="landing-page">
@@ -59,13 +88,14 @@ export default function LandingPage() {
           <a href="#platform">Platform</a>
           <a href="#how-it-works">How it works</a>
           <a href="#audiences">For teams</a>
+          <a href="#founder">About</a>
         </nav>
 
         <div className="landing-nav-actions">
           <a className="landing-nav-login" href="/dashboard">
             Sign in
           </a>
-          <a className="landing-button landing-button-small landing-button-primary" href="/dashboard">
+          <a className="landing-button landing-button-small landing-button-primary" href="/dashboard" style={{ color: "#ffffff" }}>
             Open workspace <span aria-hidden="true">↗</span>
           </a>
         </div>
@@ -85,7 +115,7 @@ export default function LandingPage() {
             auditable path from need to release.
           </p>
           <div className="landing-hero-actions">
-            <a className="landing-button landing-button-primary" href="#platform">
+            <a className="landing-button landing-button-primary" href="#platform" style={{ color: "#ffffff" }}>
               Explore the platform <span aria-hidden="true">↗</span>
             </a>
             <a className="landing-button landing-button-ghost" href="/dashboard">
@@ -217,6 +247,68 @@ export default function LandingPage() {
               <ul>{card.items.map((item) => <li key={item}><span>✓</span>{item}</li>)}</ul>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="landing-section landing-network" id="network">
+        <div className="landing-section-heading landing-section-heading-compact">
+          <div>
+            <p className="landing-section-eyebrow">Works with the workflow</p>
+            <h2>One place for every team that moves the order forward.</h2>
+          </div>
+          <p>Use the view that fits your role while the full order history stays connected underneath.</p>
+        </div>
+        <div className="landing-partner-grid" aria-label="Illustrative demo network">
+          {demoPartners.map((partner, index) => (
+            <div className="landing-partner-card" key={partner}>
+              <span className={`landing-partner-mark partner-mark-${index + 1}`} aria-hidden="true">{partner.slice(0, 1)}</span>
+              <strong>{partner}</strong>
+              <small>Illustrative demo partner</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-section landing-testimonials" id="stories">
+        <div className="landing-section-heading landing-section-heading-compact">
+          <div>
+            <p className="landing-section-eyebrow">What better visibility feels like</p>
+            <h2>Less chasing. More decisions made on time.</h2>
+          </div>
+          <p>Placeholder perspectives for the MVP preview. Replace these with approved customer stories when they are ready.</p>
+        </div>
+        <div className="landing-testimonial-grid">
+          {testimonials.map((testimonial) => (
+            <article className="landing-testimonial-card" key={testimonial.role}>
+              <span className="landing-quote-mark" aria-hidden="true">“</span>
+              <p className="landing-testimonial-quote">{testimonial.quote}</p>
+              <div className="landing-testimonial-byline">
+                <span className="landing-testimonial-avatar" aria-hidden="true">✦</span>
+                <span><strong>{testimonial.role}</strong><small>{testimonial.company}</small></span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-section landing-founder" id="founder">
+        <div className="landing-founder-card">
+          <div className="landing-founder-portrait" aria-label="Founder profile placeholder">
+            <span>MP</span>
+            <i aria-hidden="true" />
+            <i aria-hidden="true" />
+          </div>
+          <div className="landing-founder-copy">
+            <p className="landing-section-eyebrow">About the founder</p>
+            <h2>EaseMed started with a simple operational question.</h2>
+            <p>
+              How can healthcare teams spend less time chasing documents, suppliers, and status updates—and more time making the right purchase decision?
+            </p>
+            <p>
+              EaseMed is being built around that answer: a practical operating layer where demand, supply, inventory, logistics, and approvals stay connected from the first request to the final release.
+            </p>
+            <div className="landing-founder-signoff"><strong>Manu P.</strong><span>Founder, EaseMed.ai</span></div>
+          </div>
         </div>
       </section>
 
