@@ -4081,3 +4081,28 @@ h2 {
     min-height: 238px;
   }
 }
+
+/* Keep the final CTA readable and contained at medium desktop widths. */
+.landing-page .landing-cta {
+  min-width: 0;
+}
+
+.landing-page .landing-cta > div {
+  min-width: 0;
+}
+
+.landing-page .landing-cta h2 {
+  color: #fff !important;
+}
+
+@media (max-width: 1100px) and (min-width: 961px) {
+  .landing-page .landing-cta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .landing-page .landing-cta .landing-button-light {
+    align-self: flex-start;
+  }
+}
