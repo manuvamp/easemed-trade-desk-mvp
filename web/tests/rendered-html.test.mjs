@@ -4,13 +4,13 @@ import test from "node:test";
 
 const templateRoot = new URL("../", import.meta.url);
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", {
+    new Request(`http://localhost${pathname}`, {
       headers: { accept: "text/html" },
     }),
     {
@@ -25,50 +25,65 @@ async function render() {
   );
 }
 
-test("server-renders the populated trade desk MVP", async () => {
+test("server-renders the EaseMed landing page", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
   assert.match(html, /<title>EaseMed\.ai \| Procurement intelligence<\/title>/i);
-  assert.match(html, /Document master/i);
-  assert.match(html, /Workspace view/i);
-  assert.match(html, /Carrier connectors/i);
-  assert.match(html, /Demo workspace/i);
-  assert.match(html, /Document readiness/i);
+  assert.match(html, /Procurement clarity for every healthcare decision/i);
+  assert.match(html, /Requirement capture/i);
+  assert.match(html, /Intelligent matching/i);
+  assert.match(html, /Decision &amp; audit trail|Decision & audit trail/i);
+  assert.match(html, /Open workspace/i);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/i);
   assert.doesNotMatch(html, /react-loading-skeleton|codex-preview/i);
 });
 
+test("server-renders the dashboard route", async () => {
+  const response = await render("/dashboard");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /Healthcare procurement, in one operating layer/i);
+  assert.match(html, /Workspace view/i);
+  assert.match(html, /Carrier connectors/i);
+});
+
 test("starter preview assets and dependency are removed", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+  const [page, dashboardPage, layout, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/dashboard/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /useState/);
-  assert.match(page, /activeRole/);
-  assert.match(page, /activeSection/);
-  assert.match(page, /sectionsForRole/);
-  assert.match(page, /SimpleOverviewSection/);
-  assert.match(page, /ProductInventoryPanel/);
-  assert.match(page, /IncomingOrdersSection/);
-  assert.match(page, /ApprovalActions/);
-  assert.match(page, /showInfoModal/);
-  assert.match(page, /OrderDetailModal/);
-  assert.match(page, /actionAlert/);
-  assert.match(page, /type OrderLine/);
-  assert.match(page, /Add product/);
-  assert.match(page, /approval-/);
-  assert.match(page, /statusClass\(orderDecisions/);
-  assert.match(page, /statusClass\(decision\)/);
-  assert.match(page, /Create order/);
-  assert.match(page, /sectionLabel/);
+  assert.match(page, /Procurement clarity for every healthcare decision/);
+  assert.match(page, /landing-console/);
+  assert.match(page, /Open the demo workspace/);
+  assert.match(dashboardPage, /useState/);
+  assert.match(dashboardPage, /activeRole/);
+  assert.match(dashboardPage, /activeSection/);
+  assert.match(dashboardPage, /sectionsForRole/);
+  assert.match(dashboardPage, /SimpleOverviewSection/);
+  assert.match(dashboardPage, /ProductInventoryPanel/);
+  assert.match(dashboardPage, /IncomingOrdersSection/);
+  assert.match(dashboardPage, /ApprovalActions/);
+  assert.match(dashboardPage, /showInfoModal/);
+  assert.match(dashboardPage, /OrderDetailModal/);
+  assert.match(dashboardPage, /actionAlert/);
+  assert.match(dashboardPage, /type OrderLine/);
+  assert.match(dashboardPage, /Add product/);
+  assert.match(dashboardPage, /approval-/);
+  assert.match(dashboardPage, /statusClass\(orderDecisions/);
+  assert.match(dashboardPage, /statusClass\(decision\)/);
+  assert.match(dashboardPage, /Create order/);
+  assert.match(dashboardPage, /sectionLabel/);
   assert.match(layout, /EaseMed\.ai \| Procurement intelligence/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview|_sites-preview/);
+  assert.doesNotMatch(dashboardPage, /SkeletonPreview|codex-preview|_sites-preview/);
   assert.doesNotMatch(layout, /codex-preview|_sites-preview|Starter Project/);
 
   assert.deepEqual(await readdir(new URL("app/_sites-preview/", templateRoot)), []);
