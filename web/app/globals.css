@@ -2344,3 +2344,353 @@ label select {
     grid-template-columns: 1fr;
   }
 }
+
+/* FireAI-inspired analytics skin, keeping EaseMed's healthcare palette and actions. */
+:root {
+  --ink: #0a0a33;
+  --ink-soft: #4d5e75;
+  --muted: #727b91;
+  --line: #e4e7f0;
+  --paper: #ffffff;
+  --canvas: #f7f8fc;
+  --teal: #3a48f1;
+  --teal-soft: #eef0ff;
+  --blue: #06a6dd;
+  --blue-soft: #e8f8ff;
+  --gold: #ed9f39;
+  --gold-soft: #fff5e5;
+  --coral: #ef6b70;
+  --coral-soft: #fff0ed;
+  --shadow: 0 18px 50px rgba(10, 10, 51, 0.08);
+}
+
+html,
+body {
+  background: var(--canvas);
+}
+
+body {
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.trade-app {
+  background: var(--canvas);
+}
+
+.sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, #0b0d3f 0%, #050720 100%);
+}
+
+.brand-mark {
+  background: #ffa07a;
+  color: #0a0a33;
+  box-shadow: 0 0 0 5px rgba(255, 160, 122, 0.1);
+}
+
+.nav-item:hover,
+.quick-links button:hover,
+.nav-item.active {
+  background: rgba(58, 72, 241, 0.28);
+}
+
+.nav-item.active {
+  box-shadow: inset 3px 0 0 #ffa07a;
+}
+
+.nav-item.active .nav-icon,
+.quick-links button span {
+  color: #ffa07a;
+}
+
+.nav-count {
+  background: rgba(108, 99, 255, 0.26);
+  color: #d8d9ff;
+}
+
+.connector-status {
+  border-color: rgba(145, 153, 255, 0.22);
+  background: rgba(0, 0, 35, 0.32);
+}
+
+.avatar {
+  background: #ffa07a;
+  color: #0a0a33;
+}
+
+.content-shell {
+  background:
+    radial-gradient(circle at 85% 0%, rgba(108, 99, 255, 0.08), transparent 28rem),
+    var(--canvas);
+}
+
+.topbar {
+  border-bottom-color: var(--line);
+  background: rgba(247, 248, 252, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.breadcrumbs strong,
+.profile-button,
+.switcher-label,
+h1,
+h2,
+h3,
+.metric-card > strong,
+.stat-card strong {
+  color: var(--ink);
+}
+
+.demo-pill {
+  border-color: #d9dcf1;
+  background: #f0f1ff;
+  color: #3a48f1;
+}
+
+.demo-pill .status-dot,
+.connector-count .status-dot {
+  background: #3a48f1;
+}
+
+h1,
+h2,
+h3,
+.metric-card > strong,
+.stat-card strong,
+.inventory-callout strong {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-weight: 750;
+  letter-spacing: -0.055em;
+}
+
+h2 {
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
+.eyebrow,
+.switcher-label {
+  color: #3a48f1;
+}
+
+.page-description,
+.section-heading-row p:not(.eyebrow),
+.modal-copy {
+  color: var(--ink-soft);
+}
+
+.primary-button {
+  border-color: #0600a3;
+  background: linear-gradient(135deg, #0600a3 0%, #3a48f1 100%);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(58, 72, 241, 0.22);
+}
+
+.primary-button:hover {
+  background: linear-gradient(135deg, #1008bd 0%, #5260ff 100%);
+}
+
+.secondary-button {
+  border-color: #d9deeb;
+  background: #fff;
+  color: var(--ink);
+}
+
+.secondary-button:hover {
+  border-color: #8f99df;
+  background: #f2f3ff;
+}
+
+.text-button,
+.activity-link,
+.order-info-link {
+  color: #3a48f1;
+}
+
+.text-button:hover,
+.activity-link:hover,
+.order-info-link:hover {
+  color: #0600a3;
+}
+
+.role-switcher {
+  border-color: #d9deeb;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(10, 10, 51, 0.05);
+}
+
+.role-tab {
+  color: #69748b;
+}
+
+.role-tab.active {
+  background: #0a0a33;
+  color: #fff;
+}
+
+.role-initials {
+  background: #eef0ff;
+  color: #3a48f1;
+}
+
+.role-tab.active .role-initials {
+  background: #ffa07a;
+  color: #0a0a33;
+}
+
+.action-alert {
+  border-color: #ffb8a9;
+  background: linear-gradient(90deg, #fff0ed 0%, #fff8f5 100%);
+  color: #a94e3e;
+}
+
+.error-banner {
+  border-color: #f2a8a4;
+  background: #fff0ed;
+  color: #a94045;
+}
+
+.metric-card,
+.stat-card,
+.panel {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 28px rgba(10, 10, 51, 0.045);
+}
+
+.metric-card-action:hover {
+  border-color: #8791f5;
+  box-shadow: 0 12px 28px rgba(58, 72, 241, 0.13);
+}
+
+.metric-topline,
+.period-label,
+.count-badge,
+.result-count,
+.muted {
+  color: #727b91;
+}
+
+.metric-action,
+.metric-change.teal,
+.metric-change.blue,
+.metric-change.gold,
+.metric-change.coral {
+  color: #3a48f1;
+}
+
+.count-badge {
+  border-color: #d9dcf1;
+  background: #f0f1ff;
+  color: #3a48f1;
+}
+
+.product-inventory-row,
+.approval-row,
+.simple-order-row,
+.transaction-row,
+.activity-row {
+  border-color: #edf0f6;
+}
+
+.approval-row.approval-approved,
+.simple-incoming-row.approval-approved {
+  background: #effaf7;
+  box-shadow: inset 4px 0 0 #22a879;
+}
+
+.approval-row.approval-denied,
+.simple-incoming-row.approval-denied {
+  background: #fff0ed;
+  box-shadow: inset 4px 0 0 var(--coral);
+}
+
+.approval-row.approval-more-info,
+.simple-incoming-row.approval-more-info,
+.approval-row.approval-rerouted,
+.simple-incoming-row.approval-rerouted {
+  background: #fff7e5;
+  box-shadow: inset 4px 0 0 var(--gold);
+}
+
+.approval-button {
+  border-color: #d9deeb;
+  background: #fff;
+}
+
+.approval-button.approve {
+  border-color: #a8dfca;
+  background: #e7f8f0;
+  color: #16835f;
+}
+
+.approval-button.info,
+.approval-button.reroute {
+  border-color: #efd29d;
+  background: var(--gold-soft);
+  color: #a06d1a;
+}
+
+.approval-button.deny {
+  border-color: #efb9b4;
+  background: var(--coral-soft);
+  color: #c04f55;
+}
+
+.inventory-callout {
+  border-color: #c6d1ff;
+  background: #f0f2ff;
+}
+
+.inventory-callout span,
+.inventory-callout small {
+  color: #52629c;
+}
+
+.modal-backdrop {
+  background: rgba(5, 7, 32, 0.68);
+}
+
+.modal-card {
+  border-color: #dfe3f0;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(10, 10, 51, 0.23);
+}
+
+.modal-card label {
+  color: #526079;
+}
+
+.modal-card label input,
+.modal-card label select,
+.modal-card label textarea {
+  border-color: #d9deeb;
+  background: #fafbff;
+}
+
+.callout-card {
+  border-color: #d9dcf1;
+  background: linear-gradient(135deg, #f0f1ff 0%, #fff 72%);
+}
+
+.callout-icon {
+  background: #0a0a33;
+  color: #ffa07a;
+}
+
+.sidebar-nav,
+.role-switcher {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar,
+.role-switcher::-webkit-scrollbar {
+  display: none;
+  height: 0;
+  width: 0;
+}

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "EaseMed.ai Trade Desk",
+  title: "EaseMed.ai | Procurement intelligence",
   description:
-    "A structured trade document repository and transaction control tower.",
+    "The operating layer for healthcare procurement, from requirement capture to approval and fulfilment.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

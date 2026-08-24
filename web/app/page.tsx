@@ -80,10 +80,10 @@ const roles: Role[] = [
     id: "owner",
     label: "Business owner",
     short: "BO",
-    eyebrow: "Trade control tower",
-    heading: "See every transaction before it becomes a fire drill.",
+    eyebrow: "Healthcare procurement intelligence",
+    heading: "Healthcare procurement, in one operating layer.",
     description:
-      "A high-level view of document readiness, shipment health, cash exposure, and the exceptions that need a decision.",
+      "Connect demand, supply, inventory, logistics, and approvals in one auditable workspace.",
     metrics: [
       { label: "Open trade packs", value: "24", change: "+4 this week", tone: "teal" },
       { label: "Document readiness", value: "86%", change: "↑ 8.2% vs last week", tone: "blue" },
@@ -95,9 +95,9 @@ const roles: Role[] = [
     id: "sales",
     label: "Sales",
     short: "SA",
-    eyebrow: "Commercial desk",
-    heading: "Create sales and payments.",
-    description: "Choose products, set transport, and record payment.",
+    eyebrow: "Demand capture",
+    heading: "Turn requirements into ready orders.",
+    description: "Choose available products, set transport, and complete the commercial handoff.",
     metrics: [
       { label: "Active enquiries", value: "11", change: "+3 since Monday", tone: "teal" },
       { label: "Quotes awaiting reply", value: "06", change: "2 due today", tone: "blue" },
@@ -109,9 +109,9 @@ const roles: Role[] = [
     id: "warehouse",
     label: "Warehouse",
     short: "WH",
-    eyebrow: "Warehouse execution",
-    heading: "Keep inventory accurate.",
-    description: "View stock and update inventory counts.",
+    eyebrow: "Inventory intelligence",
+    heading: "Know what is available, and where it is.",
+    description: "Keep stock accurate, upload product records, and prepare approved orders for release.",
     metrics: [
       { label: "Inbound today", value: "08", change: "2 need inspection", tone: "teal" },
       { label: "Ready to dispatch", value: "17", change: "6 priority orders", tone: "blue" },
@@ -123,9 +123,9 @@ const roles: Role[] = [
     id: "logistics",
     label: "Logistics",
     short: "LO",
-    eyebrow: "Warehouse approval",
-    heading: "Approve incoming orders.",
-    description: "Review incoming orders and approve or deny them.",
+    eyebrow: "Decision queue",
+    heading: "Move approved orders forward.",
+    description: "Review requests, route them to the right warehouse, and keep every decision visible.",
     metrics: [
       { label: "Incoming orders", value: "08", change: "Review today", tone: "teal" },
       { label: "Awaiting approval", value: "05", change: "Needs a decision", tone: "blue" },
@@ -720,7 +720,7 @@ export default function Home() {
           <div className="brand-mark">E</div>
           <div>
             <strong>EaseMed.ai</strong>
-            <span>Trade operations</span>
+          <span>Procurement intelligence</span>
           </div>
         </div>
 
@@ -798,12 +798,12 @@ export default function Home() {
           <div className="breadcrumbs">
             <span>EaseMed</span>
             <span>/</span>
-            <strong>Trade desk</strong>
+            <strong>Command center</strong>
           </div>
           <div className="topbar-actions">
             <span className="demo-pill">
               <span className="status-dot" />
-              MVP demo
+              Demo workspace
             </span>
             <button className="profile-button" type="button">
               <span className="avatar small">MP</span>
@@ -834,9 +834,9 @@ export default function Home() {
 
           <div className="view-switcher-wrap">
             <div>
-              <span className="switcher-label">Preview as</span>
+              <span className="switcher-label">Workspace view</span>
               <span className="switcher-hint">
-                Choose a role to see only its actions.
+                Choose a team to see only its actions and signals.
               </span>
             </div>
             <div className="role-switcher" aria-label="Switch dashboard role">

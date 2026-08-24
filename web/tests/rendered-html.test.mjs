@@ -31,11 +31,11 @@ test("server-renders the populated trade desk MVP", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>EaseMed\.ai Trade Desk<\/title>/i);
+  assert.match(html, /<title>EaseMed\.ai \| Procurement intelligence<\/title>/i);
   assert.match(html, /Document master/i);
-  assert.match(html, /Preview as/i);
+  assert.match(html, /Workspace view/i);
   assert.match(html, /Carrier connectors/i);
-  assert.match(html, /MVP demo/i);
+  assert.match(html, /Demo workspace/i);
   assert.match(html, /Document readiness/i);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/i);
   assert.doesNotMatch(html, /react-loading-skeleton|codex-preview/i);
@@ -66,7 +66,7 @@ test("starter preview assets and dependency are removed", async () => {
   assert.match(page, /statusClass\(decision\)/);
   assert.match(page, /Create order/);
   assert.match(page, /sectionLabel/);
-  assert.match(layout, /EaseMed\.ai Trade Desk/);
+  assert.match(layout, /EaseMed\.ai \| Procurement intelligence/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview|_sites-preview/);
   assert.doesNotMatch(layout, /codex-preview|_sites-preview|Starter Project/);
