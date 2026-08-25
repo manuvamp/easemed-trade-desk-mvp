@@ -1,6 +1,5 @@
 const navLinks = [
   { href: "#how-it-works", label: "How it works" },
-  { href: "#teams", label: "Who it's for" },
   { href: "#platform", label: "Platform" },
   { href: "#customers", label: "Customers" },
   { href: "#faq", label: "FAQ" },
@@ -22,33 +21,65 @@ const heroStats = [
   { value: "±3.2%", label: "Price variance vs. benchmark" },
 ];
 
+const journeyNodes = [
+  {
+    glyph: "◎",
+    title: "Predict",
+    text: "AI flags what to buy before you run out.",
+  },
+  {
+    glyph: "✦",
+    title: "Source",
+    text: "Verified suppliers, ranked and ready to compare.",
+  },
+  {
+    glyph: "◈",
+    title: "Pay",
+    text: "Cross-border payments in a few clicks.",
+  },
+  {
+    glyph: "✓",
+    title: "Track",
+    text: "Live shipment tracking, to your door.",
+  },
+];
+
+const capabilityChips = [
+  "AI matching",
+  "Cost optimization",
+  "Intelligent compliance",
+  "Forecasting",
+  "Insights",
+  "Smart allocation",
+];
+
 const workflowSteps = [
   {
     number: "01",
     id: "capture",
     label: "Requirement capture",
-    title: "Describe it once. EaseMed structures it.",
+    title: "Describe it once.",
     description:
-      "Type a sentence, paste a spec, or upload a document. AI extracts quantities, standards, and timelines into a complete requirement — before it disappears into an email thread.",
-    bullets: ["Natural language or documents", "Clinical specs parsed automatically", "Compliance fields attached up front"],
+      "Type a sentence or upload a document — AI turns it into a complete, compliance-ready requirement.",
+    bullets: ["Plain language or documents", "Standards auto-attached", "Ready in minutes"],
   },
   {
     number: "02",
     id: "matching",
     label: "Intelligent matching",
-    title: "Meet the right suppliers — with receipts.",
+    title: "Meet the right suppliers.",
     description:
-      "Every verified partner is scored live on compliance, capacity, price history, and delivery reliability, so your shortlist arrives with evidence instead of promises.",
-    bullets: ["340+ verified supplier network", "Live scoring across four dimensions", "Shortlists in minutes, not days"],
+      "Every verified partner is scored live on compliance, capacity, price history, and reliability.",
+    bullets: ["340+ verified network", "Live four-way scoring", "Evidence, not promises"],
   },
   {
     number: "03",
     id: "decision",
     label: "Decision & audit trail",
-    title: "Approve once. Defend it forever.",
+    title: "Approve with confidence.",
     description:
-      "Compare bids side by side, release with one click, and give finance and auditors an immutable record of who decided what, when, and why.",
-    bullets: ["Side-by-side bid comparison", "One-click approvals and handoffs", "Immutable audit history"],
+      "Compare bids, release in one click, and keep an immutable record of every decision.",
+    bullets: ["Side-by-side bids", "One-click approvals", "Immutable history"],
   },
 ];
 
@@ -57,81 +88,34 @@ const audienceCards = [
     className: "health-system",
     eyebrow: "For health systems",
     title: "Stop hunting. Start deciding.",
-    pains: [
-      "Hours lost searching disconnected channels for suppliers",
-      "Purchase cycles measured in weeks of follow-ups",
-      "Compliance checks living in spreadsheets and inboxes",
-    ],
+    pains: ["Hours lost chasing suppliers", "Weeks-long purchase cycles", "Compliance in spreadsheets"],
     outcome:
-      "One structured intake feeds matched supply, transparent pricing, and an approval history you can hand to any auditor.",
+      "One intake, matched supply, and an approval history any auditor can trust.",
     cta: "Apply as a health system",
   },
   {
     className: "supplier",
     eyebrow: "For supplier partners",
     title: "See real demand early.",
-    pains: [
-      "Demand signals buried inside fragmented networks",
-      "Quotations eating the hours you sell with",
-      "No view of where supply is needed next",
-    ],
+    pains: ["Demand buried in fragmented networks", "Quotations eating selling hours", "No view of future need"],
     outcome:
-      "Structured requests, forecasted demand, and performance insight that turn one good bid into repeat business.",
+      "Structured requests and forecasted demand that turn one bid into repeat business.",
     cta: "Apply as a supplier partner",
-  },
-];
-
-const features = [
-  {
-    glyph: "✦",
-    tone: "blue",
-    title: "AI-driven matching",
-    description: "Verified suppliers ranked by compliance, capacity, price history, and delivery reliability.",
-  },
-  {
-    glyph: "◈",
-    tone: "green",
-    title: "Cost optimization",
-    description: "Benchmark pricing and variance alerts keep every unit cost defensible before you commit.",
-  },
-  {
-    glyph: "⬢",
-    tone: "aqua",
-    title: "Intelligent compliance",
-    description: "Standards like ISO 13485 and FDA 510(k) are checked while the requirement is still on screen.",
-  },
-  {
-    glyph: "◔",
-    tone: "blue",
-    title: "Supply-demand forecasting",
-    description: "See demand forming across the network before it becomes an urgent purchase order.",
-  },
-  {
-    glyph: "↗",
-    tone: "aqua",
-    title: "Performance insights",
-    description: "Delivery and quality scores for every partner, updated with every completed order.",
-  },
-  {
-    glyph: "⊞",
-    tone: "green",
-    title: "Smart allocation",
-    description: "Route approved orders to the right warehouse and carrier with connected logistics views.",
   },
 ];
 
 const securityTiles = [
   {
     badge: "Audit-ready by design",
-    detail: "Every approval, exception, and handoff is timestamped in an immutable log.",
+    detail: "Every action timestamped. Nothing editable.",
   },
   {
-    badge: "Role-based access control",
-    detail: "Business owners, sales, warehouse, and logistics each see exactly their lane.",
+    badge: "Role-based access",
+    detail: "Each team sees exactly its lane.",
   },
   {
-    badge: "Standards-aware requirements",
-    detail: "ISO 13485 · FDA 510(k) fields are attached to requirements from day one.",
+    badge: "Standards-aware",
+    detail: "ISO 13485 · FDA 510(k) built in.",
   },
 ];
 
@@ -145,47 +129,42 @@ const securityControls = [
 const testimonials = [
   {
     quote:
-      "Requests used to live in five WhatsApp groups. Now every requirement arrives structured, and our committee sees the same evidence I do.",
+      "Requests used to live in five WhatsApp groups. Now every requirement arrives structured, with the evidence attached.",
     name: "Dr. Amara Osei",
     role: "Head of Procurement",
     company: "Regional Hospital Group",
     tag: "Health system",
   },
   {
-    quote:
-      "We see verified demand before it becomes a tender. Our quotation time went from days to hours.",
+    quote: "We see verified demand before it becomes a tender. Quotation time went from days to hours.",
     name: "Rahul Mehta",
     role: "Director",
     company: "MedSupply Partners",
     tag: "Distribution",
   },
   {
-    quote:
-      "The compliance fields alone saved our week. Everything a hospital auditor asks for is already attached.",
+    quote: "Everything a hospital auditor asks for is already attached. That saved our week.",
     name: "Elena Petrova",
     role: "COO",
     company: "Clinova Health",
     tag: "Supplier",
   },
   {
-    quote:
-      "Approvals that took a fortnight now take an afternoon — and we can show exactly why each choice was made.",
+    quote: "Approvals that took a fortnight now take an afternoon — and we can show why.",
     name: "James Whitfield",
     role: "Operations Lead",
     company: "Northstar Care",
     tag: "Care network",
   },
   {
-    quote:
-      "Warehouse, sales, and logistics finally read from one screen. Handoffs just stopped breaking.",
+    quote: "Warehouse, sales, and logistics finally read from one screen. Handoffs stopped breaking.",
     name: "Fatima Al-Rashid",
     role: "Supply Chain Manager",
     company: "Meditek Gulf",
     tag: "Logistics",
   },
   {
-    quote:
-      "Forecasting shows us where supply is needed next quarter, so we plan production against reality instead of rumor.",
+    quote: "We plan production against real demand now, not rumor.",
     name: "Daniel Kim",
     role: "Founder",
     company: "Helixa Medical Devices",
@@ -193,55 +172,99 @@ const testimonials = [
   },
 ];
 
+const founderChips = ["13+ yrs sourcing", "4 continents", "30+ clients", "Multi-$M programs"];
+
 const faqs = [
   {
     question: "What is EaseMed?",
     answer:
-      "EaseMed is the operating layer for healthcare procurement. It captures requirements with AI, matches them against a verified supplier network, and moves every approval through one auditable trail that connects buyers, suppliers, warehouses, and logistics teams.",
+      "The operating layer for healthcare procurement. It predicts what to buy, matches verified suppliers, automates purchasing, and tracks delivery — all in one place.",
   },
   {
-    question: "Who is EaseMed for?",
+    question: "Who is it for?",
     answer:
-      "Both sides of the purchase. Health systems, hospitals, and care networks get structured intake and compliant sourcing; manufacturers and distributors get verified demand, forecasting, and performance insight. Each side works in its own role-specific portal.",
+      "Both sides of the purchase. Health systems get structured sourcing; suppliers get verified demand. Each works in its own portal.",
   },
   {
-    question: "How does intelligent matching work?",
+    question: "How does matching work?",
     answer:
-      "Every verified partner is scored live across compliance, capacity, price history, and delivery reliability. Instead of a directory, you get a ranked shortlist with the evidence behind each score — lead times, benchmarks, and certification status included.",
+      "Every partner is scored live on compliance, capacity, price history, and delivery reliability. You get a ranked shortlist with the evidence attached.",
   },
   {
-    question: "Does EaseMed replace our existing systems?",
+    question: "Does it replace our systems?",
     answer:
-      "No. EaseMed sits on top of what you already run. Requirements can arrive from natural language, documents, or imports, and inventory and order data can flow in via CSV or connectors. The demo workspace runs entirely on importable data today.",
+      "No. EaseMed sits on top of what you run today — requirements arrive by text, document, or CSV import.",
   },
   {
     question: "How is compliance handled?",
     answer:
-      "Requirements carry standards such as ISO 13485 and FDA 510(k) from the moment they are captured, approvals are logged immutably with named decision-makers, and audit packs can be exported whenever finance or a regulator asks.",
+      "Standards like ISO 13485 and FDA 510(k) attach to requirements automatically, and every approval is logged immutably.",
   },
   {
     question: "How do I get early access?",
     answer:
-      "Apply as a health system or as a supplier partner and our team will onboard your cohort in waves. In the meantime, the live demo workspace is open — no signup required.",
+      "Apply as a health system or supplier partner. Meanwhile, the demo workspace is open — no signup.",
   },
 ];
+
+function Logo({ size = 30 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="em-mark" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#1478FF" />
+          <stop offset="0.55" stopColor="#0CC0CF" />
+          <stop offset="1" stopColor="#0FB981" />
+        </linearGradient>
+      </defs>
+      <path d="M16 6.5v19" stroke="url(#em-mark)" strokeWidth="6" strokeLinecap="round" />
+      <path d="M6.5 16H19" stroke="url(#em-mark)" strokeWidth="6" strokeLinecap="round" />
+      <circle cx="26" cy="16" r="3.4" fill="#0FB981" />
+    </svg>
+  );
+}
+
+function Brand() {
+  return (
+    <a className="landing-brand" href="#top" aria-label="EaseMed.ai home">
+      <span className="landing-brand-logo">
+        <Logo size={30} />
+      </span>
+      <span>
+        EaseMed<span className="landing-brand-muted">.ai</span>
+      </span>
+    </a>
+  );
+}
+
+const revealScript = `(function(){
+  document.documentElement.classList.add('js');
+  try {
+    var els = document.querySelectorAll('[data-animate]');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el){ el.classList.add('in-view'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -36px' });
+    els.forEach(function(el){ io.observe(el); });
+  } catch (e) { document.documentElement.classList.remove('js'); }
+})();`;
 
 export default function LandingPage() {
   return (
     <main className="landing-page">
       <div className="landing-announce">
         <span className="landing-announce-pill">New</span>
-        <p>Early access is now open for health systems &amp; supplier partners</p>
-        <a href="#faq">Join the wave →</a>
+        <p>Early access is open for health systems &amp; supplier partners</p>
+        <a href="#cta">Join →</a>
       </div>
 
       <header className="landing-nav">
-        <a className="landing-brand" href="#top" aria-label="EaseMed.ai home">
-          <span className="landing-brand-mark">E</span>
-          <span>
-            EaseMed<span className="landing-brand-muted">.ai</span>
-          </span>
-        </a>
+        <Brand />
 
         <nav className="landing-nav-links" aria-label="Main navigation">
           {navLinks.map((link) => (
@@ -264,30 +287,30 @@ export default function LandingPage() {
       <section className="landing-hero" id="top">
         <div className="landing-hero-inner">
           <p className="landing-hero-kicker">
-            <span aria-hidden="true">✦</span> The operating layer for healthcare procurement
+            <span aria-hidden="true">✦</span> Healthcare procurement, end to end
           </p>
           <h1>
-            The fastest route from clinical need to <em>approved order.</em>
+            Source medical supplies in <em>days, not weeks.</em>
           </h1>
           <p className="landing-hero-description">
-            EaseMed captures requirements with AI, matches them against 340+ verified suppliers, and moves
-            every approval through one auditable trail — so nothing gets lost between departments again.
+            AI tells you what to buy, finds the right supplier, automates the purchase, and
+            tracks it to your door.
           </p>
           <div className="landing-hero-actions">
             <a className="landing-button landing-button-primary" href="#cta">
               Get early access
             </a>
             <a className="landing-button landing-button-ghost" href="/dashboard">
-              Explore the live demo
+              See the live demo
             </a>
           </div>
           <div className="landing-hero-proof">
             <span className="landing-stars" aria-label="Rated five out of five by design-partner teams">
               ★★★★★
             </span>
-            <span>Loved by early-access procurement teams</span>
+            <span>Loved by early-access teams</span>
             <i aria-hidden="true" />
-            <span>Built on 13+ years of healthcare sourcing</span>
+            <span>13+ years in healthcare sourcing</span>
           </div>
         </div>
 
@@ -296,7 +319,7 @@ export default function LandingPage() {
           <div className="console-glow console-glow-two" aria-hidden="true" />
           <div className="console-shell">
             <div className="console-topbar">
-              <div className="console-window-dots" aria-hidden="true"><i /><i /><i /></div>
+              <Logo size={15} />
               <span>EaseMed intelligence</span>
               <span className="console-live"><i /> Live demo data</span>
             </div>
@@ -314,7 +337,7 @@ export default function LandingPage() {
                   <span><b>14 days</b> delivery window</span>
                 </div>
                 <div className="console-progress"><span /></div>
-                <small>Structured from a plain-language request · 2 min ago</small>
+                <small>Structured by AI · 2 min ago</small>
               </article>
 
               <article className="console-card console-match">
@@ -352,17 +375,23 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-logos" aria-label="Illustrative network">
-        <p className="landing-logos-label">Working alongside teams across the procurement loop</p>
-        <div className="landing-logos-row">
-          {partnerNames.map((partner, index) => (
-            <span key={partner} className={`landing-logo landing-logo-${index + 1}`}>{partner}</span>
-          ))}
+        <p className="landing-logos-label">Working with teams across the supply chain</p>
+        <div className="landing-marquee">
+          <div className="landing-marquee-track">
+            {[0, 1].map((copy) => (
+              <div className="landing-marquee-group" key={copy} aria-hidden={copy === 1 || undefined}>
+                {partnerNames.map((partner, index) => (
+                  <span key={partner} className={`landing-logo landing-logo-${index + 1}`}>{partner}</span>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-        <p className="landing-logos-note">Illustrative network preview — the live partner directory ships with early access.</p>
+        <p className="landing-logos-note">Illustrative network — the live partner directory ships with early access.</p>
       </section>
 
       <section className="landing-stats" aria-label="Platform figures from the product demo">
-        <div className="landing-stats-inner">
+        <div className="landing-stats-inner" data-animate>
           {heroStats.map((stat) => (
             <article key={stat.label} className="landing-stat">
               <strong>{stat.value}</strong>
@@ -373,19 +402,46 @@ export default function LandingPage() {
         <p className="landing-stats-note">Figures pulled straight from the live EaseMed product environment.</p>
       </section>
 
-      <section className="landing-section landing-workflow" id="how-it-works">
-        <div className="landing-section-heading landing-centered">
-          <p className="landing-section-eyebrow">How EaseMed works</p>
-          <h2>Three steps. Zero guesswork.</h2>
+      <section className="landing-section landing-journey" id="platform">
+        <div className="landing-section-heading landing-centered" data-animate>
+          <p className="landing-section-eyebrow">Discovery to delivery</p>
+          <h2>One platform. The whole journey.</h2>
           <p className="landing-section-intro">
-            Every purchase follows the same clear path — structured once, matched with evidence, released
-            with an audit trail that defends itself.
+            EaseMed predicts what to buy — then automates everything after it.
           </p>
         </div>
 
+        <div className="landing-pipeline" data-animate>
+          <span className="landing-pipeline-line" aria-hidden="true" />
+          {journeyNodes.map((node) => (
+            <article key={node.title} className="landing-pipeline-node">
+              <span className="landing-pipeline-icon" aria-hidden="true">{node.glyph}</span>
+              <h3>{node.title}</h3>
+              <p>{node.text}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="landing-cap-chips" data-animate>
+          {capabilityChips.map((chip) => (
+            <span key={chip}>{chip}</span>
+          ))}
+        </div>
+
+        <div className="landing-journey-cta" data-animate>
+          <a className="landing-text-cta" href="/dashboard">See it live in the demo →</a>
+        </div>
+      </section>
+
+      <section className="landing-section landing-workflow" id="how-it-works">
+        <div className="landing-section-heading landing-centered" data-animate>
+          <p className="landing-section-eyebrow">How it works</p>
+          <h2>Three steps. Zero guesswork.</h2>
+        </div>
+
         <div className="landing-steps">
-          {workflowSteps.map((step, index) => (
-            <article className={`landing-step landing-step-${step.id}`} key={step.number}>
+          {workflowSteps.map((step) => (
+            <article className={`landing-step landing-step-${step.id}`} data-animate key={step.number}>
               <div className="landing-step-copy">
                 <div className="landing-step-badge">
                   <span>{step.number}</span>
@@ -401,10 +457,10 @@ export default function LandingPage() {
               </div>
 
               <div className={`landing-step-visual visual-${step.id}`} aria-hidden="true">
-                {index === 0 && (
+                {step.id === "capture" && (
                   <div className="visual-capture">
                     <div className="visual-request">
-                      “Need 12k sterile surgical gloves, FDA-cleared, delivered within 14 days.”
+                      “Need 12k sterile surgical gloves, FDA-cleared, within 14 days.”
                     </div>
                     <div className="visual-arrow">↓ Parsed by EaseMed AI</div>
                     <div className="visual-requirement-card">
@@ -420,7 +476,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                 )}
-                {index === 1 && (
+                {step.id === "matching" && (
                   <div className="visual-matching">
                     <div className="visual-supplier is-best">
                       <span className="visual-rank">97</span>
@@ -435,10 +491,9 @@ export default function LandingPage() {
                       <span className="visual-rank">86</span>
                       <div><b>Clinova Health</b><small>Tier-2 · ±3.2% vs benchmark</small></div>
                     </div>
-                    <div className="visual-footnote">Scored on compliance, capacity, price history &amp; reliability</div>
                   </div>
                 )}
-                {index === 2 && (
+                {step.id === "decision" && (
                   <div className="visual-decision">
                     <div className="visual-bids">
                       <div className="visual-bid">
@@ -463,17 +518,18 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-section landing-audiences" id="teams">
-        <div className="landing-section-heading landing-centered">
+        <div className="landing-section-heading landing-centered" data-animate>
           <p className="landing-section-eyebrow">Democratizing procurement</p>
           <h2>Built for both sides of the purchase.</h2>
-          <p className="landing-section-intro">
-            The same operating layer removes friction for the people buying and creates opportunity for the
-            people supplying.
-          </p>
         </div>
         <div className="landing-role-grid">
-          {audienceCards.map((card) => (
-            <article className={`landing-role-card ${card.className}`} key={card.eyebrow}>
+          {audienceCards.map((card, index) => (
+            <article
+              className={`landing-role-card ${card.className}`}
+              key={card.eyebrow}
+              data-animate
+              style={{ transitionDelay: `${index * 90}ms` }}
+            >
               <p className="landing-role-eyebrow">{card.eyebrow}</p>
               <h3>{card.title}</h3>
               <ul className="landing-pain-list">
@@ -488,34 +544,11 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="landing-section landing-platform" id="platform">
-        <div className="landing-section-heading landing-centered">
-          <p className="landing-section-eyebrow">The platform</p>
-          <h2>Everything the loop needs. Nothing it doesn&apos;t.</h2>
-          <p className="landing-section-intro">
-            Six capabilities, one connected view — so no team ever rebuilds the same spreadsheet twice.
-          </p>
-        </div>
-        <div className="landing-feature-grid">
-          {features.map((feature) => (
-            <article className="landing-feature-card" key={feature.title}>
-              <span className={`landing-feature-glyph tone-${feature.tone}`} aria-hidden="true">{feature.glyph}</span>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="landing-section landing-security" id="security">
         <div className="landing-security-grid">
-          <div className="landing-security-copy">
+          <div className="landing-security-copy" data-animate>
             <p className="landing-section-eyebrow">Trust &amp; compliance</p>
             <h2>Every answer is one click away.</h2>
-            <p className="landing-section-intro">
-              Healthcare procurement answers to regulators, finance, and patients. EaseMed is engineered so
-              the evidence behind every decision is already organized.
-            </p>
             <ul className="landing-control-list">
               {securityControls.map((control) => (
                 <li key={control}><span aria-hidden="true">✓</span>{control}</li>
@@ -523,8 +556,8 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="landing-security-tiles">
-            {securityTiles.map((tile) => (
-              <article key={tile.badge}>
+            {securityTiles.map((tile, index) => (
+              <article key={tile.badge} data-animate style={{ transitionDelay: `${index * 90}ms` }}>
                 <span aria-hidden="true">🛡️</span>
                 <h3>{tile.badge}</h3>
                 <p>{tile.detail}</p>
@@ -535,16 +568,18 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-section landing-testimonials" id="customers">
-        <div className="landing-section-heading landing-centered">
+        <div className="landing-section-heading landing-centered" data-animate>
           <p className="landing-section-eyebrow">Customer voices</p>
           <h2>Less chasing. More decisions made on time.</h2>
-          <p className="landing-section-intro">
-            What better visibility feels like for buyers, suppliers, and the teams in between.
-          </p>
         </div>
         <div className="landing-testimonial-columns">
-          {testimonials.map((testimonial) => (
-            <figure className="landing-testimonial-card" key={testimonial.name}>
+          {testimonials.map((testimonial, index) => (
+            <figure
+              className="landing-testimonial-card"
+              key={testimonial.name}
+              data-animate
+              style={{ transitionDelay: `${(index % 3) * 80}ms` }}
+            >
               <span className="landing-stars" aria-hidden="true">★★★★★</span>
               <blockquote>“{testimonial.quote}”</blockquote>
               <figcaption>
@@ -566,21 +601,24 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-section landing-founder" id="about">
-        <div className="landing-founder-card">
+        <div className="landing-founder-card" data-animate>
           <div className="landing-founder-portrait" aria-hidden="true">
             <span>NA</span>
           </div>
           <div className="landing-founder-copy">
             <p className="landing-section-eyebrow">About the founder</p>
-            <h2>Built by someone who has lived the problem.</h2>
-            <p>
-              Nikita Akolikar spent 13 years running cross-border sourcing operations across four
-              continents — including 5+ years inside healthcare procurement, serving 30+ clients and
-              architecting multi-million-dollar sourcing programs.
+            <h2>Built by someone who lived the problem.</h2>
+            <p className="landing-founder-bio">
+              Nikita Akolikar ran cross-border sourcing operations for 13 years — five of them
+              inside healthcare procurement.
             </p>
+            <div className="landing-founder-chips">
+              {founderChips.map((chip) => (
+                <span key={chip}>{chip}</span>
+              ))}
+            </div>
             <blockquote>
-              “I see opportunities others miss. EaseMed turns that instinct into infrastructure that every
-              buyer can use.”
+              “I see opportunities others miss. EaseMed turns that instinct into infrastructure.”
             </blockquote>
             <div className="landing-founder-signoff"><strong>Nikita Akolikar</strong><span>Founder &amp; CEO, EaseMed.ai</span></div>
           </div>
@@ -588,7 +626,7 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-careers">
-        <div>
+        <div data-animate>
           <p className="landing-section-eyebrow">Careers</p>
           <h2>Build the future of healthcare procurement.</h2>
           <p>We&apos;re hiring across engineering, operations, and partnerships.</p>
@@ -597,13 +635,13 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-section landing-faq" id="faq">
-        <div className="landing-section-heading landing-centered">
+        <div className="landing-section-heading landing-centered" data-animate>
           <p className="landing-section-eyebrow">FAQ</p>
           <h2>Questions, answered.</h2>
         </div>
         <div className="landing-faq-list">
-          {faqs.map((faq) => (
-            <details key={faq.question}>
+          {faqs.map((faq, index) => (
+            <details key={faq.question} data-animate style={{ transitionDelay: `${Math.min(index, 3) * 60}ms` }}>
               <summary>
                 {faq.question}
                 <span aria-hidden="true">+</span>
@@ -615,11 +653,10 @@ export default function LandingPage() {
       </section>
 
       <section className="landing-cta" id="cta">
-        <div className="landing-cta-panel">
-          <div>
-            <h2>Make your next purchase the clearest one yet.</h2>
-            <p>Join the early-access wave, or explore the demo workspace first — no signup required.</p>
-          </div>
+        <div className="landing-cta-panel" data-animate>
+          <span className="landing-cta-mark" aria-hidden="true"><Logo size={44} /></span>
+          <h2>Make your next purchase the clearest one yet.</h2>
+          <p>Join the early-access wave — or explore the demo first. No signup.</p>
           <div className="landing-cta-actions">
             <a className="landing-button landing-button-light" href="mailto:hello@easemed.ai?subject=EaseMed%20early%20access">
               Get early access
@@ -632,8 +669,8 @@ export default function LandingPage() {
       <footer className="landing-footer">
         <div className="landing-footer-grid">
           <div className="landing-footer-brand">
-            <a className="landing-brand" href="#top"><span className="landing-brand-mark">E</span><span>EaseMed<span className="landing-brand-muted">.ai</span></span></a>
-            <p>The unified intelligence platform connecting facilities, suppliers, and procurement teams — less complexity, faster decisions.</p>
+            <Brand />
+            <p>Discovery to delivery for healthcare procurement — predict, source, pay, track.</p>
           </div>
           <nav aria-label="Product links">
             <strong>Product</strong>
@@ -663,6 +700,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <script dangerouslySetInnerHTML={{ __html: revealScript }} />
     </main>
   );
 }

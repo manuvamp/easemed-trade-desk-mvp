@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "EaseMed.ai | Procurement intelligence",
   description:
-    "The operating layer for healthcare procurement, from requirement capture to approval and fulfilment.",
+    "AI-powered healthcare procurement: predict what to buy, source verified suppliers, automate purchasing and payments, and track every shipment.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

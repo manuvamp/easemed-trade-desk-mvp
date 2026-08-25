@@ -32,13 +32,14 @@ test("server-renders the EaseMed landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>EaseMed\.ai \| Procurement intelligence<\/title>/i);
-  assert.match(html, /The fastest route from clinical need to (<em>)?approved order/i);
+  assert.match(html, /Source medical supplies in (<em>)?days, not weeks/i);
   assert.match(html, /Requirement capture/i);
   assert.match(html, /Intelligent matching/i);
   assert.match(html, /Decision &amp; audit trail|Decision & audit trail/i);
+  assert.match(html, /Discovery to delivery/i);
   assert.match(html, /Get early access/i);
   assert.match(html, /Nikita Akolikar/i);
-  assert.match(html, /Illustrative network preview/i);
+  assert.match(html, /Illustrative network/i);
   assert.match(html, /About the founder/i);
   assert.match(html, /Open the demo workspace/i);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/i);
@@ -63,7 +64,7 @@ test("starter preview assets and dependency are removed", async () => {
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /The fastest route from clinical need to/);
+  assert.match(page, /Source medical supplies in/);
   assert.match(page, /landing-console/);
   assert.match(page, /Open the demo workspace/);
   assert.match(dashboardPage, /useState/);
