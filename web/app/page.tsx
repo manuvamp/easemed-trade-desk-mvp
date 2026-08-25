@@ -23,24 +23,56 @@ const heroStats = [
 
 const journeyNodes = [
   {
-    glyph: "◎",
     title: "Predict",
     text: "AI flags what to buy before you run out.",
+    visual: (
+      <div className="pipe-visual">
+        <span className="pipe-label">Inventory · Surgical gloves</span>
+        <div className="pipe-stock">
+          <span className="pipe-stock-bar"><i style={{ width: "18%" }} /></span>
+          <em>18% left</em>
+        </div>
+        <div className="pipe-alert"><span aria-hidden="true">✦</span>Reorder 12,000 units by Mar 4</div>
+      </div>
+    ),
   },
   {
-    glyph: "✦",
     title: "Source",
     text: "Verified suppliers, ranked and ready to compare.",
+    visual: (
+      <div className="pipe-visual">
+        <span className="pipe-label">Shortlist</span>
+        <div className="pipe-row"><b>GulfMed Supplies</b><span className="pipe-score">97</span></div>
+        <div className="pipe-row"><b>Aster Labs Trading</b><span className="pipe-score">91</span></div>
+        <div className="pipe-row"><b>Clinova Health</b><span className="pipe-score">86</span></div>
+      </div>
+    ),
   },
   {
-    glyph: "◈",
     title: "Pay",
     text: "Cross-border payments in a few clicks.",
+    visual: (
+      <div className="pipe-visual">
+        <span className="pipe-label">Payment · Invoice #2841</span>
+        <div className="pipe-pay"><b>$14,200</b><span aria-hidden="true">→</span><b>AED 52,150</b></div>
+        <div className="pipe-alert is-paid"><span aria-hidden="true">✓</span>Paid in 2 clicks · fees included</div>
+      </div>
+    ),
   },
   {
-    glyph: "✓",
     title: "Track",
     text: "Live shipment tracking, to your door.",
+    visual: (
+      <div className="pipe-visual">
+        <span className="pipe-label">Shipment EM-2210</span>
+        <div className="pipe-steps">
+          <span className="is-done"><i aria-hidden="true" />Packed</span>
+          <span className="is-done"><i aria-hidden="true" />In transit</span>
+          <span><i aria-hidden="true" />Delivered</span>
+        </div>
+        <div className="pipe-alert"><span aria-hidden="true">◎</span>On time · ETA Thursday</div>
+      </div>
+    ),
   },
 ];
 
@@ -317,58 +349,66 @@ export default function LandingPage() {
         <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
           <div className="console-glow console-glow-one" aria-hidden="true" />
           <div className="console-glow console-glow-two" aria-hidden="true" />
-          <div className="console-shell">
-            <div className="console-topbar">
-              <Logo size={15} />
-              <span>EaseMed intelligence</span>
-              <span className="console-live"><i /> Live demo data</span>
-            </div>
-            <div className="console-grid">
-              <article className="console-card console-requirement">
-                <div className="console-card-header">
-                  <span className="console-icon console-icon-blue">✦</span>
-                  <span>Requirement captured</span>
-                  <b>Locked ✓</b>
+          <div className="console-device">
+            <div className="console-screen">
+              <div className="console-shell">
+                <div className="console-topbar">
+                  <Logo size={15} />
+                  <span>EaseMed intelligence</span>
+                  <span className="console-live"><i /> Live demo data</span>
                 </div>
-                <h3>Surgical gloves (sterile)</h3>
-                <div className="console-specs">
-                  <span><b>12,000</b> units / quarter</span>
-                  <span><b>ISO 13485 + FDA 510(k)</b></span>
-                  <span><b>14 days</b> delivery window</span>
-                </div>
-                <div className="console-progress"><span /></div>
-                <small>Structured by AI · 2 min ago</small>
-              </article>
+                <div className="console-grid">
+                  <article className="console-card console-requirement">
+                    <div className="console-card-header">
+                      <span className="console-icon console-icon-blue">✦</span>
+                      <span>Requirement captured</span>
+                      <b>Locked ✓</b>
+                    </div>
+                    <h3>Surgical gloves (sterile)</h3>
+                    <div className="console-specs">
+                      <span><b>12,000</b> units / quarter</span>
+                      <span><b>ISO 13485 + FDA 510(k)</b></span>
+                      <span><b>14 days</b> delivery window</span>
+                    </div>
+                    <div className="console-progress"><span /></div>
+                    <small>Structured by AI · 2 min ago</small>
+                  </article>
 
-              <article className="console-card console-match">
-                <div className="console-card-header">
-                  <span className="console-icon console-icon-green">◎</span>
-                  <span>Supplier match</span>
-                  <b className="console-score">Tier-1</b>
-                </div>
-                <div className="console-match-number">97<span>/100</span></div>
-                <p>GulfMed Supplies · best of 3 shortlisted</p>
-                <div className="console-bars" aria-hidden="true">
-                  <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
-                </div>
-                <div className="console-match-labels"><span>Compliance</span><span>Capacity</span><span>Reliability</span></div>
-              </article>
+                  <article className="console-card console-match">
+                    <div className="console-card-header">
+                      <span className="console-icon console-icon-green">◎</span>
+                      <span>Supplier match</span>
+                      <b className="console-score">Tier-1</b>
+                    </div>
+                    <div className="console-match-number">97<span>/100</span></div>
+                    <p>GulfMed Supplies · best of 3 shortlisted</p>
+                    <div className="console-bars" aria-hidden="true">
+                      <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
+                    </div>
+                    <div className="console-match-labels"><span>Compliance</span><span>Capacity</span><span>Reliability</span></div>
+                  </article>
 
-              <article className="console-card console-approval">
-                <div className="console-card-header">
-                  <span className="console-icon console-icon-aqua">✓</span>
-                  <span>Decision ready</span>
-                  <b>$0.38/unit</b>
+                  <article className="console-card console-approval">
+                    <div className="console-card-header">
+                      <span className="console-icon console-icon-aqua">✓</span>
+                      <span>Decision ready</span>
+                      <b>$0.38/unit</b>
+                    </div>
+                    <h3>Release to warehouse</h3>
+                    <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
+                    <div className="console-approval-row"><span className="console-avatar console-avatar-light">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
+                    <button type="button" className="console-review-button">Review decision <span aria-hidden="true">↗</span></button>
+                  </article>
                 </div>
-                <h3>Release to warehouse</h3>
-                <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
-                <div className="console-approval-row"><span className="console-avatar console-avatar-light">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
-                <button type="button" className="console-review-button">Review decision <span aria-hidden="true">↗</span></button>
-              </article>
+                <div className="console-footer">
+                  <span><i /> AI-assisted, human-approved</span>
+                  <span>Last synced just now</span>
+                </div>
+              </div>
             </div>
-            <div className="console-footer">
-              <span><i /> AI-assisted, human-approved</span>
-              <span>Last synced just now</span>
+            <div className="console-stand" aria-hidden="true">
+              <div className="console-stand-neck" />
+              <div className="console-stand-base" />
             </div>
           </div>
         </div>
@@ -415,7 +455,7 @@ export default function LandingPage() {
           <span className="landing-pipeline-line" aria-hidden="true" />
           {journeyNodes.map((node) => (
             <article key={node.title} className="landing-pipeline-node">
-              <span className="landing-pipeline-icon" aria-hidden="true">{node.glyph}</span>
+              {node.visual}
               <h3>{node.title}</h3>
               <p>{node.text}</p>
             </article>
