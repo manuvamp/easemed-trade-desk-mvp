@@ -3968,50 +3968,41 @@ html {
 
 /* ---------- workflow steps ---------- */
 
-.landing-workflow .landing-section-heading {
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 40px;
-  max-width: none;
-  text-align: left;
-}
-
-.landing-workflow .landing-heading-main {
-  min-width: 0;
-}
-
-.landing-workflow .landing-section-heading h2 {
-  max-width: 460px;
-}
-
-.landing-workflow .landing-section-intro {
-  max-width: 380px;
-  margin: 0 0 8px;
-}
-
 .landing-steps {
   display: grid;
+  gap: 26px;
 }
 
 .landing-step {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
-  gap: clamp(36px, 6vw, 80px);
-  padding: 64px 0;
+  gap: clamp(30px, 5vw, 64px);
+  border: 1px solid var(--lp-line);
+  border-radius: 18px;
+  padding: clamp(28px, 4vw, 48px);
+  background: #fff;
+  box-shadow: var(--lp-shadow);
 }
 
-.landing-step:first-child {
-  padding-top: 8px;
-}
-
-.landing-step:last-child {
-  padding-bottom: 8px;
-}
-
-.landing-step + .landing-step {
-  border-top: 1px solid var(--lp-line);
+/* flow connector between step cards */
+.landing-step + .landing-step::before {
+  content: "↓";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--lp-line);
+  border-radius: 50%;
+  background: #fff;
+  color: #0891b2;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .landing-step:nth-child(even) .landing-step-copy {
@@ -4050,7 +4041,7 @@ html {
 .landing-step-copy h3 {
   margin: 0;
   color: var(--lp-ink);
-  font-size: clamp(23px, 2.6vw, 30px);
+  font-size: clamp(22px, 2.4vw, 27px);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.12;
@@ -4058,29 +4049,43 @@ html {
 
 .landing-step-copy > p:not(.landing-step-badge) {
   margin: 15px 0 0;
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.65;
 }
 
-.landing-step-list {
-  display: grid;
-  gap: 10px;
+.landing-step-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   margin: 20px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--lp-ink);
 }
 
-.landing-step-list li,
+.landing-step-chips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--lp-line);
+  border-radius: 8px;
+  padding: 7px 12px;
+  background: var(--lp-soft);
+  color: var(--lp-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.landing-step-chips span i {
+  color: var(--lp-green);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .landing-control-list li {
   display: flex;
   align-items: baseline;
   gap: 9px;
 }
 
-.landing-step-list li span,
 .landing-control-list li span {
   color: var(--lp-green);
   font-size: 13px;
@@ -4088,11 +4093,20 @@ html {
 }
 
 .landing-step-visual {
-  border: 1px solid var(--lp-line);
-  border-radius: 12px;
-  padding: 24px;
-  background: #fff;
-  box-shadow: var(--lp-shadow);
+  border-radius: 14px;
+  padding: clamp(20px, 2.6vw, 30px);
+  background: linear-gradient(160deg, #f2fbfd 0%, #ffffff 65%);
+  box-shadow: inset 0 0 0 1px rgba(8, 145, 178, 0.08);
+}
+
+.landing-step-matching .landing-step-visual {
+  background: linear-gradient(160deg, #f2fcf6 0%, #ffffff 65%);
+  box-shadow: inset 0 0 0 1px rgba(15, 185, 129, 0.1);
+}
+
+.landing-step-decision .landing-step-visual {
+  background: linear-gradient(160deg, #f0f9fb 0%, #ffffff 65%);
+  box-shadow: inset 0 0 0 1px rgba(12, 192, 207, 0.1);
 }
 
 .visual-capture {
@@ -5024,7 +5038,12 @@ html.js [data-animate].in-view {
 @media (max-width: 1080px) {
   .landing-step {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 28px;
+    padding: 28px;
+  }
+
+  .landing-step + .landing-step::before {
+    top: -17px;
   }
 
   .landing-step:nth-child(even) .landing-step-copy {
@@ -5244,14 +5263,9 @@ html.js [data-animate].in-view {
     padding-top: 84px;
   }
 
-  .landing-workflow .landing-section-heading {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  .landing-workflow .landing-section-intro {
-    margin: 0;
+  .landing-step-chips span {
+    font-size: 11px;
+    padding: 6px 10px;
   }
 
   .landing-control-list {

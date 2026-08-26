@@ -99,27 +99,24 @@ const workflowSteps = [
     id: "capture",
     label: "Requirement capture",
     title: "Describe it once.",
-    description:
-      "Type a sentence or upload a document — AI turns it into a complete, compliance-ready requirement.",
-    bullets: ["Plain language or documents", "Standards auto-attached", "Ready in minutes"],
+    description: "AI turns a sentence or document into a compliance-ready requirement.",
+    chips: ["Plain language or docs", "Standards auto-attached", "Ready in minutes"],
   },
   {
     number: "02",
     id: "matching",
     label: "Intelligent matching",
     title: "Meet the right suppliers.",
-    description:
-      "Every verified partner is scored live on compliance, capacity, price history, and reliability.",
-    bullets: ["340+ verified network", "Live four-way scoring", "Evidence, not promises"],
+    description: "Every verified partner is scored live on compliance, capacity, price, and reliability.",
+    chips: ["340+ verified network", "Live 4-way scoring", "Evidence-based"],
   },
   {
     number: "03",
     id: "decision",
     label: "Decision & audit trail",
     title: "Approve with confidence.",
-    description:
-      "Compare bids, release in one click, and keep an immutable record of every decision.",
-    bullets: ["Side-by-side bids", "One-click approvals", "Immutable history"],
+    description: "Compare bids, release in one click, and keep an immutable record.",
+    chips: ["Side-by-side bids", "One-click approvals", "Immutable history"],
   },
 ];
 
@@ -584,12 +581,10 @@ export default function LandingPage() {
 
       <section className="landing-section landing-workflow" id="how-it-works">
         <div className="landing-section-heading landing-centered" data-animate>
-          <div className="landing-heading-main">
-            <p className="landing-section-eyebrow">How it works</p>
-            <h2>Three steps. Zero guesswork.</h2>
-          </div>
+          <p className="landing-section-eyebrow">How it works</p>
+          <h2>Three steps. Zero guesswork.</h2>
           <p className="landing-section-intro">
-            From a plain sentence to an approved order — one clear path, no follow-up threads.
+            From a plain sentence to an approved order — one clear path.
           </p>
         </div>
 
@@ -603,11 +598,11 @@ export default function LandingPage() {
                 </div>
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
-                <ul className="landing-step-list">
-                  {step.bullets.map((bullet) => (
-                    <li key={bullet}><span aria-hidden="true">✓</span>{bullet}</li>
+                <div className="landing-step-chips">
+                  {step.chips.map((chip) => (
+                    <span key={chip}><i aria-hidden="true">✓</i>{chip}</span>
                   ))}
-                </ul>
+                </div>
               </div>
 
               <div className={`landing-step-visual visual-${step.id}`} aria-hidden="true">
