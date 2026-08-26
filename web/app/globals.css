@@ -3558,7 +3558,7 @@ html {
   right: 12.5%;
   left: 12.5%;
   height: 2px;
-  background: linear-gradient(90deg, rgba(20, 120, 255, 0.45), rgba(12, 192, 207, 0.45) 55%, rgba(15, 185, 129, 0.45));
+  background: linear-gradient(90deg, rgba(8, 145, 178, 0.45), rgba(12, 192, 207, 0.45) 55%, rgba(15, 185, 129, 0.45));
 }
 
 .landing-pipeline-node {
