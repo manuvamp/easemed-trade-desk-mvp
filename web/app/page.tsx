@@ -138,14 +138,20 @@ const audienceCards = [
 
 const securityTiles = [
   {
+    icon: "shield",
+    tone: "blue",
     badge: "Audit-ready by design",
     detail: "Every action timestamped. Nothing editable.",
   },
   {
+    icon: "lock",
+    tone: "aqua",
     badge: "Role-based access",
     detail: "Each team sees exactly its lane.",
   },
   {
+    icon: "file",
+    tone: "green",
     badge: "Standards-aware",
     detail: "ISO 13485 · FDA 510(k) built in.",
   },
@@ -203,8 +209,6 @@ const testimonials = [
     tag: "Manufacturing",
   },
 ];
-
-const founderChips = ["13+ yrs sourcing", "4 continents", "30+ clients", "Multi-$M programs"];
 
 const faqs = [
   {
@@ -269,6 +273,34 @@ function Brand() {
   );
 }
 
+function SecurityIcon({ kind }: { kind: string }) {
+  const paths = {
+    shield: (
+      <>
+        <path d="M12 3c2.6 1.8 5.2 2.6 7.5 2.6v5.1c0 4.6-3 7.9-7.5 9.8-4.5-1.9-7.5-5.2-7.5-9.8V5.6C6.8 5.6 9.4 4.8 12 3z" />
+        <path d="M9.2 11.8l2 2 3.6-3.9" />
+      </>
+    ),
+    lock: (
+      <>
+        <path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5" />
+        <rect x="5.5" y="10.5" width="13" height="9.5" rx="2" />
+      </>
+    ),
+    file: (
+      <>
+        <path d="M13.5 3H7.5A1.5 1.5 0 006 4.5v15A1.5 1.5 0 007.5 21h9a1.5 1.5 0 001.5-1.5V8l-4.5-5z" />
+        <path d="M9.5 13.8l2 2 3.5-3.8" />
+      </>
+    ),
+  } as const;
+  return (
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {paths[kind as keyof typeof paths]}
+    </svg>
+  );
+}
+
 const revealScript = `(function(){
   document.documentElement.classList.add('js');
   try {
@@ -318,9 +350,6 @@ export default function LandingPage() {
 
       <section className="landing-hero" id="top">
         <div className="landing-hero-inner">
-          <p className="landing-hero-kicker">
-            <span aria-hidden="true">✦</span> Healthcare procurement, end to end
-          </p>
           <h1>
             Source medical supplies in <em>days, not weeks.</em>
           </h1>
@@ -604,9 +633,11 @@ export default function LandingPage() {
           <div className="landing-security-tiles">
             {securityTiles.map((tile, index) => (
               <article key={tile.badge} data-animate style={{ transitionDelay: `${index * 90}ms` }}>
-                <span aria-hidden="true">🛡️</span>
-                <h3>{tile.badge}</h3>
-                <p>{tile.detail}</p>
+                <span className={`security-icon tone-${tile.tone}`}><SecurityIcon kind={tile.icon} /></span>
+                <div>
+                  <h3>{tile.badge}</h3>
+                  <p>{tile.detail}</p>
+                </div>
               </article>
             ))}
           </div>
@@ -649,7 +680,19 @@ export default function LandingPage() {
       <section className="landing-section landing-founder" id="about">
         <div className="landing-founder-card" data-animate>
           <div className="landing-founder-portrait">
-            <img src="/founder.jpg" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
+            <img src="/founder.webp" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
+            <div className="founder-chip founder-chip-1">
+              <span className="founder-chip-icon tone-green" aria-hidden="true">⚡</span>
+              <span><b>13+ yrs</b><small>in global sourcing</small></span>
+            </div>
+            <div className="founder-chip founder-chip-2">
+              <span className="founder-chip-icon tone-blue" aria-hidden="true">✦</span>
+              <span><b>30+ clients</b><small>across 4 continents</small></span>
+            </div>
+            <div className="founder-chip founder-chip-3">
+              <span className="founder-chip-icon tone-aqua" aria-hidden="true">◈</span>
+              <span><b>Multi-$M</b><small>sourcing programs</small></span>
+            </div>
           </div>
           <div className="landing-founder-copy">
             <p className="landing-section-eyebrow">About the founder</p>
@@ -658,11 +701,6 @@ export default function LandingPage() {
               Nikita Akolikar ran cross-border sourcing operations for 13 years — five of them
               inside healthcare procurement.
             </p>
-            <div className="landing-founder-chips">
-              {founderChips.map((chip) => (
-                <span key={chip}>{chip}</span>
-              ))}
-            </div>
             <blockquote>
               “I see opportunities others miss. EaseMed turns that instinct into infrastructure.”
             </blockquote>

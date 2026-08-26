@@ -2947,7 +2947,7 @@ html {
   position: relative;
   width: min(1160px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 40px 0 24px;
+  padding: 26px 0 24px;
   text-align: center;
 }
 
@@ -2959,24 +2959,6 @@ html {
   margin: 0 auto;
 }
 
-.landing-hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 20px;
-  border: 1px solid rgba(12, 150, 200, 0.25);
-  border-radius: 999px;
-  padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.75);
-  color: #0a8fa0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.landing-hero-kicker span {
-  color: var(--lp-aqua);
-}
 
 .landing-hero h1 {
   max-width: 780px;
@@ -4225,8 +4207,7 @@ html {
   line-height: 1.5;
 }
 
-.landing-cap-chips,
-.landing-founder-chips {
+.landing-cap-chips {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -4292,43 +4273,43 @@ html {
 }
 
 .landing-security-tiles article {
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
-  align-items: start;
-  gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
   border: 1px solid var(--lp-line);
   border-radius: 17px;
-  padding: 21px;
+  padding: 19px 22px;
   background: var(--lp-card);
   box-shadow: var(--lp-shadow);
 }
 
-.landing-security-tiles span {
-  grid-column: 1;
-  grid-row: 1;
+.security-icon {
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
   place-items: center;
-  border-radius: 13px;
-  background: rgba(12, 192, 207, 0.11);
-  font-size: 19px;
+  border-radius: 14px;
+}
+
+.security-icon.tone-blue { background: rgba(20, 120, 255, 0.1); color: #1478ff; }
+.security-icon.tone-aqua { background: rgba(12, 192, 207, 0.12); color: #0a8fa0; }
+.security-icon.tone-green { background: rgba(15, 185, 129, 0.12); color: #0a8f63; }
+
+.security-icon svg {
+  display: block;
 }
 
 .landing-security-tiles h3 {
-  grid-column: 2;
-  grid-row: 1;
-  margin: 2px 0 0;
+  margin: 0;
   color: var(--lp-ink);
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .landing-security-tiles p {
-  grid-column: 2;
-  grid-row: 2;
-  margin: 6px 0 0;
+  margin: 5px 0 0;
   font-size: 12.5px;
   line-height: 1.55;
 }
@@ -4435,21 +4416,76 @@ html {
 }
 
 .landing-founder-portrait {
-  width: min(280px, 100%);
+  position: relative;
+  width: min(320px, 100%);
   justify-self: center;
-  border-radius: 26px;
-  padding: 4px;
-  background: linear-gradient(140deg, #1478ff, #0cc0cf 55%, #0fb981);
-  box-shadow: 0 26px 54px rgba(12, 150, 200, 0.32);
 }
 
 .landing-founder-portrait img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center top;
-  border-radius: 22px;
+  filter: drop-shadow(0 34px 54px rgba(7, 42, 54, 0.28));
+}
+
+.founder-chip {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(226, 240, 243, 0.9);
+  border-radius: 14px;
+  padding: 9px 14px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 34px rgba(7, 42, 54, 0.14);
+  backdrop-filter: blur(6px);
+}
+
+.founder-chip b {
+  display: block;
+  color: var(--lp-ink);
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+.founder-chip small {
+  display: block;
+  margin-top: 1px;
+  color: var(--lp-muted);
+  font-size: 10.5px;
+  white-space: nowrap;
+}
+
+.founder-chip-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.founder-chip-icon.tone-blue { background: rgba(20, 120, 255, 0.1); color: #1478ff; }
+.founder-chip-icon.tone-aqua { background: rgba(12, 192, 207, 0.12); color: #0a8fa0; }
+.founder-chip-icon.tone-green { background: rgba(15, 185, 129, 0.12); color: #0a8f63; }
+
+.founder-chip-1 {
+  top: 5%;
+  right: -30px;
+  animation: em-float 6s ease-in-out infinite alternate;
+}
+
+.founder-chip-2 {
+  top: 46%;
+  left: -36px;
+  animation: em-float 7.5s ease-in-out -2.5s infinite alternate-reverse;
+}
+
+.founder-chip-3 {
+  bottom: 3%;
+  right: -20px;
+  animation: em-float 8.5s ease-in-out -4s infinite alternate;
 }
 
 .landing-founder-bio {
@@ -4458,10 +4494,6 @@ html {
   line-height: 1.65;
 }
 
-.landing-founder-chips {
-  justify-content: flex-start;
-  margin-top: 18px;
-}
 
 .landing-founder-copy blockquote {
   margin: 22px 0 0;
@@ -4779,7 +4811,8 @@ html.js [data-animate].in-view {
   .console-glow-one,
   .console-glow-two,
   .landing-marquee-track,
-  .landing-pipeline-line::after {
+  .landing-pipeline-line::after,
+  .founder-chip {
     animation: none;
   }
 
@@ -4899,7 +4932,41 @@ html.js [data-animate].in-view {
   }
 
   .landing-founder-portrait {
-    width: min(240px, 82%);
+    width: min(300px, 92%);
+    margin: 0 auto;
+  }
+
+  .founder-chip {
+    gap: 8px;
+    padding: 8px 11px;
+    border-radius: 12px;
+  }
+
+  .founder-chip b {
+    font-size: 12px;
+  }
+
+  .founder-chip small {
+    font-size: 9.5px;
+  }
+
+  .founder-chip-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
+  .founder-chip-1 {
+    top: 4%;
+    right: -6px;
+  }
+
+  .founder-chip-2 {
+    left: -6px;
+  }
+
+  .founder-chip-3 {
+    right: -4px;
   }
 
   .landing-careers {
