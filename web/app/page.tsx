@@ -23,11 +23,13 @@ const heroStats = [
 
 const journeyNodes = [
   {
+    icon: "trend",
+    tone: "teal",
     title: "Predict",
     text: "AI flags what to buy before you run out.",
     visual: (
       <div className="pipe-visual">
-        <span className="pipe-label">Inventory · Surgical gloves</span>
+        <div className="pipe-head"><span className="pipe-icon tone-teal"><Icon name="trend" size={13} /></span><span className="pipe-label">Inventory · Gloves</span></div>
         <div className="pipe-stock">
           <span className="pipe-stock-bar"><i style={{ width: "18%" }} /></span>
           <em>18% left</em>
@@ -37,11 +39,13 @@ const journeyNodes = [
     ),
   },
   {
+    icon: "users",
+    tone: "green",
     title: "Source",
     text: "Verified suppliers, ranked and ready to compare.",
     visual: (
       <div className="pipe-visual">
-        <span className="pipe-label">Shortlist</span>
+        <div className="pipe-head"><span className="pipe-icon tone-green"><Icon name="users" size={13} /></span><span className="pipe-label">Shortlist</span></div>
         <div className="pipe-row"><b>GulfMed Supplies</b><span className="pipe-score">97</span></div>
         <div className="pipe-row"><b>Aster Labs Trading</b><span className="pipe-score">91</span></div>
         <div className="pipe-row"><b>Clinova Health</b><span className="pipe-score">86</span></div>
@@ -49,22 +53,26 @@ const journeyNodes = [
     ),
   },
   {
+    icon: "card",
+    tone: "aqua",
     title: "Pay",
     text: "Cross-border payments in a few clicks.",
     visual: (
       <div className="pipe-visual">
-        <span className="pipe-label">Payment · Invoice #2841</span>
+        <div className="pipe-head"><span className="pipe-icon tone-aqua"><Icon name="card" size={13} /></span><span className="pipe-label">Payment · Invoice #2841</span></div>
         <div className="pipe-pay"><b>$14,200</b><span aria-hidden="true">→</span><b>AED 52,150</b></div>
         <div className="pipe-alert is-paid"><span aria-hidden="true">✓</span>Paid in 2 clicks · fees included</div>
       </div>
     ),
   },
   {
+    icon: "pin",
+    tone: "navy",
     title: "Track",
     text: "Live shipment tracking, to your door.",
     visual: (
       <div className="pipe-visual">
-        <span className="pipe-label">Shipment EM-2210</span>
+        <div className="pipe-head"><span className="pipe-icon tone-navy"><Icon name="pin" size={13} /></span><span className="pipe-label">Shipment EM-2210</span></div>
         <div className="pipe-steps">
           <span className="is-done"><i aria-hidden="true" />Packed</span>
           <span className="is-done"><i aria-hidden="true" />In transit</span>
@@ -325,6 +333,26 @@ function Icon({ name, size = 20 }: { name: string; size?: number }) {
         <circle cx="12" cy="10" r="3" />
       </>
     ),
+    users: (
+      <>
+        <path d="M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2" />
+        <circle cx="10" cy="7" r="4" />
+        <path d="M21 21v-2a4 4 0 00-3-3.87" />
+        <path d="M16 3.13a4 4 0 010 7.75" />
+      </>
+    ),
+    card: (
+      <>
+        <rect x="2" y="5" width="20" height="14" rx="2" />
+        <path d="M2 10h20" />
+      </>
+    ),
+    clock: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7.5V12l3 1.8" />
+      </>
+    ),
   } as const;
 
   return (
@@ -399,6 +427,9 @@ export default function LandingPage() {
             </a>
           </div>
           <div className="landing-hero-proof">
+            <span className="landing-avatar-stack" aria-hidden="true">
+              <i>AO</i><i>RM</i><i>JW</i><i>FA</i>
+            </span>
             <span className="landing-stars" aria-label="Rated five out of five by design-partner teams">
               ★★★★★
             </span>
@@ -661,7 +692,7 @@ export default function LandingPage() {
                 ))}
               </ul>
               <p className="landing-role-outcome">{card.outcome}</p>
-              <a className="landing-button landing-button-outline-light" href="#cta">{card.cta} →</a>
+              <a className="landing-button landing-button-light" href="#cta">{card.cta} →</a>
             </article>
           ))}
         </div>
@@ -736,14 +767,17 @@ export default function LandingPage() {
         </div>
         <div className="landing-results-grid">
           <article className="landing-results-card" data-animate>
+            <span className="landing-results-icon"><Icon name="clock" size={17} /></span>
             <strong>11 days → 3</strong>
             <span>Average purchase cycle at a regional hospital group</span>
           </article>
           <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
+            <span className="landing-results-icon"><Icon name="trend" size={17} /></span>
             <strong>4×</strong>
             <span>More supplier quotations sent per week at MedSupply Partners</span>
           </article>
           <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
+            <span className="landing-results-icon"><Icon name="shield" size={17} /></span>
             <strong>100%</strong>
             <span>Audit packs accepted without a single follow-up at Northstar Care</span>
           </article>
