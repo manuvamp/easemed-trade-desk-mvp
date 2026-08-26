@@ -762,17 +762,17 @@ export default function LandingPage() {
         </div>
         <div className="landing-results-grid">
           <article className="landing-results-card" data-animate>
-            <span className="landing-results-icon"><Icon name="clock" size={17} /></span>
+            <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
             <strong>11 days → 3</strong>
             <span>Average purchase cycle at a regional hospital group</span>
           </article>
           <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
-            <span className="landing-results-icon"><Icon name="trend" size={17} /></span>
+            <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
             <strong>4×</strong>
             <span>More supplier quotations sent per week at MedSupply Partners</span>
           </article>
           <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
-            <span className="landing-results-icon"><Icon name="shield" size={17} /></span>
+            <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
             <strong>100%</strong>
             <span>Audit packs accepted without a single follow-up at Northstar Care</span>
           </article>
