@@ -145,12 +145,12 @@ const securityTiles = [
   },
   {
     icon: "lock",
-    tone: "aqua",
+    tone: "teal",
     badge: "Role-based access",
     detail: "Each team sees exactly its lane.",
   },
   {
-    icon: "file",
+    icon: "fileCheck",
     tone: "green",
     badge: "Standards-aware",
     detail: "ISO 13485 · FDA 510(k) built in.",
@@ -246,16 +246,9 @@ const faqs = [
 function Logo({ size = 30 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="em-mark" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1478FF" />
-          <stop offset="0.55" stopColor="#0CC0CF" />
-          <stop offset="1" stopColor="#0FB981" />
-        </linearGradient>
-      </defs>
-      <path d="M16 6.5v19" stroke="url(#em-mark)" strokeWidth="6" strokeLinecap="round" />
-      <path d="M6.5 16H19" stroke="url(#em-mark)" strokeWidth="6" strokeLinecap="round" />
-      <circle cx="26" cy="16" r="3.4" fill="#0FB981" />
+      <path d="M16 6.5v19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+      <path d="M6.5 16H19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+      <circle cx="26" cy="16" r="3.4" fill="#2563eb" />
     </svg>
   );
 }
@@ -273,8 +266,27 @@ function Brand() {
   );
 }
 
-function SecurityIcon({ kind }: { kind: string }) {
-  const paths = {
+function Icon({ name, size = 20 }: { name: string; size?: number }) {
+  const content = {
+    file: (
+      <>
+        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+        <path d="M14 2v6h6" />
+        <path d="M9 13h6M9 17h6" />
+      </>
+    ),
+    target: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="4.5" />
+      </>
+    ),
+    checkCircle: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8.5 12.3l2.4 2.4 4.6-5" />
+      </>
+    ),
     shield: (
       <>
         <path d="M12 3c2.6 1.8 5.2 2.6 7.5 2.6v5.1c0 4.6-3 7.9-7.5 9.8-4.5-1.9-7.5-5.2-7.5-9.8V5.6C6.8 5.6 9.4 4.8 12 3z" />
@@ -287,16 +299,31 @@ function SecurityIcon({ kind }: { kind: string }) {
         <rect x="5.5" y="10.5" width="13" height="9.5" rx="2" />
       </>
     ),
-    file: (
+    fileCheck: (
       <>
         <path d="M13.5 3H7.5A1.5 1.5 0 006 4.5v15A1.5 1.5 0 007.5 21h9a1.5 1.5 0 001.5-1.5V8l-4.5-5z" />
         <path d="M9.5 13.8l2 2 3.5-3.8" />
       </>
     ),
+    zap: <path d="M13 2L4.5 13.5H11L9.5 22 18 10.5h-6.5L13 2z" />,
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18" />
+        <path d="M12 3c2.7 2.6 4 5.7 4 9s-1.3 6.4-4 9c-2.7-2.6-4-5.7-4-9s1.3-6.4 4-9z" />
+      </>
+    ),
+    trend: (
+      <>
+        <path d="M22 7l-8.5 8.5-5-5L2 17" />
+        <path d="M16 7h6v6" />
+      </>
+    ),
   } as const;
+
   return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {paths[kind as keyof typeof paths]}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {content[name as keyof typeof content]}
     </svg>
   );
 }
@@ -376,8 +403,6 @@ export default function LandingPage() {
         </div>
 
         <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
-          <div className="console-glow console-glow-one" aria-hidden="true" />
-          <div className="console-glow console-glow-two" aria-hidden="true" />
           <div className="console-screen">
             <div className="console-shell">
               <div className="console-topbar">
@@ -388,7 +413,7 @@ export default function LandingPage() {
               <div className="console-grid">
                 <article className="console-card console-requirement">
                   <div className="console-card-header">
-                    <span className="console-icon console-icon-blue">✦</span>
+                    <span className="console-icon"><Icon name="file" size={13} /></span>
                     <span>Requirement captured</span>
                     <b>Locked ✓</b>
                   </div>
@@ -405,7 +430,7 @@ export default function LandingPage() {
 
                 <article className="console-card console-match">
                   <div className="console-card-header">
-                    <span className="console-icon console-icon-green">◎</span>
+                    <span className="console-icon"><Icon name="target" size={13} /></span>
                     <span>Supplier match</span>
                     <b className="console-score">Tier-1</b>
                   </div>
@@ -423,7 +448,7 @@ export default function LandingPage() {
 
                 <article className="console-card console-approval">
                   <div className="console-card-header">
-                    <span className="console-icon console-icon-aqua">✓</span>
+                    <span className="console-icon"><Icon name="checkCircle" size={13} /></span>
                     <span>Decision ready</span>
                     <b>$0.38/unit</b>
                   </div>
@@ -633,7 +658,7 @@ export default function LandingPage() {
           <div className="landing-security-tiles">
             {securityTiles.map((tile, index) => (
               <article key={tile.badge} data-animate style={{ transitionDelay: `${index * 90}ms` }}>
-                <span className={`security-icon tone-${tile.tone}`}><SecurityIcon kind={tile.icon} /></span>
+                <span className={`security-icon tone-${tile.tone}`}><Icon name={tile.icon} size={21} /></span>
                 <div>
                   <h3>{tile.badge}</h3>
                   <p>{tile.detail}</p>
@@ -682,15 +707,15 @@ export default function LandingPage() {
           <div className="landing-founder-portrait">
             <img src="/founder.webp" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
             <div className="founder-chip founder-chip-1">
-              <span className="founder-chip-icon tone-green" aria-hidden="true">⚡</span>
+              <span className="founder-chip-icon tone-green"><Icon name="zap" size={15} /></span>
               <span><b>13+ yrs</b><small>in global sourcing</small></span>
             </div>
             <div className="founder-chip founder-chip-2">
-              <span className="founder-chip-icon tone-blue" aria-hidden="true">✦</span>
+              <span className="founder-chip-icon tone-blue"><Icon name="globe" size={15} /></span>
               <span><b>30+ clients</b><small>across 4 continents</small></span>
             </div>
             <div className="founder-chip founder-chip-3">
-              <span className="founder-chip-icon tone-aqua" aria-hidden="true">◈</span>
+              <span className="founder-chip-icon tone-navy"><Icon name="trend" size={15} /></span>
               <span><b>Multi-$M</b><small>sourcing programs</small></span>
             </div>
           </div>
