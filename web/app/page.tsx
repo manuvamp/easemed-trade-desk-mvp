@@ -349,66 +349,72 @@ export default function LandingPage() {
         <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
           <div className="console-glow console-glow-one" aria-hidden="true" />
           <div className="console-glow console-glow-two" aria-hidden="true" />
-          <div className="console-device">
-            <div className="console-screen">
-              <div className="console-shell">
-                <div className="console-topbar">
-                  <Logo size={15} />
-                  <span>EaseMed intelligence</span>
-                  <span className="console-live"><i /> Live demo data</span>
-                </div>
-                <div className="console-grid">
-                  <article className="console-card console-requirement">
-                    <div className="console-card-header">
-                      <span className="console-icon console-icon-blue">✦</span>
-                      <span>Requirement captured</span>
-                      <b>Locked ✓</b>
-                    </div>
-                    <h3>Surgical gloves (sterile)</h3>
-                    <div className="console-specs">
-                      <span><b>12,000</b> units / quarter</span>
-                      <span><b>ISO 13485 + FDA 510(k)</b></span>
-                      <span><b>14 days</b> delivery window</span>
-                    </div>
-                    <div className="console-progress"><span /></div>
-                    <small>Structured by AI · 2 min ago</small>
-                  </article>
-
-                  <article className="console-card console-match">
-                    <div className="console-card-header">
-                      <span className="console-icon console-icon-green">◎</span>
-                      <span>Supplier match</span>
-                      <b className="console-score">Tier-1</b>
-                    </div>
-                    <div className="console-match-number">97<span>/100</span></div>
-                    <p>GulfMed Supplies · best of 3 shortlisted</p>
-                    <div className="console-bars" aria-hidden="true">
-                      <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
-                    </div>
-                    <div className="console-match-labels"><span>Compliance</span><span>Capacity</span><span>Reliability</span></div>
-                  </article>
-
-                  <article className="console-card console-approval">
-                    <div className="console-card-header">
-                      <span className="console-icon console-icon-aqua">✓</span>
-                      <span>Decision ready</span>
-                      <b>$0.38/unit</b>
-                    </div>
-                    <h3>Release to warehouse</h3>
-                    <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
-                    <div className="console-approval-row"><span className="console-avatar console-avatar-light">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
-                    <button type="button" className="console-review-button">Review decision <span aria-hidden="true">↗</span></button>
-                  </article>
-                </div>
-                <div className="console-footer">
-                  <span><i /> AI-assisted, human-approved</span>
-                  <span>Last synced just now</span>
-                </div>
+          <div className="console-screen">
+            <div className="console-shell">
+              <div className="console-topbar">
+                <Logo size={15} />
+                <span>EaseMed intelligence</span>
+                <span className="console-live"><i /> Live demo data</span>
               </div>
-            </div>
-            <div className="console-stand" aria-hidden="true">
-              <div className="console-stand-neck" />
-              <div className="console-stand-base" />
+              <div className="console-grid">
+                <article className="console-card console-requirement">
+                  <div className="console-card-header">
+                    <span className="console-icon console-icon-blue">✦</span>
+                    <span>Requirement captured</span>
+                    <b>Locked ✓</b>
+                  </div>
+                  <h3>Surgical gloves (sterile)</h3>
+                  <div className="console-specs">
+                    <span><b>12,000</b> units / quarter</span>
+                    <span><b>ISO 13485 + FDA 510(k)</b></span>
+                    <span><b>14 days</b> delivery window</span>
+                    <span><b>≤ $0.42</b> unit benchmark</span>
+                  </div>
+                  <div className="console-progress"><span /></div>
+                  <small>Structured by AI · 2 min ago</small>
+                </article>
+
+                <article className="console-card console-match">
+                  <div className="console-card-header">
+                    <span className="console-icon console-icon-green">◎</span>
+                    <span>Supplier match</span>
+                    <b className="console-score">Tier-1</b>
+                  </div>
+                  <div className="console-match-number">97<span>/100</span></div>
+                  <p>GulfMed Supplies · best of 3 shortlisted</p>
+                  <div className="console-bars" aria-hidden="true">
+                    <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
+                  </div>
+                  <div className="console-match-labels"><span>Compliance</span><span>Capacity</span><span>Reliability</span></div>
+                  <div className="console-chips">
+                    <span>~9-day lead time</span>
+                    <span>±3.2% vs benchmark</span>
+                  </div>
+                </article>
+
+                <article className="console-card console-approval">
+                  <div className="console-card-header">
+                    <span className="console-icon console-icon-aqua">✓</span>
+                    <span>Decision ready</span>
+                    <b>$0.38/unit</b>
+                  </div>
+                  <h3>Release to warehouse</h3>
+                  <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
+                  <div className="console-approval-row"><span className="console-avatar console-avatar-light">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
+                  <div className="console-approval-row"><span className="console-avatar console-avatar-light">W</span><span>Warehouse notified</span><strong className="is-done">Queued</strong></div>
+                  <button type="button" className="console-review-button">Review decision <span aria-hidden="true">↗</span></button>
+                </article>
+              </div>
+              <div className="console-kpis">
+                <div><small>Open orders</small><b>14</b></div>
+                <div><small>On-time delivery</small><b>96%</b></div>
+                <div><small>Savings · QTD</small><b>$18.4k</b></div>
+                <div><small>Suppliers live</small><b>342</b></div>
+              </div>
+              <div className="console-footer">
+                <span><i /> AI-assisted, human-approved</span>
+                <span>Last synced just now</span>
+              </div>
             </div>
           </div>
         </div>

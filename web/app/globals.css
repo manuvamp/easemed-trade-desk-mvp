@@ -3040,18 +3040,14 @@ html {
 
 .landing-console {
   position: relative;
-  width: min(1080px, 100%);
+  width: min(1000px, 100%);
   margin: 52px auto 0;
   text-align: left;
 }
 
-.console-device {
-  position: relative;
-  z-index: 1;
-}
-
 .console-screen {
   position: relative;
+  z-index: 1;
   border-radius: 24px;
   padding: 14px;
   background: linear-gradient(180deg, #12262f, #081821 70%);
@@ -3068,27 +3064,6 @@ html {
   background: linear-gradient(115deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 30%);
   pointer-events: none;
   z-index: 2;
-}
-
-.console-stand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.console-stand-neck {
-  width: 120px;
-  height: 48px;
-  background: linear-gradient(180deg, #0d2430, #071720);
-  clip-path: polygon(14% 0, 86% 0, 100% 100%, 0% 100%);
-}
-
-.console-stand-base {
-  width: 270px;
-  height: 14px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #0e2833, #071720);
-  box-shadow: 0 30px 44px rgba(6, 42, 54, 0.3);
 }
 
 .console-glow {
@@ -3120,6 +3095,9 @@ html {
 .console-shell {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 16 / 9;
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
   padding: 18px 18px 14px;
@@ -3178,13 +3156,16 @@ html {
 
 .console-grid {
   display: grid;
+  flex: 1;
   grid-template-columns: repeat(3, 1fr);
   gap: 11px;
   margin-top: 15px;
 }
 
 .console-card {
+  display: flex;
   min-height: 168px;
+  flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 13px;
   padding: 15px;
@@ -3194,7 +3175,7 @@ html {
 .console-card-header {
   gap: 7px;
   color: rgba(255, 255, 255, 0.66);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -3227,16 +3208,16 @@ html {
 .console-card h3 {
   margin: 16px 0 12px;
   color: #fff;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 750;
   letter-spacing: -0.02em;
 }
 
 .console-specs {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   color: rgba(255, 255, 255, 0.52);
-  font-size: 10.5px;
+  font-size: 12px;
 }
 
 .console-specs b {
@@ -3246,7 +3227,7 @@ html {
 
 .console-progress {
   height: 4px;
-  margin-top: 18px;
+  margin-top: auto;
   overflow: hidden;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.12);
@@ -3269,7 +3250,7 @@ html {
 
 .console-match-number {
   margin-top: 14px;
-  font-size: 36px;
+  font-size: 46px;
   font-weight: 900;
   letter-spacing: -0.06em;
   background: linear-gradient(100deg, #8fd7ff, #7deec3);
@@ -3279,18 +3260,19 @@ html {
 }
 
 .console-match-number span {
-  font-size: 17px;
+  font-size: 20px;
 }
 
 .console-match p {
   margin: 2px 0 13px;
   color: rgba(255, 255, 255, 0.52);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .console-bars {
   display: grid;
   gap: 5px;
+  margin-top: auto;
 }
 
 .console-bars span {
@@ -3309,9 +3291,9 @@ html {
 
 .console-approval-row {
   gap: 7px;
-  margin-top: 9px;
+  margin-top: 10px;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 9.5px;
+  font-size: 11px;
 }
 
 .console-approval-row strong {
@@ -3344,7 +3326,7 @@ html {
 
 .console-review-button {
   width: 100%;
-  margin-top: 13px;
+  margin-top: auto;
   border: 0;
   border-radius: 7px;
   padding: 9px 11px;
@@ -3359,6 +3341,57 @@ html {
 
 .console-review-button span {
   float: right;
+}
+
+.console-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.console-chips span {
+  display: inline-flex;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 8.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.console-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 11px;
+}
+
+.console-kpis div {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px 13px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.console-kpis small {
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.console-kpis b {
+  display: block;
+  margin-top: 4px;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .console-footer {
@@ -4832,18 +4865,25 @@ html.js [data-animate].in-view {
   }
 
   .console-shell {
+    aspect-ratio: auto;
     border-radius: 9px;
     padding: 15px 13px 12px;
   }
 
-  .console-stand-neck {
-    width: 84px;
-    height: 30px;
+  .console-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .console-stand-base {
-    width: 180px;
-    height: 10px;
+  .console-progress {
+    margin-top: 18px;
+  }
+
+  .console-bars {
+    margin-top: 0;
+  }
+
+  .console-review-button {
+    margin-top: 12px;
   }
 
   .landing-role-grid {
