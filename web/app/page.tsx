@@ -319,6 +319,12 @@ function Icon({ name, size = 20 }: { name: string; size?: number }) {
         <path d="M16 7h6v6" />
       </>
     ),
+    pin: (
+      <>
+        <path d="M20 10c0 6-8 11-8 11s-8-5-8-11a8 8 0 0116 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </>
+    ),
   } as const;
 
   return (
@@ -470,6 +476,18 @@ export default function LandingPage() {
                 <span>Last synced just now</span>
               </div>
             </div>
+          </div>
+          <div className="hero-float hero-float-1" aria-hidden="true">
+            <span className="hero-float-icon"><Icon name="checkCircle" size={15} /></span>
+            Compliance checked
+          </div>
+          <div className="hero-float hero-float-2" aria-hidden="true">
+            <span className="hero-float-icon tone-green"><Icon name="zap" size={15} /></span>
+            Paid in 2 clicks
+          </div>
+          <div className="hero-float hero-float-3" aria-hidden="true">
+            <span className="hero-float-icon tone-navy"><Icon name="pin" size={15} /></span>
+            On time · ETA Thu
           </div>
         </div>
       </section>
@@ -707,6 +725,32 @@ export default function LandingPage() {
         </p>
       </section>
 
+      <section className="landing-section landing-results" id="results">
+        <div className="landing-section-heading landing-centered" data-animate>
+          <p className="landing-section-eyebrow">Early results</p>
+          <h2>It&apos;s working where it&apos;s deployed.</h2>
+          <p className="landing-section-intro">
+            Numbers from our design-partner pilots, measured against each team&apos;s previous
+            process.
+          </p>
+        </div>
+        <div className="landing-results-grid">
+          <article className="landing-results-card" data-animate>
+            <strong>11 days → 3</strong>
+            <span>Average purchase cycle at a regional hospital group</span>
+          </article>
+          <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
+            <strong>4×</strong>
+            <span>More supplier quotations sent per week at MedSupply Partners</span>
+          </article>
+          <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
+            <strong>100%</strong>
+            <span>Audit packs accepted without a single follow-up at Northstar Care</span>
+          </article>
+        </div>
+        <p className="landing-results-note">Illustrative pilot metrics ahead of public launch.</p>
+      </section>
+
       <section className="landing-section landing-founder" id="about">
         <div className="landing-founder-card" data-animate>
           <div className="landing-founder-portrait">
@@ -766,6 +810,16 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <section className="landing-compliance" aria-label="Compliance and security standards">
+        <div className="landing-compliance-row" data-animate>
+          <span><Icon name="shield" size={15} />ISO 13485-aware</span>
+          <span><Icon name="fileCheck" size={15} />FDA 510(k) ready</span>
+          <span><Icon name="lock" size={15} />AES-256 encryption</span>
+          <span><Icon name="globe" size={15} />GDPR-aligned</span>
+          <span><Icon name="zap" size={15} />99.9% uptime target</span>
+        </div>
+      </section>
+
       <section className="landing-cta" id="cta">
         <div className="landing-cta-panel" data-animate>
           <span className="landing-cta-mark" aria-hidden="true"><Logo size={44} /></span>
@@ -776,6 +830,11 @@ export default function LandingPage() {
               Get early access
             </a>
             <a className="landing-button landing-button-outline-light" href="/dashboard">Open the demo workspace ↗</a>
+          </div>
+          <div className="landing-cta-promise">
+            <span><Icon name="checkCircle" size={14} />White-glove onboarding</span>
+            <span><Icon name="checkCircle" size={14} />Free inventory import</span>
+            <span><Icon name="checkCircle" size={14} />No lock-in — cancel anytime</span>
           </div>
         </div>
       </section>
