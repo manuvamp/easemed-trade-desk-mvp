@@ -715,7 +715,7 @@ export default function LandingPage() {
               <span><b>30+ clients</b><small>across 4 continents</small></span>
             </div>
             <div className="founder-chip founder-chip-3">
-              <span className="founder-chip-icon tone-navy"><Icon name="trend" size={15} /></span>
+              <span className="founder-chip-icon tone-teal"><Icon name="trend" size={15} /></span>
               <span><b>Multi-$M</b><small>sourcing programs</small></span>
             </div>
           </div>
