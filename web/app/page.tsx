@@ -248,7 +248,7 @@ function Logo({ size = 30 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path d="M16 6.5v19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
       <path d="M6.5 16H19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
-      <circle cx="26" cy="16" r="3.4" fill="#2563eb" />
+      <circle cx="26" cy="16" r="3.4" fill="#0cc0cf" />
     </svg>
   );
 }
@@ -535,8 +535,13 @@ export default function LandingPage() {
 
       <section className="landing-section landing-workflow" id="how-it-works">
         <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">How it works</p>
-          <h2>Three steps. Zero guesswork.</h2>
+          <div className="landing-heading-main">
+            <p className="landing-section-eyebrow">How it works</p>
+            <h2>Three steps. Zero guesswork.</h2>
+          </div>
+          <p className="landing-section-intro">
+            From a plain sentence to an approved order — one clear path, no follow-up threads.
+          </p>
         </div>
 
         <div className="landing-steps">
