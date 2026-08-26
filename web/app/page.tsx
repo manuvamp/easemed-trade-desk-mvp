@@ -642,8 +642,8 @@ export default function LandingPage() {
 
       <section className="landing-section landing-founder" id="about">
         <div className="landing-founder-card" data-animate>
-          <div className="landing-founder-portrait" aria-hidden="true">
-            <span>NA</span>
+          <div className="landing-founder-portrait">
+            <img src="/founder.jpg" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
           </div>
           <div className="landing-founder-copy">
             <p className="landing-section-eyebrow">About the founder</p>
