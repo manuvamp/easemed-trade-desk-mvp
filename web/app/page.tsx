@@ -1,7 +1,7 @@
 const navLinks = [
-  { href: "#how-it-works", label: "How it works" },
   { href: "#platform", label: "Platform" },
-  { href: "#customers", label: "Customers" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#security", label: "Security" },
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -24,61 +24,75 @@ const heroStats = [
 const journeyNodes = [
   {
     icon: "trend",
-    tone: "teal",
     title: "Predict",
     text: "AI flags what to buy before you run out.",
     visual: (
       <div className="pipe-visual">
-        <div className="pipe-head"><span className="pipe-icon tone-teal"><Icon name="trend" size={13} /></span><span className="pipe-label">Inventory · Gloves</span></div>
+        <div className="pipe-head">
+          <span className="pipe-icon"><Icon name="trend" size={14} /></span>
+          <b>Surgical gloves (sterile)</b>
+        </div>
         <div className="pipe-stock">
           <span className="pipe-stock-bar"><i style={{ width: "18%" }} /></span>
           <em>18% left</em>
         </div>
-        <div className="pipe-alert"><span aria-hidden="true">✦</span>Reorder 12,000 units by Mar 4</div>
+        <p className="pipe-note">Reorder 12,000 units by Mar 4</p>
       </div>
     ),
   },
   {
     icon: "users",
-    tone: "green",
     title: "Source",
     text: "Verified suppliers, ranked and ready to compare.",
     visual: (
       <div className="pipe-visual">
-        <div className="pipe-head"><span className="pipe-icon tone-green"><Icon name="users" size={13} /></span><span className="pipe-label">Shortlist</span></div>
-        <div className="pipe-row"><b>GulfMed Supplies</b><span className="pipe-score">97</span></div>
-        <div className="pipe-row"><b>Aster Labs Trading</b><span className="pipe-score">91</span></div>
-        <div className="pipe-row"><b>Clinova Health</b><span className="pipe-score">86</span></div>
+        <div className="pipe-head">
+          <span className="pipe-icon"><Icon name="users" size={14} /></span>
+          <b>Shortlist</b>
+        </div>
+        <div className="pipe-list">
+          <div className="pipe-row"><span>GulfMed Supplies</span><b>97</b></div>
+          <div className="pipe-row"><span>Aster Labs Trading</span><b>91</b></div>
+          <div className="pipe-row"><span>Clinova Health</span><b>86</b></div>
+        </div>
       </div>
     ),
   },
   {
     icon: "card",
-    tone: "aqua",
     title: "Pay",
     text: "Cross-border payments in a few clicks.",
     visual: (
       <div className="pipe-visual">
-        <div className="pipe-head"><span className="pipe-icon tone-aqua"><Icon name="card" size={13} /></span><span className="pipe-label">Payment · Invoice #2841</span></div>
-        <div className="pipe-pay"><b>$14,200</b><span aria-hidden="true">→</span><b>AED 52,150</b></div>
-        <div className="pipe-alert is-paid"><span aria-hidden="true">✓</span>Paid in 2 clicks · fees included</div>
+        <div className="pipe-head">
+          <span className="pipe-icon"><Icon name="card" size={14} /></span>
+          <b>Invoice #2841</b>
+        </div>
+        <div className="pipe-pay">
+          <span>USD $14,200</span>
+          <span className="pipe-arrow" aria-hidden="true">→</span>
+          <span>AED 52,150</span>
+        </div>
+        <p className="pipe-note is-paid">✓ Paid in 2 clicks · fees included</p>
       </div>
     ),
   },
   {
     icon: "pin",
-    tone: "navy",
     title: "Track",
     text: "Live shipment tracking, to your door.",
     visual: (
       <div className="pipe-visual">
-        <div className="pipe-head"><span className="pipe-icon tone-navy"><Icon name="pin" size={13} /></span><span className="pipe-label">Shipment EM-2210</span></div>
+        <div className="pipe-head">
+          <span className="pipe-icon"><Icon name="pin" size={14} /></span>
+          <b>Shipment EM-2210</b>
+        </div>
         <div className="pipe-steps">
           <span className="is-done"><i aria-hidden="true" />Packed</span>
           <span className="is-done"><i aria-hidden="true" />In transit</span>
           <span><i aria-hidden="true" />Delivered</span>
         </div>
-        <div className="pipe-alert"><span aria-hidden="true">◎</span>On time · ETA Thursday</div>
+        <p className="pipe-note">On time · ETA Thursday</p>
       </div>
     ),
   },
@@ -122,21 +136,25 @@ const workflowSteps = [
 
 const audienceCards = [
   {
-    className: "health-system",
+    dark: false,
     eyebrow: "For health systems",
     title: "Stop hunting. Start deciding.",
-    pains: ["Hours lost chasing suppliers", "Weeks-long purchase cycles", "Compliance in spreadsheets"],
-    outcome:
-      "One intake, matched supply, and an approval history any auditor can trust.",
+    points: [
+      "One intake for every buy request",
+      "Matched supply with live evidence",
+      "Approval history any auditor can trust",
+    ],
     cta: "Apply as a health system",
   },
   {
-    className: "supplier",
+    dark: true,
     eyebrow: "For supplier partners",
     title: "See real demand early.",
-    pains: ["Demand buried in fragmented networks", "Quotations eating selling hours", "No view of future need"],
-    outcome:
-      "Structured requests and forecasted demand that turn one bid into repeat business.",
+    points: [
+      "Structured, forecasted demand",
+      "Quotations take hours, not days",
+      "Repeat business between bids",
+    ],
     cta: "Apply as a supplier partner",
   },
 ];
@@ -144,19 +162,16 @@ const audienceCards = [
 const securityTiles = [
   {
     icon: "shield",
-    tone: "blue",
     badge: "Audit-ready by design",
     detail: "Every action timestamped. Nothing editable.",
   },
   {
     icon: "lock",
-    tone: "teal",
     badge: "Role-based access",
     detail: "Each team sees exactly its lane.",
   },
   {
     icon: "fileCheck",
-    tone: "green",
     badge: "Standards-aware",
     detail: "ISO 13485 · FDA 510(k) built in.",
   },
@@ -169,48 +184,50 @@ const securityControls = [
   "Exportable audit packs",
 ];
 
+const complianceBadges = [
+  { icon: "shield", label: "ISO 13485-aware" },
+  { icon: "fileCheck", label: "FDA 510(k) ready" },
+  { icon: "lock", label: "AES-256 encryption" },
+  { icon: "globe", label: "GDPR-aligned" },
+  { icon: "zap", label: "99.9% uptime target" },
+];
+
 const testimonials = [
   {
     quote:
       "Requests used to live in five WhatsApp groups. Now every requirement arrives structured, with the evidence attached.",
     name: "Dr. Amara Osei",
-    role: "Head of Procurement",
-    company: "Regional Hospital Group",
+    role: "Head of Procurement, Regional Hospital Group",
     tag: "Health system",
   },
   {
     quote: "We see verified demand before it becomes a tender. Quotation time went from days to hours.",
     name: "Rahul Mehta",
-    role: "Director",
-    company: "MedSupply Partners",
+    role: "Director, MedSupply Partners",
     tag: "Distribution",
   },
   {
     quote: "Everything a hospital auditor asks for is already attached. That saved our week.",
     name: "Elena Petrova",
-    role: "COO",
-    company: "Clinova Health",
+    role: "COO, Clinova Health",
     tag: "Supplier",
   },
   {
     quote: "Approvals that took a fortnight now take an afternoon — and we can show why.",
     name: "James Whitfield",
-    role: "Operations Lead",
-    company: "Northstar Care",
+    role: "Operations Lead, Northstar Care",
     tag: "Care network",
   },
   {
     quote: "Warehouse, sales, and logistics finally read from one screen. Handoffs stopped breaking.",
     name: "Fatima Al-Rashid",
-    role: "Supply Chain Manager",
-    company: "Meditek Gulf",
+    role: "Supply Chain Manager, Meditek Gulf",
     tag: "Logistics",
   },
   {
     quote: "We plan production against real demand now, not rumor.",
     name: "Daniel Kim",
-    role: "Founder",
-    company: "Helixa Medical Devices",
+    role: "Founder, Helixa Medical Devices",
     tag: "Manufacturing",
   },
 ];
@@ -262,7 +279,7 @@ function Brand() {
   return (
     <a className="landing-brand" href="#top" aria-label="EaseMed.ai home">
       <span className="landing-brand-logo">
-        <Logo size={30} />
+        <Logo size={28} />
       </span>
       <span>
         EaseMed<span className="landing-brand-muted">.ai</span>
@@ -379,30 +396,26 @@ const revealScript = `(function(){
 export default function LandingPage() {
   return (
     <main className="landing-page">
-      <div className="landing-announce">
-        <span className="landing-announce-pill">New</span>
-        <p>Early access is open for health systems &amp; supplier partners</p>
-        <a href="#cta">Join →</a>
-      </div>
-
       <header className="landing-nav">
-        <Brand />
+        <div className="landing-nav-inner">
+          <Brand />
 
-        <nav className="landing-nav-links" aria-label="Main navigation">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
+          <nav className="landing-nav-links" aria-label="Main navigation">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="landing-nav-actions">
+            <a className="landing-nav-login" href="/dashboard">
+              Sign in
             </a>
-          ))}
-        </nav>
-
-        <div className="landing-nav-actions">
-          <a className="landing-nav-login" href="/dashboard">
-            Sign in
-          </a>
-          <a className="landing-button landing-button-primary landing-button-small" href="#cta">
-            Get early access
-          </a>
+            <a className="landing-button landing-button-primary landing-button-small" href="#cta">
+              Get early access
+            </a>
+          </div>
         </div>
       </header>
 
@@ -412,44 +425,41 @@ export default function LandingPage() {
             Source medical supplies in <em>days, not weeks.</em>
           </h1>
           <p className="landing-hero-description">
-            AI tells you what to buy, finds the right supplier, automates the purchase, and
-            tracks it to your door.
+            EaseMed predicts what you need, matches verified suppliers, and carries the purchase
+            through payment and delivery — one platform, end to end.
           </p>
           <div className="landing-hero-actions">
             <a className="landing-button landing-button-primary" href="#cta">
               Get early access
             </a>
             <a className="landing-button landing-button-ghost" href="/dashboard">
-              See the live demo
+              Open the demo workspace
             </a>
           </div>
-          <div className="landing-hero-proof">
-            <span className="landing-avatar-stack" aria-hidden="true">
-              <i>AO</i><i>RM</i><i>JW</i><i>FA</i>
-            </span>
-            <span className="landing-stars" aria-label="Rated five out of five by design-partner teams">
-              ★★★★★
-            </span>
-            <span>Loved by early-access teams</span>
-            <i aria-hidden="true" />
-            <span>13+ years in healthcare sourcing</span>
-          </div>
+          <p className="landing-hero-proof">
+            Trusted by procurement teams across 4 continents — from hospitals to medical
+            manufacturers.
+          </p>
         </div>
 
         <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
           <div className="console-screen">
+            <div className="console-topbar">
+              <span className="console-topbar-brand">
+                <Logo size={16} />
+                <b>EaseMed</b>
+              </span>
+              <span className="console-url">app.easemed.ai/workspace</span>
+              <span className="console-live"><i /> Live demo data</span>
+            </div>
+
             <div className="console-shell">
-              <div className="console-topbar">
-                <Logo size={15} />
-                <span>EaseMed intelligence</span>
-                <span className="console-live"><i /> Live demo data</span>
-              </div>
               <div className="console-grid">
                 <article className="console-card console-requirement">
                   <div className="console-card-header">
                     <span className="console-icon"><Icon name="file" size={13} /></span>
                     <span>Requirement captured</span>
-                    <b>Locked ✓</b>
+                    <b className="console-chip">Locked</b>
                   </div>
                   <h3>Surgical gloves (sterile)</h3>
                   <div className="console-specs">
@@ -466,7 +476,7 @@ export default function LandingPage() {
                   <div className="console-card-header">
                     <span className="console-icon"><Icon name="target" size={13} /></span>
                     <span>Supplier match</span>
-                    <b className="console-score">Tier-1</b>
+                    <b className="console-chip">Tier-1</b>
                   </div>
                   <div className="console-match-number">97<span>/100</span></div>
                   <p>GulfMed Supplies · best of 3 shortlisted</p>
@@ -484,98 +494,90 @@ export default function LandingPage() {
                   <div className="console-card-header">
                     <span className="console-icon"><Icon name="checkCircle" size={13} /></span>
                     <span>Decision ready</span>
-                    <b>$0.38/unit</b>
+                    <b className="console-chip">$0.38/unit</b>
                   </div>
                   <h3>Release to warehouse</h3>
                   <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
-                  <div className="console-approval-row"><span className="console-avatar console-avatar-light">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
-                  <div className="console-approval-row"><span className="console-avatar console-avatar-light">W</span><span>Warehouse notified</span><strong className="is-done">Queued</strong></div>
-                  <button type="button" className="console-review-button">Review decision <span aria-hidden="true">↗</span></button>
+                  <div className="console-approval-row"><span className="console-avatar">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
+                  <div className="console-approval-row"><span className="console-avatar">W</span><span>Warehouse notified</span><strong className="is-done">Queued</strong></div>
+                  <button type="button" className="console-review-button">Review decision</button>
                 </article>
               </div>
+
               <div className="console-kpis">
                 <div><small>Open orders</small><b>14</b></div>
                 <div><small>On-time delivery</small><b>96%</b></div>
                 <div><small>Savings · QTD</small><b>$18.4k</b></div>
                 <div><small>Suppliers live</small><b>342</b></div>
               </div>
+
               <div className="console-footer">
                 <span><i /> AI-assisted, human-approved</span>
                 <span>Last synced just now</span>
               </div>
             </div>
           </div>
-          <div className="hero-float hero-float-1" aria-hidden="true">
-            <span className="hero-float-icon"><Icon name="checkCircle" size={15} /></span>
-            Compliance checked
-          </div>
-          <div className="hero-float hero-float-2" aria-hidden="true">
-            <span className="hero-float-icon tone-green"><Icon name="zap" size={15} /></span>
-            Paid in 2 clicks
-          </div>
-          <div className="hero-float hero-float-3" aria-hidden="true">
-            <span className="hero-float-icon tone-navy"><Icon name="pin" size={15} /></span>
-            On time · ETA Thu
-          </div>
         </div>
       </section>
 
       <section className="landing-logos" aria-label="Illustrative network">
-        <p className="landing-logos-label">Working with teams across the supply chain</p>
-        <div className="landing-marquee">
-          <div className="landing-marquee-track">
-            {[0, 1].map((copy) => (
-              <div className="landing-marquee-group" key={copy} aria-hidden={copy === 1 || undefined}>
-                {partnerNames.map((partner, index) => (
-                  <span key={partner} className={`landing-logo landing-logo-${index + 1}`}>{partner}</span>
-                ))}
-              </div>
-            ))}
+        <div className="landing-logos-inner">
+          <p className="landing-logos-label">Working with teams across the supply chain</p>
+          <div className="landing-marquee">
+            <div className="landing-marquee-track">
+              {[0, 1].map((copy) => (
+                <div className="landing-marquee-group" key={copy} aria-hidden={copy === 1 || undefined}>
+                  {partnerNames.map((partner) => (
+                    <span key={partner} className="landing-logo">{partner}</span>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
+          <p className="landing-logos-note">Illustrative network — the live partner directory ships with early access.</p>
         </div>
-        <p className="landing-logos-note">Illustrative network — the live partner directory ships with early access.</p>
       </section>
 
       <section className="landing-stats" aria-label="Platform figures from the product demo">
         <div className="landing-stats-inner" data-animate>
           {heroStats.map((stat) => (
-            <article key={stat.label} className="landing-stat">
+            <div key={stat.label} className="landing-stat">
               <strong>{stat.value}</strong>
               <span>{stat.label}</span>
-            </article>
+            </div>
           ))}
         </div>
-        <p className="landing-stats-note">Figures pulled straight from the live EaseMed product environment.</p>
       </section>
 
       <section className="landing-section landing-journey" id="platform">
         <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">Discovery to delivery</p>
-          <h2>One platform. The whole journey.</h2>
+          <p className="landing-section-eyebrow">Platform</p>
+          <h2>Discovery to delivery.</h2>
           <p className="landing-section-intro">
             EaseMed predicts what to buy — then automates everything after it.
           </p>
         </div>
 
-        <div className="landing-pipeline" data-animate>
-          <span className="landing-pipeline-line" aria-hidden="true" />
-          {journeyNodes.map((node) => (
-            <article key={node.title} className="landing-pipeline-node">
-              {node.visual}
-              <h3>{node.title}</h3>
-              <p>{node.text}</p>
-            </article>
-          ))}
-        </div>
+        <div className="landing-wrap">
+          <div className="landing-pipeline" data-animate>
+            {journeyNodes.map((node) => (
+              <article key={node.title} className="landing-pipeline-node">
+                {node.visual}
+                <h3>{node.title}</h3>
+                <p>{node.text}</p>
+              </article>
+            ))}
+          </div>
 
-        <div className="landing-cap-chips" data-animate>
-          {capabilityChips.map((chip) => (
-            <span key={chip}>{chip}</span>
-          ))}
-        </div>
+          <div className="landing-cap-chips" data-animate>
+            {capabilityChips.map((chip) => (
+              <span key={chip}>{chip}</span>
+            ))}
+          </div>
 
-        <div className="landing-journey-cta" data-animate>
-          <a className="landing-text-cta" href="/dashboard">See it live in the demo →</a>
+          <p className="landing-journey-cta" data-animate>
+            <a className="landing-text-cta" href="/dashboard">See it live in the demo</a>
+          </p>
         </div>
       </section>
 
@@ -588,131 +590,163 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="landing-steps">
-          {workflowSteps.map((step) => (
-            <article className={`landing-step landing-step-${step.id}`} data-animate key={step.number}>
-              <div className="landing-step-copy">
+        <div className="landing-wrap">
+          <div className="landing-steps">
+            {workflowSteps.map((step) => (
+              <article className="landing-step" data-animate key={step.number}>
                 <div className="landing-step-badge">
                   <span>{step.number}</span>
                   {step.label}
                 </div>
                 <h3>{step.title}</h3>
-                <p>{step.description}</p>
+                <p className="landing-step-description">{step.description}</p>
                 <div className="landing-step-chips">
                   {step.chips.map((chip) => (
                     <span key={chip}><i aria-hidden="true">✓</i>{chip}</span>
                   ))}
                 </div>
-              </div>
 
-              <div className={`landing-step-visual visual-${step.id}`} aria-hidden="true">
-                {step.id === "capture" && (
-                  <div className="visual-capture">
-                    <div className="visual-request">
-                      “Need 12k sterile surgical gloves, FDA-cleared, within 14 days.”
-                    </div>
-                    <div className="visual-arrow">↓ Parsed by EaseMed AI</div>
-                    <div className="visual-requirement-card">
-                      <div className="visual-card-head">
-                        <b>Surgical gloves (sterile)</b>
-                        <span className="visual-chip visual-chip-green">Requirement locked</span>
+                <div className="landing-step-visual" aria-hidden="true">
+                  {step.id === "capture" && (
+                    <div className="visual-capture">
+                      <p className="visual-request">
+                        “Need 12k sterile surgical gloves, FDA-cleared, within 14 days.”
+                      </p>
+                      <div className="visual-arrow">Parsed by EaseMed AI</div>
+                      <div className="visual-card">
+                        <div className="visual-card-head">
+                          <b>Surgical gloves (sterile)</b>
+                          <span className="visual-chip">Requirement locked</span>
+                        </div>
+                        <div className="visual-specs">
+                          <span>12,000 units / quarter</span>
+                          <span>ISO 13485 + FDA 510(k)</span>
+                          <span>14-day delivery window</span>
+                        </div>
                       </div>
-                      <div className="visual-specs">
-                        <span>12,000 units / quarter</span>
-                        <span>ISO 13485 + FDA 510(k)</span>
-                        <span>14-day delivery window</span>
+                    </div>
+                  )}
+                  {step.id === "matching" && (
+                    <div className="visual-matching">
+                      <div className="visual-row">
+                        <span>GulfMed Supplies</span>
+                        <b>97</b>
+                        <i className="visual-chip">Best match</i>
+                      </div>
+                      <div className="visual-row">
+                        <span>Aster Labs Trading</span>
+                        <b>91</b>
+                        <small>Tier-1 · 11-day lead</small>
+                      </div>
+                      <div className="visual-row">
+                        <span>Clinova Health</span>
+                        <b>86</b>
+                        <small>Tier-2 · ±3.2% vs benchmark</small>
                       </div>
                     </div>
-                  </div>
-                )}
-                {step.id === "matching" && (
-                  <div className="visual-matching">
-                    <div className="visual-supplier is-best">
-                      <span className="visual-rank">97</span>
-                      <div><b>GulfMed Supplies</b><small>Tier-1 · ~9-day lead time</small></div>
-                      <span className="visual-chip visual-chip-green">Best match</span>
-                    </div>
-                    <div className="visual-supplier">
-                      <span className="visual-rank">91</span>
-                      <div><b>Aster Labs Trading</b><small>Tier-1 · 11-day lead time</small></div>
-                    </div>
-                    <div className="visual-supplier">
-                      <span className="visual-rank">86</span>
-                      <div><b>Clinova Health</b><small>Tier-2 · ±3.2% vs benchmark</small></div>
-                    </div>
-                  </div>
-                )}
-                {step.id === "decision" && (
-                  <div className="visual-decision">
-                    <div className="visual-bids">
-                      <div className="visual-bid">
+                  )}
+                  {step.id === "decision" && (
+                    <div className="visual-decision">
+                      <div className="visual-bid is-best">
                         <span>GulfMed Supplies</span>
                         <b>$0.38<small>/unit</small></b>
-                        <span className="visual-chip visual-chip-green">Lowest</span>
+                        <i className="visual-chip">Lowest</i>
                       </div>
-                      <div className="visual-bid is-muted">
+                      <div className="visual-bid">
                         <span>Aster Labs Trading</span>
                         <b>$0.41<small>/unit</small></b>
                       </div>
+                      <div className="visual-audit">
+                        <span>CFO approval</span>
+                        <b>Pending</b>
+                      </div>
+                      <div className="visual-audit is-done">
+                        <span>Compliance score</span>
+                        <b>100%</b>
+                      </div>
+                      <div className="visual-audit is-done">
+                        <span>Audit events recorded</span>
+                        <b>16</b>
+                      </div>
                     </div>
-                    <div className="visual-audit-row"><span>CFO approval</span><b>Pending</b></div>
-                    <div className="visual-audit-row is-done"><span>Compliance score</span><b>100%</b></div>
-                    <div className="visual-audit-row is-done"><span>Audit events recorded</span><b>16</b></div>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="landing-section landing-audiences" id="teams">
         <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">Democratizing procurement</p>
+          <p className="landing-section-eyebrow">Who it&apos;s for</p>
           <h2>Built for both sides of the purchase.</h2>
         </div>
-        <div className="landing-role-grid">
-          {audienceCards.map((card, index) => (
-            <article
-              className={`landing-role-card ${card.className}`}
-              key={card.eyebrow}
-              data-animate
-              style={{ transitionDelay: `${index * 90}ms` }}
-            >
-              <p className="landing-role-eyebrow">{card.eyebrow}</p>
-              <h3>{card.title}</h3>
-              <ul className="landing-pain-list">
-                {card.pains.map((pain) => (
-                  <li key={pain}><span aria-hidden="true">×</span>{pain}</li>
-                ))}
-              </ul>
-              <p className="landing-role-outcome">{card.outcome}</p>
-              <a className="landing-button landing-button-light" href="#cta">{card.cta} →</a>
-            </article>
-          ))}
+
+        <div className="landing-wrap">
+          <div className="landing-role-grid">
+            {audienceCards.map((card, index) => (
+              <article
+                className={`landing-role-card${card.dark ? " is-dark" : ""}`}
+                key={card.eyebrow}
+                data-animate
+                style={{ transitionDelay: `${index * 90}ms` }}
+              >
+                <p className="landing-role-eyebrow">{card.eyebrow}</p>
+                <h3>{card.title}</h3>
+                <ul className="landing-point-list">
+                  {card.points.map((point) => (
+                    <li key={point}>
+                      <Icon name="checkCircle" size={15} />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  className={`landing-button ${card.dark ? "landing-button-light" : "landing-button-primary"}`}
+                  href="#cta"
+                >
+                  {card.cta}
+                </a>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="landing-section landing-security" id="security">
-        <div className="landing-security-grid">
-          <div className="landing-security-copy" data-animate>
-            <p className="landing-section-eyebrow">Trust &amp; compliance</p>
-            <h2>Every answer is one click away.</h2>
-            <ul className="landing-control-list">
-              {securityControls.map((control) => (
-                <li key={control}><span aria-hidden="true">✓</span>{control}</li>
+      <section className="landing-security" id="security">
+        <div className="landing-wrap">
+          <div className="landing-security-grid">
+            <div className="landing-security-copy" data-animate>
+              <p className="landing-section-eyebrow">Trust &amp; compliance</p>
+              <h2>Every answer is one click away.</h2>
+              <p className="landing-security-sub">
+                Procurement decisions carry weight. EaseMed keeps the evidence, the audit
+                history, and the access rules in order — by default.
+              </p>
+              <ul className="landing-control-list">
+                {securityControls.map((control) => (
+                  <li key={control}><Icon name="checkCircle" size={15} />{control}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="landing-security-tiles">
+              {securityTiles.map((tile, index) => (
+                <article key={tile.badge} data-animate style={{ transitionDelay: `${index * 90}ms` }}>
+                  <span className="security-icon"><Icon name={tile.icon} size={19} /></span>
+                  <div>
+                    <h3>{tile.badge}</h3>
+                    <p>{tile.detail}</p>
+                  </div>
+                </article>
               ))}
-            </ul>
+            </div>
           </div>
-          <div className="landing-security-tiles">
-            {securityTiles.map((tile, index) => (
-              <article key={tile.badge} data-animate style={{ transitionDelay: `${index * 90}ms` }}>
-                <span className={`security-icon tone-${tile.tone}`}><Icon name={tile.icon} size={21} /></span>
-                <div>
-                  <h3>{tile.badge}</h3>
-                  <p>{tile.detail}</p>
-                </div>
-              </article>
+
+          <div className="landing-compliance-row" data-animate>
+            {complianceBadges.map((badge) => (
+              <span key={badge.label}><Icon name={badge.icon} size={14} />{badge.label}</span>
             ))}
           </div>
         </div>
@@ -723,32 +757,34 @@ export default function LandingPage() {
           <p className="landing-section-eyebrow">Customer voices</p>
           <h2>Less chasing. More decisions made on time.</h2>
         </div>
-        <div className="landing-testimonial-columns">
-          {testimonials.map((testimonial, index) => (
-            <figure
-              className="landing-testimonial-card"
-              key={testimonial.name}
-              data-animate
-              style={{ transitionDelay: `${(index % 3) * 80}ms` }}
-            >
-              <span className="landing-stars" aria-hidden="true">★★★★★</span>
-              <blockquote>“{testimonial.quote}”</blockquote>
-              <figcaption>
-                <span className="landing-testimonial-avatar" aria-hidden="true">
-                  {testimonial.name.split(" ").map((part) => part[0]).join("")}
-                </span>
-                <span>
-                  <strong>{testimonial.name}</strong>
-                  <small>{testimonial.role}, {testimonial.company}</small>
-                </span>
-                <em>{testimonial.tag}</em>
-              </figcaption>
-            </figure>
-          ))}
+
+        <div className="landing-wrap">
+          <div className="landing-testimonial-columns">
+            {testimonials.map((testimonial, index) => (
+              <figure
+                className="landing-testimonial-card"
+                key={testimonial.name}
+                data-animate
+                style={{ transitionDelay: `${(index % 3) * 80}ms` }}
+              >
+                <blockquote>“{testimonial.quote}”</blockquote>
+                <figcaption>
+                  <span className="landing-testimonial-avatar" aria-hidden="true">
+                    {testimonial.name.split(" ").map((part) => part[0]).join("")}
+                  </span>
+                  <span className="landing-testimonial-meta">
+                    <strong>{testimonial.name}</strong>
+                    <small>{testimonial.role}</small>
+                  </span>
+                  <span className="landing-testimonial-tag">{testimonial.tag}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="landing-testimonials-note">
+            Perspectives shown are illustrative design-partner voices ahead of public launch.
+          </p>
         </div>
-        <p className="landing-testimonials-note">
-          Perspectives shown are illustrative design-partner voices ahead of public launch.
-        </p>
       </section>
 
       <section className="landing-section landing-results" id="results">
@@ -760,65 +796,68 @@ export default function LandingPage() {
             process.
           </p>
         </div>
-        <div className="landing-results-grid">
-          <article className="landing-results-card" data-animate>
-            <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
-            <strong>11 days → 3</strong>
-            <span>Average purchase cycle at a regional hospital group</span>
-          </article>
-          <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
-            <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
-            <strong>4×</strong>
-            <span>More supplier quotations sent per week at MedSupply Partners</span>
-          </article>
-          <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
-            <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
-            <strong>100%</strong>
-            <span>Audit packs accepted without a single follow-up at Northstar Care</span>
-          </article>
+
+        <div className="landing-wrap">
+          <div className="landing-results-grid">
+            <article className="landing-results-card" data-animate>
+              <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
+              <strong>11 days → 3</strong>
+              <span>Average purchase cycle at a regional hospital group</span>
+            </article>
+            <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
+              <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
+              <strong>4×</strong>
+              <span>More supplier quotations sent per week at MedSupply Partners</span>
+            </article>
+            <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
+              <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
+              <strong>100%</strong>
+              <span>Audit packs accepted without a single follow-up at Northstar Care</span>
+            </article>
+          </div>
+          <p className="landing-results-note">Illustrative pilot metrics ahead of public launch.</p>
         </div>
-        <p className="landing-results-note">Illustrative pilot metrics ahead of public launch.</p>
       </section>
 
       <section className="landing-section landing-founder" id="about">
-        <div className="landing-founder-card" data-animate>
-          <div className="landing-founder-portrait">
-            <img src="/founder.webp" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
-            <div className="founder-chip founder-chip-1">
-              <span className="founder-chip-icon tone-green"><Icon name="zap" size={15} /></span>
-              <span><b>13+ yrs</b><small>in global sourcing</small></span>
+        <div className="landing-wrap">
+          <div className="landing-founder-card" data-animate>
+            <div className="landing-founder-portrait">
+              <img src="/founder.webp" alt="Nikita Akolikar — Founder & CEO, EaseMed.ai" loading="lazy" />
             </div>
-            <div className="founder-chip founder-chip-2">
-              <span className="founder-chip-icon tone-blue"><Icon name="globe" size={15} /></span>
-              <span><b>30+ clients</b><small>across 4 continents</small></span>
+            <div className="landing-founder-copy">
+              <p className="landing-section-eyebrow">About the founder</p>
+              <h2>Built by someone who lived the problem.</h2>
+              <p className="landing-founder-bio">
+                Nikita Akolikar ran cross-border sourcing operations for 13 years — five of them
+                inside healthcare procurement.
+              </p>
+              <div className="landing-founder-stats">
+                <div><b>13+ yrs</b><span>global sourcing</span></div>
+                <div><b>4</b><span>continents</span></div>
+                <div><b>30+</b><span>clients</span></div>
+              </div>
+              <blockquote>
+                “I see opportunities others miss. EaseMed turns that instinct into infrastructure.”
+              </blockquote>
+              <div className="landing-founder-signoff">
+                <strong>Nikita Akolikar</strong>
+                <span>Founder &amp; CEO, EaseMed.ai</span>
+              </div>
             </div>
-            <div className="founder-chip founder-chip-3">
-              <span className="founder-chip-icon tone-teal"><Icon name="trend" size={15} /></span>
-              <span><b>Multi-$M</b><small>sourcing programs</small></span>
-            </div>
-          </div>
-          <div className="landing-founder-copy">
-            <p className="landing-section-eyebrow">About the founder</p>
-            <h2>Built by someone who lived the problem.</h2>
-            <p className="landing-founder-bio">
-              Nikita Akolikar ran cross-border sourcing operations for 13 years — five of them
-              inside healthcare procurement.
-            </p>
-            <blockquote>
-              “I see opportunities others miss. EaseMed turns that instinct into infrastructure.”
-            </blockquote>
-            <div className="landing-founder-signoff"><strong>Nikita Akolikar</strong><span>Founder &amp; CEO, EaseMed.ai</span></div>
           </div>
         </div>
       </section>
 
       <section className="landing-careers">
-        <div data-animate>
-          <p className="landing-section-eyebrow">Careers</p>
-          <h2>Build the future of healthcare procurement.</h2>
-          <p>We&apos;re hiring across engineering, operations, and partnerships.</p>
+        <div className="landing-wrap landing-careers-inner" data-animate>
+          <div>
+            <p className="landing-section-eyebrow">Careers</p>
+            <h2>Build the future of healthcare procurement.</h2>
+            <p>We&apos;re hiring across engineering, operations, and partnerships.</p>
+          </div>
+          <a className="landing-button landing-button-dark" href="mailto:careers@easemed.ai">Join us</a>
         </div>
-        <a className="landing-button landing-button-dark" href="mailto:careers@easemed.ai">Join us →</a>
       </section>
 
       <section className="landing-section landing-faq" id="faq">
@@ -826,79 +865,76 @@ export default function LandingPage() {
           <p className="landing-section-eyebrow">FAQ</p>
           <h2>Questions, answered.</h2>
         </div>
-        <div className="landing-faq-list">
-          {faqs.map((faq, index) => (
-            <details key={faq.question} data-animate style={{ transitionDelay: `${Math.min(index, 3) * 60}ms` }}>
-              <summary>
-                {faq.question}
-                <span aria-hidden="true">+</span>
-              </summary>
-              <p>{faq.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
 
-      <section className="landing-compliance" aria-label="Compliance and security standards">
-        <div className="landing-compliance-row" data-animate>
-          <span><Icon name="shield" size={15} />ISO 13485-aware</span>
-          <span><Icon name="fileCheck" size={15} />FDA 510(k) ready</span>
-          <span><Icon name="lock" size={15} />AES-256 encryption</span>
-          <span><Icon name="globe" size={15} />GDPR-aligned</span>
-          <span><Icon name="zap" size={15} />99.9% uptime target</span>
+        <div className="landing-wrap">
+          <div className="landing-faq-list">
+            {faqs.map((faq, index) => (
+              <details key={faq.question} data-animate style={{ transitionDelay: `${Math.min(index, 3) * 60}ms` }}>
+                <summary>
+                  {faq.question}
+                  <span aria-hidden="true">+</span>
+                </summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="landing-cta" id="cta">
-        <div className="landing-cta-panel" data-animate>
-          <span className="landing-cta-mark" aria-hidden="true"><Logo size={44} /></span>
-          <h2>Make your next purchase the clearest one yet.</h2>
-          <p>Join the early-access wave — or explore the demo first. No signup.</p>
-          <div className="landing-cta-actions">
-            <a className="landing-button landing-button-light" href="mailto:hello@easemed.ai?subject=EaseMed%20early%20access">
-              Get early access
-            </a>
-            <a className="landing-button landing-button-outline-light" href="/dashboard">Open the demo workspace ↗</a>
-          </div>
-          <div className="landing-cta-promise">
-            <span><Icon name="checkCircle" size={14} />White-glove onboarding</span>
-            <span><Icon name="checkCircle" size={14} />Free inventory import</span>
-            <span><Icon name="checkCircle" size={14} />No lock-in — cancel anytime</span>
+        <div className="landing-wrap">
+          <div className="landing-cta-panel" data-animate>
+            <span className="landing-cta-mark" aria-hidden="true"><Logo size={40} /></span>
+            <h2>Make your next purchase the clearest one yet.</h2>
+            <p>Join the early-access wave — or explore the demo first. No signup.</p>
+            <div className="landing-cta-actions">
+              <a className="landing-button landing-button-light" href="mailto:hello@easemed.ai?subject=EaseMed%20early%20access">
+                Get early access
+              </a>
+              <a className="landing-button landing-button-outline-light" href="/dashboard">Open the demo workspace</a>
+            </div>
+            <div className="landing-cta-promise">
+              <span><Icon name="checkCircle" size={14} />White-glove onboarding</span>
+              <span><Icon name="checkCircle" size={14} />Free inventory import</span>
+              <span><Icon name="checkCircle" size={14} />No lock-in — cancel anytime</span>
+            </div>
           </div>
         </div>
       </section>
 
       <footer className="landing-footer">
-        <div className="landing-footer-grid">
-          <div className="landing-footer-brand">
-            <Brand />
-            <p>Discovery to delivery for healthcare procurement — predict, source, pay, track.</p>
+        <div className="landing-wrap">
+          <div className="landing-footer-grid">
+            <div className="landing-footer-brand">
+              <Brand />
+              <p>Discovery to delivery for healthcare procurement — predict, source, pay, track.</p>
+            </div>
+            <nav aria-label="Product links">
+              <strong>Product</strong>
+              <a href="#platform">Platform</a>
+              <a href="#how-it-works">How it works</a>
+              <a href="#security">Security</a>
+              <a href="/dashboard">Demo workspace</a>
+            </nav>
+            <nav aria-label="Company links">
+              <strong>Company</strong>
+              <a href="#about">About</a>
+              <a href="mailto:careers@easemed.ai">Careers</a>
+              <a href="mailto:hello@easemed.ai">Contact</a>
+            </nav>
+            <nav aria-label="Legal links">
+              <strong>Legal</strong>
+              <a href="#faq">Privacy policy</a>
+              <a href="#faq">Terms of service</a>
+            </nav>
           </div>
-          <nav aria-label="Product links">
-            <strong>Product</strong>
-            <a href="#platform">Platform</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#security">Security</a>
-            <a href="/dashboard">Demo workspace</a>
-          </nav>
-          <nav aria-label="Company links">
-            <strong>Company</strong>
-            <a href="#about">About</a>
-            <a href="mailto:careers@easemed.ai">Careers</a>
-            <a href="mailto:hello@easemed.ai">Contact</a>
-          </nav>
-          <nav aria-label="Legal links">
-            <strong>Legal</strong>
-            <a href="#faq">Privacy policy</a>
-            <a href="#faq">Terms of service</a>
-          </nav>
-        </div>
-        <div className="landing-footer-bottom">
-          <span>© 2026 EaseMed.ai — Healthcare procurement intelligence.</span>
-          <div className="landing-footer-social">
-            <a href="https://www.linkedin.com" aria-label="LinkedIn">in</a>
-            <a href="https://x.com" aria-label="X">𝕏</a>
-            <a href="https://www.instagram.com" aria-label="Instagram">◎</a>
+          <div className="landing-footer-bottom">
+            <span>© 2026 EaseMed.ai — Healthcare procurement intelligence.</span>
+            <div className="landing-footer-social">
+              <a href="https://www.linkedin.com" aria-label="LinkedIn">LinkedIn</a>
+              <a href="https://x.com" aria-label="X">X</a>
+              <a href="https://www.instagram.com" aria-label="Instagram">Instagram</a>
+            </div>
           </div>
         </div>
       </footer>
