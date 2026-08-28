@@ -2722,6 +2722,7 @@ h2 {
   overflow-x: clip;
   background: var(--lp-canvas);
   color: var(--lp-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
 }
 
@@ -2735,6 +2736,8 @@ h2 {
   color: var(--lp-ink);
   line-height: 1.12;
   margin: 0;
+  max-width: none;
+  font-family: inherit;
   text-wrap: balance;
 }
 
