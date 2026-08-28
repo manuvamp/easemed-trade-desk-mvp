@@ -2883,9 +2883,9 @@ h2 {
   width: min(1120px, calc(100% - 48px));
   margin-inline: auto;
   height: 64px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 32px;
 }
 
 .landing-brand {
@@ -2909,16 +2909,33 @@ h2 {
 }
 
 .landing-nav-links {
+  justify-self: center;
   display: flex;
   gap: 26px;
-  margin-left: 12px;
 }
 
 .landing-nav-links a {
+  position: relative;
   font-size: 14.5px;
   font-weight: 500;
   color: var(--lp-muted);
   transition: color 0.15s ease;
+}
+
+.landing-nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -5px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--lp-grad);
+  transition: right 0.2s ease;
+}
+
+.landing-nav-links a:hover::after {
+  right: 0;
 }
 
 .landing-nav-links a:hover {
@@ -2926,7 +2943,7 @@ h2 {
 }
 
 .landing-nav-actions {
-  margin-left: auto;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -2970,6 +2987,7 @@ h2 {
   font-weight: 650;
   letter-spacing: -0.03em;
   margin: 0 0 24px;
+  text-wrap: wrap;
 }
 
 .landing-hero-inner h1 em {
@@ -3006,11 +3024,24 @@ h2 {
 /* ---------- Console ---------- */
 
 .landing-console {
+  position: relative;
   margin: 60px auto 0;
   width: min(1040px, calc(100% - 48px));
 }
 
+.landing-console::before {
+  content: "";
+  position: absolute;
+  inset: -48px -40px;
+  pointer-events: none;
+  background:
+    radial-gradient(560px 300px at 22% 16%, rgba(8, 145, 178, 0.13), transparent 65%),
+    radial-gradient(520px 280px at 80% 84%, rgba(15, 185, 129, 0.11), transparent 65%);
+}
+
 .console-screen {
+  position: relative;
+  z-index: 1;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--lp-line);
   border-radius: 16px;
@@ -3356,6 +3387,66 @@ h2 {
   background: var(--lp-teal);
 }
 
+.console-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: #ffffff;
+  border: 1px solid var(--lp-line);
+  border-radius: 12px;
+  padding: 11px 16px;
+  box-shadow: 0 18px 44px -20px rgba(15, 23, 42, 0.35);
+  font-size: 12.5px;
+  color: var(--lp-ink);
+}
+
+.console-float b {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 650;
+}
+
+.console-float small {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--lp-muted);
+}
+
+.console-float-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.console-float-tr {
+  top: 66px;
+  right: -16px;
+}
+
+.console-float-tr .console-float-icon {
+  background: #ecfeff;
+  color: #0e7490;
+  border: 1px solid #a5f3fc;
+}
+
+.console-float-bl {
+  bottom: 46px;
+  left: -16px;
+}
+
+.console-float-bl .console-float-icon {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
 /* ---------- Logos ---------- */
 
 .landing-logos {
@@ -3477,6 +3568,11 @@ h2 {
 }
 
 /* ---------- Journey ---------- */
+
+.landing-journey {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
 
 .landing-pipeline {
   display: grid;
@@ -4039,6 +4135,40 @@ h2 {
   color: var(--lp-primary-dark);
 }
 
+.landing-step.tone-blue .landing-step-visual {
+  background: linear-gradient(165deg, #0f172a 0%, #0b1120 100%);
+  border-color: #1e293b;
+}
+
+.landing-step.tone-blue .visual-bid,
+.landing-step.tone-blue .visual-audit {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.landing-step.tone-blue .visual-bid b {
+  color: #ffffff;
+}
+
+.landing-step.tone-blue .visual-bid b small {
+  color: #94a3b8;
+}
+
+.landing-step.tone-blue .visual-audit b {
+  color: #94a3b8;
+}
+
+.landing-step.tone-blue .visual-audit.is-done b {
+  color: #5eead4;
+}
+
+.landing-step.tone-blue .visual-chip {
+  background: rgba(8, 145, 178, 0.22);
+  color: #7ae7f5;
+  border-color: rgba(8, 145, 178, 0.45);
+}
+
 /* ---------- Audiences ---------- */
 
 .landing-role-grid {
@@ -4084,6 +4214,25 @@ h2 {
   height: 3px;
   border-radius: 0 0 4px 4px;
   background: linear-gradient(90deg, #0891b2, #0fb981);
+}
+
+.landing-role-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #ecfeff;
+  border: 1px solid #a5f3fc;
+  color: #0e7490;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.landing-role-card.is-dark .landing-role-icon {
+  background: rgba(8, 145, 178, 0.18);
+  border-color: rgba(8, 145, 178, 0.4);
+  color: #7ae7f5;
 }
 
 .landing-role-card.is-dark:hover {
@@ -4151,6 +4300,7 @@ h2 {
 
 .landing-security {
   background:
+    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1.4px) 0 0 / 26px 26px,
     radial-gradient(760px 380px at 88% -10%, rgba(8, 145, 178, 0.16), transparent 62%),
     #0f172a;
   padding: 104px 0;
@@ -4280,6 +4430,7 @@ h2 {
 }
 
 .landing-testimonial-card {
+  position: relative;
   margin: 0;
   background: #ffffff;
   border: 1px solid var(--lp-line);
@@ -4291,6 +4442,21 @@ h2 {
   box-shadow: var(--lp-shadow);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
+
+.landing-testimonial-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  width: 40px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--tone, var(--lp-primary));
+}
+
+.landing-testimonial-card.tone-0 { --tone: #0891b2; }
+.landing-testimonial-card.tone-1 { --tone: #16a34a; }
+.landing-testimonial-card.tone-2 { --tone: #0284c7; }
 
 .landing-testimonial-card:hover {
   border-color: #cbd5e1;
@@ -4417,7 +4583,7 @@ h2 {
 .landing-results-card.tone-blue .landing-results-icon { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 
 .landing-results-card strong {
-  font-size: 34px;
+  font-size: 40px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--lp-ink);
@@ -4624,6 +4790,7 @@ h2 {
 
 .landing-cta-panel {
   background:
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 22px 22px,
     radial-gradient(900px 340px at 50% -100px, rgba(14, 116, 144, 0.5), transparent 62%),
     radial-gradient(720px 280px at 88% 112%, rgba(15, 185, 129, 0.14), transparent 60%),
     #0f172a;
@@ -4806,6 +4973,11 @@ html.js [data-animate].in-view {
     display: none;
   }
 
+  .landing-nav-inner {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .landing-steps,
   .landing-results-grid,
   .landing-role-grid {
@@ -4829,6 +5001,10 @@ html.js [data-animate].in-view {
 
   .console-screen {
     aspect-ratio: auto;
+  }
+
+  .console-float {
+    display: none;
   }
 
   .console-grid {

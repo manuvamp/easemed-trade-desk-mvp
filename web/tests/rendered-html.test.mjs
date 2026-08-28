@@ -32,7 +32,8 @@ test("server-renders the EaseMed landing page", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>EaseMed\.ai \| Procurement intelligence<\/title>/i);
-  assert.match(html, /Source medical supplies in (<em>)?days, not weeks/i);
+  assert.match(html, /Source medical supplies/i);
+  assert.match(html, /days, not weeks/i);
   assert.match(html, /Requirement capture/i);
   assert.match(html, /Intelligent matching/i);
   assert.match(html, /Decision &amp; audit trail|Decision & audit trail/i);
@@ -64,7 +65,8 @@ test("starter preview assets and dependency are removed", async () => {
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /Source medical supplies in/);
+  assert.match(page, /Source medical supplies/);
+  assert.match(page, /days, not weeks/);
   assert.match(page, /landing-console/);
   assert.match(page, /Open the demo workspace/);
   assert.match(dashboardPage, /useState/);

@@ -144,6 +144,7 @@ const workflowSteps = [
 const audienceCards = [
   {
     dark: false,
+    icon: "users",
     eyebrow: "For health systems",
     title: "Stop hunting. Start deciding.",
     points: [
@@ -155,6 +156,7 @@ const audienceCards = [
   },
   {
     dark: true,
+    icon: "globe",
     eyebrow: "For supplier partners",
     title: "See real demand early.",
     points: [
@@ -429,7 +431,9 @@ export default function LandingPage() {
       <section className="landing-hero" id="top">
         <div className="landing-hero-inner">
           <h1>
-            Source medical supplies in <em>days, not weeks.</em>
+            Source medical supplies
+            <br />
+            in <em>days, not weeks.</em>
           </h1>
           <p className="landing-hero-description">
             EaseMed predicts what you need, matches verified suppliers, and carries the purchase
@@ -523,6 +527,14 @@ export default function LandingPage() {
                 <span>Last synced just now</span>
               </div>
             </div>
+          </div>
+          <div className="console-float console-float-tr" aria-hidden="true">
+            <span className="console-float-icon"><Icon name="shield" size={16} /></span>
+            <span><b>Compliance verified</b><small>ISO 13485 + FDA 510(k)</small></span>
+          </div>
+          <div className="console-float console-float-bl" aria-hidden="true">
+            <span className="console-float-icon"><Icon name="card" size={16} /></span>
+            <span><b>Payment released</b><small>$14,200 · settled in 2 clicks</small></span>
           </div>
         </div>
       </section>
@@ -699,6 +711,7 @@ export default function LandingPage() {
                 data-animate
                 style={{ transitionDelay: `${index * 90}ms` }}
               >
+                <span className="landing-role-icon"><Icon name={card.icon} size={20} /></span>
                 <p className="landing-role-eyebrow">{card.eyebrow}</p>
                 <h3>{card.title}</h3>
                 <ul className="landing-point-list">
@@ -769,7 +782,7 @@ export default function LandingPage() {
           <div className="landing-testimonial-columns">
             {testimonials.map((testimonial, index) => (
               <figure
-                className="landing-testimonial-card"
+                className={`landing-testimonial-card tone-${index % 3}`}
                 key={testimonial.name}
                 data-animate
                 style={{ transitionDelay: `${(index % 3) * 80}ms` }}
