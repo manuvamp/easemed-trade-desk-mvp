@@ -24,6 +24,7 @@ const heroStats = [
 const journeyNodes = [
   {
     icon: "trend",
+    tone: "teal",
     title: "Predict",
     text: "AI flags what to buy before you run out.",
     visual: (
@@ -42,6 +43,7 @@ const journeyNodes = [
   },
   {
     icon: "users",
+    tone: "green",
     title: "Source",
     text: "Verified suppliers, ranked and ready to compare.",
     visual: (
@@ -60,6 +62,7 @@ const journeyNodes = [
   },
   {
     icon: "card",
+    tone: "blue",
     title: "Pay",
     text: "Cross-border payments in a few clicks.",
     visual: (
@@ -79,6 +82,7 @@ const journeyNodes = [
   },
   {
     icon: "pin",
+    tone: "navy",
     title: "Track",
     text: "Live shipment tracking, to your door.",
     visual: (
@@ -111,6 +115,7 @@ const workflowSteps = [
   {
     number: "01",
     id: "capture",
+    tone: "teal",
     label: "Requirement capture",
     title: "Describe it once.",
     description: "AI turns a sentence or document into a compliance-ready requirement.",
@@ -119,6 +124,7 @@ const workflowSteps = [
   {
     number: "02",
     id: "matching",
+    tone: "green",
     label: "Intelligent matching",
     title: "Meet the right suppliers.",
     description: "Every verified partner is scored live on compliance, capacity, price, and reliability.",
@@ -127,6 +133,7 @@ const workflowSteps = [
   {
     number: "03",
     id: "decision",
+    tone: "blue",
     label: "Decision & audit trail",
     title: "Approve with confidence.",
     description: "Compare bids, release in one click, and keep an immutable record.",
@@ -527,8 +534,8 @@ export default function LandingPage() {
             <div className="landing-marquee-track">
               {[0, 1].map((copy) => (
                 <div className="landing-marquee-group" key={copy} aria-hidden={copy === 1 || undefined}>
-                  {partnerNames.map((partner) => (
-                    <span key={partner} className="landing-logo">{partner}</span>
+                  {partnerNames.map((partner, index) => (
+                    <span key={partner} className={`landing-logo landing-logo-${index + 1}`}>{partner}</span>
                   ))}
                 </div>
               ))}
@@ -561,7 +568,7 @@ export default function LandingPage() {
         <div className="landing-wrap">
           <div className="landing-pipeline" data-animate>
             {journeyNodes.map((node) => (
-              <article key={node.title} className="landing-pipeline-node">
+              <article key={node.title} className={`landing-pipeline-node tone-${node.tone}`}>
                 {node.visual}
                 <h3>{node.title}</h3>
                 <p>{node.text}</p>
@@ -593,7 +600,7 @@ export default function LandingPage() {
         <div className="landing-wrap">
           <div className="landing-steps">
             {workflowSteps.map((step) => (
-              <article className="landing-step" data-animate key={step.number}>
+              <article className={`landing-step tone-${step.tone}`} data-animate key={step.number}>
                 <div className="landing-step-badge">
                   <span>{step.number}</span>
                   {step.label}
@@ -687,7 +694,7 @@ export default function LandingPage() {
           <div className="landing-role-grid">
             {audienceCards.map((card, index) => (
               <article
-                className={`landing-role-card${card.dark ? " is-dark" : ""}`}
+                className={`landing-role-card${card.dark ? " is-dark" : " is-light"}`}
                 key={card.eyebrow}
                 data-animate
                 style={{ transitionDelay: `${index * 90}ms` }}
@@ -769,7 +776,7 @@ export default function LandingPage() {
               >
                 <blockquote>“{testimonial.quote}”</blockquote>
                 <figcaption>
-                  <span className="landing-testimonial-avatar" aria-hidden="true">
+                  <span className={`landing-testimonial-avatar tone-${index % 3}`} aria-hidden="true">
                     {testimonial.name.split(" ").map((part) => part[0]).join("")}
                   </span>
                   <span className="landing-testimonial-meta">
@@ -799,17 +806,17 @@ export default function LandingPage() {
 
         <div className="landing-wrap">
           <div className="landing-results-grid">
-            <article className="landing-results-card" data-animate>
+            <article className="landing-results-card tone-teal" data-animate>
               <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
               <strong>11 days → 3</strong>
               <span>Average purchase cycle at a regional hospital group</span>
             </article>
-            <article className="landing-results-card" data-animate style={{ transitionDelay: "90ms" }}>
+            <article className="landing-results-card tone-green" data-animate style={{ transitionDelay: "90ms" }}>
               <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
               <strong>4×</strong>
               <span>More supplier quotations sent per week at MedSupply Partners</span>
             </article>
-            <article className="landing-results-card" data-animate style={{ transitionDelay: "180ms" }}>
+            <article className="landing-results-card tone-blue" data-animate style={{ transitionDelay: "180ms" }}>
               <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
               <strong>100%</strong>
               <span>Audit packs accepted without a single follow-up at Northstar Care</span>
