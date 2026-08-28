@@ -532,6 +532,10 @@ export default function LandingPage() {
             <span className="console-float-icon"><Icon name="shield" size={16} /></span>
             <span><b>Compliance verified</b><small>ISO 13485 + FDA 510(k)</small></span>
           </div>
+          <div className="console-float console-float-tl" aria-hidden="true">
+            <span className="console-float-icon"><Icon name="trend" size={16} /></span>
+            <span><b>Reorder predicted</b><small>12,000 units · by Mar 4</small></span>
+          </div>
           <div className="console-float console-float-bl" aria-hidden="true">
             <span className="console-float-icon"><Icon name="card" size={16} /></span>
             <span><b>Payment released</b><small>$14,200 · settled in 2 clicks</small></span>

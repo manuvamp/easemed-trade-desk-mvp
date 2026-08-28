@@ -2975,18 +2975,34 @@ h2 {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(620px 340px at 16% -4%, rgba(8, 145, 178, 0.11), transparent 65%),
-    radial-gradient(560px 320px at 86% 10%, rgba(15, 185, 129, 0.09), transparent 65%);
+    radial-gradient(1000px 540px at 50% -200px, rgba(8, 145, 178, 0.16), transparent 68%),
+    radial-gradient(760px 460px at 10% 4%, rgba(12, 192, 207, 0.11), transparent 62%),
+    radial-gradient(760px 460px at 92% 10%, rgba(15, 185, 129, 0.11), transparent 62%);
+}
+
+.landing-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(760px 440px at 50% 0%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(760px 440px at 50% 0%, #000 25%, transparent 78%);
 }
 
 .landing-hero-inner {
+  position: relative;
+  z-index: 1;
   width: min(880px, calc(100% - 48px));
   margin-inline: auto;
   text-align: center;
 }
 
 .landing-hero-inner h1 {
-  font-size: clamp(40px, 6.4vw, 64px);
+  font-size: clamp(42px, 6.8vw, 68px);
   font-weight: 650;
   letter-spacing: -0.03em;
   margin: 0 0 24px;
@@ -3018,6 +3034,12 @@ h2 {
   flex-wrap: wrap;
 }
 
+.landing-hero-actions .landing-button {
+  height: 50px;
+  padding: 0 28px;
+  font-size: 15px;
+}
+
 .landing-hero-proof {
   margin: 24px 0 0;
   font-size: 14px;
@@ -3028,6 +3050,7 @@ h2 {
 
 .landing-console {
   position: relative;
+  z-index: 1;
   margin: 60px auto 0;
   width: min(1040px, calc(100% - 48px));
 }
@@ -3046,10 +3069,12 @@ h2 {
   position: relative;
   z-index: 1;
   aspect-ratio: 16 / 9;
-  border: 1px solid var(--lp-line);
+  border: 1px solid transparent;
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 32px 72px -40px rgba(15, 23, 42, 0.3);
+  background:
+    linear-gradient(var(--lp-canvas), var(--lp-canvas)) padding-box,
+    linear-gradient(135deg, rgba(8, 145, 178, 0.55), rgba(12, 192, 207, 0.35) 55%, rgba(15, 185, 129, 0.45)) border-box;
+  box-shadow: 0 36px 90px -42px rgba(8, 145, 178, 0.5);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -3437,6 +3462,17 @@ h2 {
   background: #ecfeff;
   color: #0e7490;
   border: 1px solid #a5f3fc;
+}
+
+.console-float-tl {
+  top: 132px;
+  left: -16px;
+}
+
+.console-float-tl .console-float-icon {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
 }
 
 .console-float-bl {
