@@ -2771,6 +2771,17 @@ h2 {
   color: var(--lp-primary);
 }
 
+.landing-section-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--lp-grad);
+  vertical-align: 4px;
+  margin-right: 10px;
+}
+
 .landing-section-heading h2,
 .landing-founder-copy h2,
 .landing-careers h2 {
@@ -2975,7 +2986,7 @@ h2 {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(1000px 540px at 50% -200px, rgba(8, 145, 178, 0.16), transparent 68%),
+    radial-gradient(1000px 540px at 50% -200px, rgba(8, 145, 178, 0.19), transparent 68%),
     radial-gradient(760px 460px at 10% 4%, rgba(12, 192, 207, 0.11), transparent 62%),
     radial-gradient(760px 460px at 92% 10%, rgba(15, 185, 129, 0.11), transparent 62%);
 }
@@ -3570,7 +3581,7 @@ h2 {
   background: linear-gradient(180deg, #ecfeff 0%, #f8fafc 100%);
   border-top: 1px solid var(--lp-line-soft);
   border-bottom: 1px solid var(--lp-line-soft);
-  padding: 42px 0;
+  padding: 56px 0;
 }
 
 .landing-stats-inner {
@@ -3590,19 +3601,19 @@ h2 {
 
 .landing-stat strong {
   display: block;
-  font-size: 30px;
+  font-size: 46px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   background: var(--lp-grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .landing-stat span {
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--lp-muted);
 }
 
@@ -3614,6 +3625,7 @@ h2 {
 }
 
 .landing-pipeline {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
@@ -3647,6 +3659,32 @@ h2 {
 .landing-pipeline-node.tone-green { --tone: #16a34a; }
 .landing-pipeline-node.tone-blue { --tone: #0284c7; }
 .landing-pipeline-node.tone-navy { --tone: #0f172a; }
+
+.pipe-fig {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--tone, var(--lp-faint));
+  opacity: 0.75;
+}
+
+@media (min-width: 1081px) {
+  .landing-pipeline::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 48px;
+    right: 48px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #0891b2, #0cc0cf 38%, #16a34a 70%, #0f172a);
+    opacity: 0.16;
+  }
+}
 
 .landing-pipeline-node:hover {
   border-color: #cbd5e1;
@@ -4509,6 +4547,18 @@ h2 {
   color: var(--lp-body);
 }
 
+.landing-testimonial-card blockquote::before {
+  content: "\201C";
+  display: block;
+  height: 24px;
+  margin-bottom: 4px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 46px;
+  line-height: 1;
+  color: var(--tone, var(--lp-primary));
+  opacity: 0.35;
+}
+
 .landing-testimonial-card figcaption {
   display: flex;
   align-items: center;
@@ -4622,10 +4672,14 @@ h2 {
 .landing-results-card.tone-blue .landing-results-icon { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 
 .landing-results-card strong {
-  font-size: 40px;
+  font-size: 44px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--lp-ink);
+  letter-spacing: -0.025em;
+  background: var(--lp-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
   line-height: 1.2;
 }
 
@@ -4643,6 +4697,12 @@ h2 {
 }
 
 /* ---------- Founder ---------- */
+
+.landing-founder {
+  background:
+    radial-gradient(700px 420px at 18% 30%, rgba(12, 192, 207, 0.07), transparent 62%),
+    radial-gradient(700px 420px at 85% 75%, rgba(15, 185, 129, 0.06), transparent 62%);
+}
 
 .landing-founder-card {
   display: grid;
@@ -4743,7 +4803,7 @@ h2 {
 /* ---------- Careers ---------- */
 
 .landing-careers {
-  background: var(--lp-soft);
+  background: linear-gradient(180deg, #f8fafc 0%, #f0fdfa 100%);
   border-top: 1px solid var(--lp-line-soft);
   border-bottom: 1px solid var(--lp-line-soft);
   padding: 72px 0;
@@ -4828,11 +4888,13 @@ h2 {
 }
 
 .landing-cta-panel {
+  border: 1px solid transparent;
   background:
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 22px 22px,
-    radial-gradient(900px 340px at 50% -100px, rgba(14, 116, 144, 0.5), transparent 62%),
-    radial-gradient(720px 280px at 88% 112%, rgba(15, 185, 129, 0.14), transparent 60%),
-    #0f172a;
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 22px 22px padding-box,
+    radial-gradient(900px 340px at 50% -100px, rgba(14, 116, 144, 0.5), transparent 62%) padding-box,
+    radial-gradient(720px 280px at 88% 112%, rgba(15, 185, 129, 0.14), transparent 60%) padding-box,
+    linear-gradient(#0f172a, #0f172a) padding-box,
+    linear-gradient(135deg, rgba(8, 145, 178, 0.65), rgba(12, 192, 207, 0.4) 55%, rgba(15, 185, 129, 0.55)) border-box;
   border-radius: 24px;
   padding: 64px 40px;
   text-align: center;
@@ -4889,9 +4951,20 @@ h2 {
 /* ---------- Footer ---------- */
 
 .landing-footer {
+  position: relative;
   background: #ffffff;
-  border-top: 1px solid var(--lp-line-soft);
+  border-top: none;
   padding: 56px 0 36px;
+}
+
+.landing-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(8, 145, 178, 0.55) 30%, rgba(15, 185, 129, 0.45) 70%, transparent);
 }
 
 .landing-footer-grid {

@@ -583,8 +583,9 @@ export default function LandingPage() {
 
         <div className="landing-wrap">
           <div className="landing-pipeline" data-animate>
-            {journeyNodes.map((node) => (
+            {journeyNodes.map((node, index) => (
               <article key={node.title} className={`landing-pipeline-node tone-${node.tone}`}>
+                <span className="pipe-fig" aria-hidden="true">0{index + 1}</span>
                 {node.visual}
                 <h3>{node.title}</h3>
                 <p>{node.text}</p>
@@ -791,7 +792,7 @@ export default function LandingPage() {
                 data-animate
                 style={{ transitionDelay: `${(index % 3) * 80}ms` }}
               >
-                <blockquote>“{testimonial.quote}”</blockquote>
+                <blockquote>{testimonial.quote}</blockquote>
                 <figcaption>
                   <span className={`landing-testimonial-avatar tone-${index % 3}`} aria-hidden="true">
                     {testimonial.name.split(" ").map((part) => part[0]).join("")}
