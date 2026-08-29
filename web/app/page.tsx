@@ -447,10 +447,11 @@ export default function LandingPage() {
               Open the demo workspace
             </a>
           </div>
-          <p className="landing-hero-proof">
-            Trusted by procurement teams across 4 continents — from hospitals to medical
-            manufacturers.
-          </p>
+          <div className="landing-hero-callouts">
+            <div><b>3×</b><span>Faster sourcing cycles</span></div>
+            <div><b>340+</b><span>Verified suppliers in network</span></div>
+            <div><b>100%</b><span>Audit-ready decisions</span></div>
+          </div>
         </div>
 
         <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
@@ -527,18 +528,6 @@ export default function LandingPage() {
                 <span>Last synced just now</span>
               </div>
             </div>
-          </div>
-          <div className="console-float console-float-tr" aria-hidden="true">
-            <span className="console-float-icon"><Icon name="shield" size={16} /></span>
-            <span><b>Compliance verified</b><small>ISO 13485 + FDA 510(k)</small></span>
-          </div>
-          <div className="console-float console-float-tl" aria-hidden="true">
-            <span className="console-float-icon"><Icon name="trend" size={16} /></span>
-            <span><b>Reorder predicted</b><small>12,000 units · by Mar 4</small></span>
-          </div>
-          <div className="console-float console-float-bl" aria-hidden="true">
-            <span className="console-float-icon"><Icon name="card" size={16} /></span>
-            <span><b>Payment released</b><small>$14,200 · settled in 2 clicks</small></span>
           </div>
         </div>
       </section>
