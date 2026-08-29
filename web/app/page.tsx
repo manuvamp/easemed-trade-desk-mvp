@@ -279,7 +279,7 @@ function Logo({ size = 30 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path d="M16 6.5v19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
       <path d="M6.5 16H19" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
-      <circle cx="26" cy="16" r="3.4" fill="#3a48f1" />
+      <circle cx="26" cy="16" r="3.4" fill="#8b5cf6" />
     </svg>
   );
 }
