@@ -4877,7 +4877,7 @@ h2 {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.6) 30%, rgba(145, 141, 212, 0.5) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(145, 141, 212, 0.6) 30%, rgba(145, 141, 212, 0.5) 70%, transparent);
 }
 
 .landing-footer-grid {
@@ -5287,5 +5287,120 @@ html:has(.landing-page) {
 
   html:has(.landing-page) {
     scroll-behavior: auto;
+  }
+}
+
+/* ---------- Life II: product-feel motion ---------- */
+
+@keyframes em-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes em-travel {
+  0% {
+    left: 48px;
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 54px);
+    opacity: 0;
+  }
+}
+
+@keyframes em-breathe {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.05) translateY(12px);
+  }
+}
+
+.console-bars span {
+  transform-origin: left center;
+  animation: em-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.console-bars span:nth-child(2) {
+  animation-delay: 0.12s;
+}
+
+.console-bars span:nth-child(3) {
+  animation-delay: 0.24s;
+}
+
+html.js [data-animate].in-view .pipe-stock-bar i {
+  transform-origin: left center;
+  animation: em-grow 0.8s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.landing-hero::before {
+  animation: em-breathe 14s ease-in-out infinite;
+}
+
+.landing-nav.scrolled {
+  background: rgba(26, 24, 48, 0.97);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.6);
+}
+
+.landing-button-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-button-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.22) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+  pointer-events: none;
+}
+
+.landing-button-primary:hover::after {
+  transform: translateX(120%);
+}
+
+@media (min-width: 1081px) {
+  .landing-pipeline::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 48px;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: #918dd4;
+    box-shadow: 0 0 0 4px rgba(145, 141, 212, 0.18);
+    animation: em-travel 7s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .console-bars span,
+  html.js [data-animate].in-view .pipe-stock-bar i,
+  .landing-hero::before {
+    animation: none;
+  }
+
+  .landing-pipeline::after {
+    display: none;
+  }
+
+  .landing-button-primary::after {
+    transition: none;
   }
 }

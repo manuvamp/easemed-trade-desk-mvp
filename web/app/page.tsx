@@ -389,16 +389,22 @@ const revealScript = `(function(){
   document.documentElement.classList.add('js');
   try {
     var els = document.querySelectorAll('[data-animate]');
-    if (!('IntersectionObserver' in window)) {
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -36px' });
+      els.forEach(function(el){ io.observe(el); });
+    } else {
       els.forEach(function(el){ el.classList.add('in-view'); });
-      return;
     }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) { entry.target.classList.add('in-view'); io.unobserve(entry.target); }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -36px' });
-    els.forEach(function(el){ io.observe(el); });
+    var nav = document.querySelector('.landing-nav');
+    if (nav) {
+      var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 8); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
   } catch (e) { document.documentElement.classList.remove('js'); }
 })();`;
 
