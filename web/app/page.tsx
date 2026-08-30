@@ -436,6 +436,11 @@ export default function LandingPage() {
 
       <section className="landing-hero" id="top">
         <div className="landing-hero-inner">
+          <div className="landing-hero-status">
+            <span className="status-live"><i />342 suppliers online</span>
+            <span>14 open orders</span>
+            <span>Synced just now</span>
+          </div>
           <h1>
             Source medical supplies
             <br />
