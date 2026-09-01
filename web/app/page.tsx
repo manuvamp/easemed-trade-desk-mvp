@@ -1,6 +1,7 @@
 const navLinks = [
   { href: "#platform", label: "Platform" },
   { href: "#how-it-works", label: "How it works" },
+  { href: "#decision-intelligence", label: "Decision trail" },
   { href: "#security", label: "Security" },
   { href: "#faq", label: "FAQ" },
 ];
@@ -26,7 +27,7 @@ const journeyNodes = [
     icon: "trend",
     tone: "teal",
     title: "Predict",
-    text: "AI flags what to buy before you run out.",
+    text: "AI can flag inventory pressure before a stockout becomes urgent.",
     visual: (
       <div className="pipe-visual">
         <div className="pipe-head">
@@ -45,7 +46,7 @@ const journeyNodes = [
     icon: "users",
     tone: "green",
     title: "Source",
-    text: "Verified suppliers, ranked and ready to compare.",
+    text: "Supplier options ranked against the same decision criteria.",
     visual: (
       <div className="pipe-visual">
         <div className="pipe-head">
@@ -64,7 +65,7 @@ const journeyNodes = [
     icon: "card",
     tone: "blue",
     title: "Pay",
-    text: "Cross-border payments in a few clicks.",
+    text: "Carry the approved order into the payment handoff.",
     visual: (
       <div className="pipe-visual">
         <div className="pipe-head">
@@ -84,7 +85,7 @@ const journeyNodes = [
     icon: "pin",
     tone: "navy",
     title: "Track",
-    text: "Live shipment tracking, to your door.",
+    text: "Keep fulfillment status connected to the original decision.",
     visual: (
       <div className="pipe-visual">
         <div className="pipe-head">
@@ -118,8 +119,8 @@ const workflowSteps = [
     tone: "teal",
     label: "Requirement capture",
     title: "Describe it once.",
-    description: "AI turns a sentence or document into a compliance-ready requirement.",
-    chips: ["Plain language or docs", "Standards auto-attached", "Ready in minutes"],
+    description: "AI turns a sentence or document into a structured requirement that teams can review before sourcing.",
+    chips: ["Plain language or docs", "Standards-aware fields", "Human review"],
   },
   {
     number: "02",
@@ -127,8 +128,8 @@ const workflowSteps = [
     tone: "green",
     label: "Intelligent matching",
     title: "Meet the right suppliers.",
-    description: "Every verified partner is scored live on compliance, capacity, price, and reliability.",
-    chips: ["340+ verified network", "Live 4-way scoring", "Evidence-based"],
+    description: "Supplier options are compared on compliance, capacity, commercial fit, and delivery reliability.",
+    chips: ["4-way comparison", "Reasoning visible", "Evidence attached"],
   },
   {
     number: "03",
@@ -136,8 +137,63 @@ const workflowSteps = [
     tone: "blue",
     label: "Decision & audit trail",
     title: "Approve with confidence.",
-    description: "Compare bids, release in one click, and keep an immutable record.",
-    chips: ["Side-by-side bids", "One-click approvals", "Immutable history"],
+    description: "Compare bids, route approval, and preserve the rationale and handoffs behind the decision.",
+    chips: ["Side-by-side bids", "Approval routing", "Exportable history"],
+  },
+];
+
+const decisionStages = [
+  {
+    id: "requirement",
+    label: "Requirement",
+    eyebrow: "01 · What is actually needed",
+    title: "The buying brief becomes the first source of truth.",
+    text: "EaseMed structures the request into quantities, standards, delivery windows, and commercial constraints before suppliers are compared.",
+    facts: [
+      ["Volume", "12,000 units / quarter"],
+      ["Evidence", "ISO 13485 + FDA 510(k)"],
+      ["Delivery", "14-day window"],
+      ["Benchmark", "≤ $0.42 / unit"],
+    ],
+  },
+  {
+    id: "reasoning",
+    label: "Supplier reasoning",
+    eyebrow: "02 · Why this option ranks higher",
+    title: "A score is useful only when the reasoning is visible.",
+    text: "Instead of a black-box recommendation, EaseMed shows the dimensions behind the ranking so procurement teams can challenge the result.",
+    facts: [
+      ["Compliance", "Required evidence present"],
+      ["Capacity", "Volume fits stated capacity"],
+      ["Commercial", "$0.38 / unit in sample"],
+      ["Reliability", "Lead-time history considered"],
+    ],
+  },
+  {
+    id: "approval",
+    label: "Approval",
+    eyebrow: "03 · Who decided and why",
+    title: "The recommendation arrives with context, not homework.",
+    text: "Approvers see the requirement, supplier comparison, exceptions, and commercial trade-offs in one place before release.",
+    facts: [
+      ["Decision owner", "Finance approval"],
+      ["Exceptions", "Surfaced before release"],
+      ["Rationale", "Attached to the decision"],
+      ["History", "Exportable event trail"],
+    ],
+  },
+  {
+    id: "fulfillment",
+    label: "Fulfillment",
+    eyebrow: "04 · What happened after approval",
+    title: "The decision trail continues past the purchase order.",
+    text: "Warehouse, payment, and logistics handoffs stay linked to the approved supplier and original requirement instead of splitting into new threads.",
+    facts: [
+      ["Payment", "Linked to approved order"],
+      ["Warehouse", "Handoff status visible"],
+      ["Logistics", "Shipment milestone context"],
+      ["Closeout", "Decision and delivery connected"],
+    ],
   },
 ];
 
@@ -229,7 +285,7 @@ const faqs = [
   {
     question: "What is EaseMed?",
     answer:
-      "The operating layer for healthcare procurement. It predicts what to buy, matches verified suppliers, automates purchasing, and tracks delivery — all in one place.",
+      "The operating layer for healthcare procurement. It structures requirements, compares supplier options, supports approvals, and keeps downstream order handoffs connected in one workflow.",
   },
   {
     question: "Who is it for?",
@@ -239,7 +295,7 @@ const faqs = [
   {
     question: "How does matching work?",
     answer:
-      "Every partner is scored live on compliance, capacity, price history, and delivery reliability. You get a ranked shortlist with the evidence attached.",
+      "Supplier options can be compared on compliance, capacity, commercial fit, and delivery reliability. The ranked shortlist keeps the supporting evidence beside the recommendation.",
   },
   {
     question: "Does it replace our systems?",
@@ -249,7 +305,7 @@ const faqs = [
   {
     question: "How is compliance handled?",
     answer:
-      "Standards like ISO 13485 and FDA 510(k) attach to requirements automatically, and every approval is logged immutably.",
+      "Requirements can carry standards and supporting evidence, while approval activity stays connected to the decision history for later review.",
   },
   {
     question: "How do I get early access?",
@@ -388,6 +444,65 @@ const revealScript = `(function(){
       var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 8); };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+    }
+
+    var decisionRoot = document.querySelector('[data-decision-tabs]');
+    if (decisionRoot) {
+      var tabs = Array.from(decisionRoot.querySelectorAll('[role="tab"]'));
+      var panels = Array.from(decisionRoot.querySelectorAll('[role="tabpanel"]'));
+      var activate = function(nextTab) {
+        var target = nextTab.getAttribute('aria-controls');
+        tabs.forEach(function(tab){
+          var active = tab === nextTab;
+          tab.setAttribute('aria-selected', active ? 'true' : 'false');
+          tab.setAttribute('tabindex', active ? '0' : '-1');
+        });
+        panels.forEach(function(panel){
+          panel.hidden = panel.id !== target;
+          panel.classList.toggle('is-active', panel.id === target);
+        });
+      };
+      tabs.forEach(function(tab, index){
+        tab.addEventListener('click', function(){ activate(tab); });
+        tab.addEventListener('keydown', function(event){
+          if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft' && event.key !== 'Home' && event.key !== 'End') return;
+          event.preventDefault();
+          var nextIndex = index;
+          if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+          if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (event.key === 'Home') nextIndex = 0;
+          if (event.key === 'End') nextIndex = tabs.length - 1;
+          activate(tabs[nextIndex]);
+          tabs[nextIndex].focus();
+        });
+      });
+    }
+
+    var navLinks = document.querySelectorAll('.landing-nav-links a');
+    var navSections = Array.from(navLinks).map(function(link){
+      var href = link.getAttribute('href');
+      return href && href.charAt(0) === '#' ? document.querySelector(href) : null;
+    }).filter(Boolean);
+    if ('IntersectionObserver' in window && navSections.length) {
+      var navIo = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (!entry.isIntersecting) return;
+          navLinks.forEach(function(link){
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + entry.target.id);
+          });
+        });
+      }, { rootMargin: '-25% 0px -65% 0px', threshold: 0.01 });
+      navSections.forEach(function(section){ navIo.observe(section); });
+    }
+
+    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('[data-spotlight]').forEach(function(card){
+        card.addEventListener('pointermove', function(event){
+          var rect = card.getBoundingClientRect();
+          card.style.setProperty('--mx', (event.clientX - rect.left) + 'px');
+          card.style.setProperty('--my', (event.clientY - rect.top) + 'px');
+        });
+      });
     }
   } catch (e) { document.documentElement.classList.remove('js'); }
 })();`;
@@ -681,6 +796,74 @@ export default function LandingPage() {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="landing-section landing-decision" id="decision-intelligence">
+        <div className="landing-section-heading landing-centered" data-animate>
+          <p className="landing-section-eyebrow">Decision intelligence</p>
+          <h2>Not another catalog. Not another black-box score.</h2>
+          <p className="landing-section-intro">
+            The recommendation is only the start. EaseMed keeps the evidence and reasoning visible from the first request through fulfillment.
+          </p>
+        </div>
+
+        <div className="landing-wrap" data-decision-tabs data-animate>
+          <div className="decision-shell" data-spotlight>
+            <div className="decision-tabs" role="tablist" aria-label="Decision trail stages">
+              {decisionStages.map((stage, index) => (
+                <button
+                  key={stage.id}
+                  id={`decision-tab-${stage.id}`}
+                  className="decision-tab"
+                  type="button"
+                  role="tab"
+                  aria-selected={index === 0 ? "true" : "false"}
+                  aria-controls={`decision-panel-${stage.id}`}
+                  tabIndex={index === 0 ? 0 : -1}
+                >
+                  <span>0{index + 1}</span>
+                  {stage.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="decision-panels">
+              {decisionStages.map((stage, index) => (
+                <article
+                  key={stage.id}
+                  id={`decision-panel-${stage.id}`}
+                  className={`decision-panel${index === 0 ? " is-active" : ""}`}
+                  role="tabpanel"
+                  aria-labelledby={`decision-tab-${stage.id}`}
+                  hidden={index !== 0}
+                >
+                  <div className="decision-copy">
+                    <p>{stage.eyebrow}</p>
+                    <h3>{stage.title}</h3>
+                    <span>{stage.text}</span>
+                  </div>
+                  <div className="decision-evidence" aria-label={`${stage.label} evidence example`}>
+                    <div className="decision-evidence-head">
+                      <span>Why this decision?</span>
+                      <b>Illustrative demo data</b>
+                    </div>
+                    {stage.facts.map(([label, value], factIndex) => (
+                      <div className="decision-fact" key={label} style={{ animationDelay: `${factIndex * 70}ms` }}>
+                        <span>{label}</span>
+                        <strong>{value}</strong>
+                        <i aria-hidden="true"><em /></i>
+                      </div>
+                    ))}
+                    <div className="decision-rationale">
+                      <Icon name="checkCircle" size={16} />
+                      <span>Evidence stays attached so a human can review, challenge, or approve the recommendation.</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>

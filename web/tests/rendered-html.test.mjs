@@ -37,6 +37,10 @@ test("server-renders the EaseMed landing page", async () => {
   assert.match(html, /Requirement capture/i);
   assert.match(html, /Intelligent matching/i);
   assert.match(html, /Decision &amp; audit trail|Decision & audit trail/i);
+  assert.match(html, /Decision intelligence/i);
+  assert.match(html, /Not another catalog/i);
+  assert.match(html, /Supplier reasoning/i);
+  assert.match(html, /Illustrative demo data/i);
   assert.match(html, /Discovery to delivery/i);
   assert.match(html, /Get early access/i);
   assert.match(html, /Nikita Akolikar/i);

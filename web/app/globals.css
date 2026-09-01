@@ -2957,6 +2957,14 @@ h2 {
   right: 0;
 }
 
+.landing-nav-links a.is-active {
+  color: #ffffff;
+}
+
+.landing-nav-links a.is-active::after {
+  right: 0;
+}
+
 .landing-nav-links a:hover {
   color: #ffffff;
 }
@@ -4179,6 +4187,232 @@ h2 {
   border-color: rgba(145, 141, 212, 0.5);
 }
 
+/* ---------- Decision intelligence ---------- */
+
+.landing-decision {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(760px 360px at 16% 18%, rgba(145, 141, 212, 0.12), transparent 68%),
+    #ffffff;
+}
+
+.decision-shell {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid var(--lp-line);
+  background: var(--lp-navy);
+  box-shadow: 0 32px 80px -36px rgba(26, 24, 48, 0.46);
+}
+
+.decision-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(145, 141, 212, 0.16), transparent 64%);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.decision-shell:hover::before {
+  opacity: 1;
+}
+
+.decision-tabs {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.decision-tab {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(255, 255, 255, 0.62);
+  min-height: 72px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.decision-tab:last-child {
+  border-right: 0;
+}
+
+.decision-tab span {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #918dd4;
+}
+
+.decision-tab[aria-selected="true"] {
+  color: #ffffff;
+  background: rgba(145, 141, 212, 0.12);
+  box-shadow: inset 0 -2px 0 #918dd4;
+}
+
+.decision-panels {
+  position: relative;
+  z-index: 1;
+}
+
+.decision-panel {
+  min-height: 410px;
+  grid-template-columns: 0.86fr 1.14fr;
+  gap: 48px;
+  align-items: center;
+  padding: 54px;
+}
+
+.decision-panel.is-active {
+  display: grid;
+  animation: em-decision-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.decision-copy p {
+  margin: 0 0 13px;
+  color: #918dd4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.decision-copy h3 {
+  color: #ffffff;
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+}
+
+.decision-copy > span {
+  display: block;
+  color: #b8b5d5;
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.decision-evidence {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 50px -30px rgba(0, 0, 0, 0.55);
+  padding: 20px;
+}
+
+.decision-evidence-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.decision-evidence-head span {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.decision-evidence-head b {
+  color: #aaa6d2;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.decision-fact {
+  position: relative;
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 8px 16px;
+  padding: 13px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.decision-panel.is-active .decision-fact {
+  animation: em-fact-in 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.decision-fact span {
+  color: #8f8bab;
+  font-size: 11.5px;
+}
+
+.decision-fact strong {
+  color: #f6f5ff;
+  font-size: 12.5px;
+  font-weight: 650;
+  text-align: right;
+}
+
+.decision-fact i {
+  grid-column: 1 / -1;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.decision-fact i em {
+  display: block;
+  width: 78%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6f6bad, #b7b4e3);
+  transform-origin: left center;
+}
+
+.decision-panel.is-active .decision-fact i em {
+  animation: em-grow 0.72s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.decision-rationale {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: rgba(145, 141, 212, 0.11);
+  color: #cfcced;
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.decision-rationale svg {
+  flex: none;
+  margin-top: 1px;
+  color: #b7b4e3;
+}
+
+@keyframes em-decision-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes em-fact-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 /* ---------- Audiences ---------- */
 
 .landing-role-grid {
@@ -5048,6 +5282,12 @@ html.js [data-animate].in-view {
     grid-template-columns: 1fr;
   }
 
+  .decision-panel {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 40px;
+  }
+
   .landing-security-grid {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -5075,6 +5315,33 @@ html.js [data-animate].in-view {
 @media (max-width: 720px) {
   .landing-section-heading {
     margin-bottom: 40px;
+  }
+
+  .decision-tabs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .decision-tab:nth-child(2) {
+    border-right: 0;
+  }
+
+  .decision-tab:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .decision-panel {
+    min-height: 0;
+    padding: 30px 22px;
+  }
+
+  .decision-evidence-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .decision-fact {
+    grid-template-columns: 90px minmax(0, 1fr);
   }
 
   .landing-hero-actions {
@@ -5551,5 +5818,15 @@ html.js [data-animate].in-view .pipe-stock-bar i {
 @media (prefers-reduced-motion: reduce) {
   .landing-hero-status .status-live i {
     animation: none;
+  }
+
+  .decision-panel.is-active,
+  .decision-panel.is-active .decision-fact,
+  .decision-panel.is-active .decision-fact i em {
+    animation: none;
+  }
+
+  .decision-shell::before {
+    display: none;
   }
 }
