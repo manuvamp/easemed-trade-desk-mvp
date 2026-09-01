@@ -42,6 +42,11 @@ test("server-renders the EaseMed landing page", async () => {
   assert.match(html, /Supplier reasoning/i);
   assert.match(html, /Illustrative demo data/i);
   assert.match(html, /Discovery to delivery/i);
+  assert.match(html, /Cross-border continuity/i);
+  assert.match(html, /One purchase\. Four handoffs\. No context reset\./i);
+  assert.match(html, /Human approval remains the release point/i);
+  assert.doesNotMatch(html, /White-glove onboarding|Free inventory import|No lock-in/i);
+  assert.doesNotMatch(html, /Savings · QTD|Suppliers live/i);
   assert.match(html, /Get early access/i);
   assert.match(html, /Nikita Akolikar/i);
   assert.match(html, /One workflow across the healthcare supply chain/i);

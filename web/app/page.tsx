@@ -197,6 +197,37 @@ const decisionStages = [
   },
 ];
 
+const continuityStages = [
+  {
+    icon: "fileCheck",
+    label: "Requirement",
+    title: "Make the request portable.",
+    text: "Keep quantities, standards, evidence, delivery windows, and commercial constraints in one structured brief.",
+    status: "Brief locked",
+  },
+  {
+    icon: "globe",
+    label: "Supplier evidence",
+    title: "Compare across borders with context.",
+    text: "Review supplier fit against the same requirement instead of rebuilding the decision in email threads and spreadsheets.",
+    status: "Evidence attached",
+  },
+  {
+    icon: "card",
+    label: "Finance handoff",
+    title: "Carry approval into payment.",
+    text: "Keep the approved supplier, order terms, and decision context visible when finance takes over.",
+    status: "Approval linked",
+  },
+  {
+    icon: "pin",
+    label: "Fulfillment",
+    title: "Keep the trail alive through delivery.",
+    text: "Warehouse and logistics milestones stay connected to the order that created them, so closeout has the full story.",
+    status: "Milestones connected",
+  },
+];
+
 const audienceCards = [
   {
     dark: false,
@@ -503,6 +534,19 @@ const revealScript = `(function(){
           card.style.setProperty('--my', (event.clientY - rect.top) + 'px');
         });
       });
+      document.querySelectorAll('[data-depth]').forEach(function(card){
+        card.addEventListener('pointermove', function(event){
+          var rect = card.getBoundingClientRect();
+          var dx = (event.clientX - rect.left) / rect.width - 0.5;
+          var dy = (event.clientY - rect.top) / rect.height - 0.5;
+          card.style.setProperty('--rx', (-dy * 2.2) + 'deg');
+          card.style.setProperty('--ry', (dx * 2.8) + 'deg');
+        });
+        card.addEventListener('pointerleave', function(){
+          card.style.setProperty('--rx', '0deg');
+          card.style.setProperty('--ry', '0deg');
+        });
+      });
     }
   } catch (e) { document.documentElement.classList.remove('js'); }
 })();`;
@@ -564,14 +608,14 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="landing-console" aria-label="EaseMed procurement intelligence preview">
+        <div className="landing-console" data-depth aria-label="EaseMed procurement intelligence preview">
           <div className="console-screen">
             <div className="console-topbar">
               <span className="console-topbar-brand">
                 <Logo size={16} />
                 <b>EaseMed</b>
               </span>
-              <span className="console-url">Sample procurement workspace</span>
+              <span className="console-url">Illustrative sample workspace</span>
               <span className="console-live"><i /> Interactive demo</span>
             </div>
 
@@ -600,8 +644,8 @@ export default function LandingPage() {
                     <span>Supplier match</span>
                     <b className="console-chip">Tier-1</b>
                   </div>
-                  <div className="console-match-number">97<span>/100</span></div>
-                  <p>GulfMed Supplies · best of 3 shortlisted</p>
+                  <div className="console-match-number">97<span>/100 sample</span></div>
+                  <p>Example supplier A · best fit in this sample</p>
                   <div className="console-bars" aria-hidden="true">
                     <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
                   </div>
@@ -627,10 +671,10 @@ export default function LandingPage() {
               </div>
 
               <div className="console-kpis">
-                <div><small>Open orders</small><b>14</b></div>
-                <div><small>On-time delivery</small><b>96%</b></div>
-                <div><small>Savings · QTD</small><b>$18.4k</b></div>
-                <div><small>Suppliers live</small><b>342</b></div>
+                <div><small>Requirement</small><b>Ready</b></div>
+                <div><small>Supplier evidence</small><b>Attached</b></div>
+                <div><small>Approval</small><b>Human</b></div>
+                <div><small>Delivery trail</small><b>Linked</b></div>
               </div>
 
               <div className="console-footer">
@@ -676,7 +720,7 @@ export default function LandingPage() {
           <p className="landing-section-eyebrow">Platform</p>
           <h2>Discovery to delivery.</h2>
           <p className="landing-section-intro">
-            EaseMed predicts what to buy — then automates everything after it.
+            EaseMed can flag inventory pressure, structure the buy, and carry the approved workflow forward without losing the decision context.
           </p>
         </div>
 
@@ -701,6 +745,40 @@ export default function LandingPage() {
           <p className="landing-journey-cta" data-animate>
             <a className="landing-text-cta" href="/dashboard">See it live in the demo</a>
           </p>
+        </div>
+      </section>
+
+      <section className="landing-section landing-continuity" id="cross-border">
+        <div className="landing-section-heading landing-centered" data-animate>
+          <p className="landing-section-eyebrow">Cross-border continuity</p>
+          <h2>One purchase. Four handoffs. No context reset.</h2>
+          <p className="landing-section-intro">
+            Most procurement tools stop at sourcing. EaseMed is designed to keep the original requirement and approval context connected as the order moves across teams and borders.
+          </p>
+        </div>
+
+        <div className="landing-wrap" data-animate>
+          <div className="continuity-shell" data-spotlight>
+            <div className="continuity-rail" aria-hidden="true"><span /></div>
+            <div className="continuity-grid">
+              {continuityStages.map((stage, index) => (
+                <article className="continuity-card" key={stage.label}>
+                  <div className="continuity-card-head">
+                    <span className="continuity-icon"><Icon name={stage.icon} size={18} /></span>
+                    <b>0{index + 1}</b>
+                  </div>
+                  <p>{stage.label}</p>
+                  <h3>{stage.title}</h3>
+                  <span>{stage.text}</span>
+                  <em><i aria-hidden="true" />{stage.status}</em>
+                </article>
+              ))}
+            </div>
+            <div className="continuity-footer">
+              <span><Icon name="shield" size={15} /> Human approval remains the release point</span>
+              <span><Icon name="fileCheck" size={15} /> Evidence stays attached to the order trail</span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1080,9 +1158,9 @@ export default function LandingPage() {
               <a className="landing-button landing-button-outline-light" href="/dashboard">Open the demo workspace</a>
             </div>
             <div className="landing-cta-promise">
-              <span><Icon name="checkCircle" size={14} />White-glove onboarding</span>
-              <span><Icon name="checkCircle" size={14} />Free inventory import</span>
-              <span><Icon name="checkCircle" size={14} />No lock-in — cancel anytime</span>
+              <span><Icon name="checkCircle" size={14} />Structured requirement intake</span>
+              <span><Icon name="checkCircle" size={14} />Evidence-aware supplier review</span>
+              <span><Icon name="checkCircle" size={14} />Human approval before release</span>
             </div>
           </div>
         </div>
