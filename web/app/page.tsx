@@ -5,20 +5,20 @@ const navLinks = [
   { href: "#faq", label: "FAQ" },
 ];
 
-const partnerNames = [
-  "Meditek Gulf",
-  "Northstar Care",
-  "Aster Labs",
-  "Clinova Health",
-  "Kantipur Health",
-  "Helixa Medical",
+const networkRoles = [
+  "Hospital procurement",
+  "Medical distributors",
+  "Manufacturers",
+  "Finance teams",
+  "Warehouses",
+  "Logistics partners",
 ];
 
 const heroStats = [
-  { value: "340+", label: "Verified partners in network" },
-  { value: "97/100", label: "Best-match supplier score" },
-  { value: "~9 days", label: "Average matched lead time" },
-  { value: "±3.2%", label: "Price variance vs. benchmark" },
+  { value: "1 intake", label: "For every purchase request" },
+  { value: "4-way", label: "Supplier matching score" },
+  { value: "Human", label: "Approval before release" },
+  { value: "End-to-end", label: "Decision and delivery trail" },
 ];
 
 const journeyNodes = [
@@ -172,7 +172,7 @@ const securityTiles = [
   {
     icon: "shield",
     badge: "Audit-ready by design",
-    detail: "Every action timestamped. Nothing editable.",
+    detail: "Keep the request, evidence, approvals, and handoffs together.",
   },
   {
     icon: "lock",
@@ -181,63 +181,47 @@ const securityTiles = [
   },
   {
     icon: "fileCheck",
-    badge: "Standards-aware",
-    detail: "ISO 13485 · FDA 510(k) built in.",
+    badge: "Standards-aware requirements",
+    detail: "Attach the evidence a supplier needs before a quote is compared.",
   },
 ];
 
 const securityControls = [
-  "GDPR-aligned data handling",
-  "Encrypted in transit and at rest",
-  "Human-in-the-loop approvals",
-  "Exportable audit packs",
+  "Access scoped by role",
+  "Evidence attached to each requirement",
+  "Human approval before release",
+  "Exportable decision history",
 ];
 
 const complianceBadges = [
-  { icon: "shield", label: "ISO 13485-aware" },
-  { icon: "fileCheck", label: "FDA 510(k) ready" },
-  { icon: "lock", label: "AES-256 encryption" },
-  { icon: "globe", label: "GDPR-aligned" },
-  { icon: "zap", label: "99.9% uptime target" },
+  { icon: "shield", label: "Standards-aware" },
+  { icon: "fileCheck", label: "Evidence attached" },
+  { icon: "lock", label: "Role-based access" },
+  { icon: "globe", label: "Cross-border workflow" },
+  { icon: "zap", label: "Human-approved" },
 ];
 
-const testimonials = [
+const outcomeStories = [
   {
-    quote:
-      "Requests used to live in five WhatsApp groups. Now every requirement arrives structured, with the evidence attached.",
-    name: "Dr. Amara Osei",
-    role: "Head of Procurement, Regional Hospital Group",
-    tag: "Health system",
+    icon: "file",
+    eyebrow: "Procurement teams",
+    title: "Turn messy requests into a clean buying brief.",
+    text: "Start from a sentence, document, or spreadsheet. EaseMed structures the requirement and keeps the supporting evidence beside it.",
+    foot: "Request → requirement",
   },
   {
-    quote: "We see verified demand before it becomes a tender. Quotation time went from days to hours.",
-    name: "Rahul Mehta",
-    role: "Director, MedSupply Partners",
-    tag: "Distribution",
+    icon: "target",
+    eyebrow: "Supplier decisions",
+    title: "Compare the right suppliers on the same evidence.",
+    text: "Shortlist and score options on compliance, capacity, price, and reliability before an approver ever opens the decision.",
+    foot: "Requirement → shortlist",
   },
   {
-    quote: "Everything a hospital auditor asks for is already attached. That saved our week.",
-    name: "Elena Petrova",
-    role: "COO, Clinova Health",
-    tag: "Supplier",
-  },
-  {
-    quote: "Approvals that took a fortnight now take an afternoon — and we can show why.",
-    name: "James Whitfield",
-    role: "Operations Lead, Northstar Care",
-    tag: "Care network",
-  },
-  {
-    quote: "Warehouse, sales, and logistics finally read from one screen. Handoffs stopped breaking.",
-    name: "Fatima Al-Rashid",
-    role: "Supply Chain Manager, Meditek Gulf",
-    tag: "Logistics",
-  },
-  {
-    quote: "We plan production against real demand now, not rumor.",
-    name: "Daniel Kim",
-    role: "Founder, Helixa Medical Devices",
-    tag: "Manufacturing",
+    icon: "checkCircle",
+    eyebrow: "Finance & operations",
+    title: "Keep approvals, payment, and delivery in one trail.",
+    text: "The decision does not disappear after approval. Finance, warehouse, and logistics can follow the same order through release and delivery.",
+    foot: "Approval → delivery",
   },
 ];
 
@@ -437,31 +421,31 @@ export default function LandingPage() {
       <section className="landing-hero" id="top">
         <div className="landing-hero-inner">
           <div className="landing-hero-status">
-            <span className="status-live"><i />342 suppliers online</span>
-            <span>14 open orders</span>
-            <span>Synced just now</span>
+            <span className="status-live"><i />Private beta</span>
+            <span>Healthcare procurement control tower</span>
           </div>
           <h1>
-            Source medical supplies
+            Move every medical purchase
             <br />
-            in <em>days, not weeks.</em>
+            <em>from request to delivery.</em>
           </h1>
           <p className="landing-hero-description">
-            EaseMed predicts what you need, matches verified suppliers, and carries the purchase
-            through payment and delivery — one platform, end to end.
+            EaseMed turns a buying request into a structured requirement, ranks the right suppliers,
+            and keeps approvals, payment, and delivery in one auditable workflow.
           </p>
           <div className="landing-hero-actions">
-            <a className="landing-button landing-button-primary" href="#cta">
-              Get early access
+            <a className="landing-button landing-button-primary" href="/dashboard">
+              Explore the interactive demo
             </a>
-            <a className="landing-button landing-button-ghost" href="/dashboard">
-              Open the demo workspace
+            <a className="landing-button landing-button-ghost" href="#cta">
+              Request early access
             </a>
           </div>
           <div className="landing-hero-callouts">
-            <div><b>3×</b><span>Faster sourcing cycles</span></div>
-            <div><b>340+</b><span>Verified suppliers in network</span></div>
-            <div><b>100%</b><span>Audit-ready decisions</span></div>
+            <div><b>01</b><span>Structure the request</span></div>
+            <div><b>02</b><span>Rank supplier options</span></div>
+            <div><b>03</b><span>Approve with evidence</span></div>
+            <div><b>04</b><span>Track through delivery</span></div>
           </div>
         </div>
 
@@ -472,8 +456,8 @@ export default function LandingPage() {
                 <Logo size={16} />
                 <b>EaseMed</b>
               </span>
-              <span className="console-url">app.easemed.ai/workspace</span>
-              <span className="console-live"><i /> Live demo data</span>
+              <span className="console-url">Sample procurement workspace</span>
+              <span className="console-live"><i /> Interactive demo</span>
             </div>
 
             <div className="console-shell">
@@ -543,25 +527,25 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="landing-logos" aria-label="Illustrative network">
+      <section className="landing-logos" aria-label="Teams EaseMed connects">
         <div className="landing-logos-inner">
-          <p className="landing-logos-label">Working with teams across the supply chain</p>
+          <p className="landing-logos-label">One workflow across the healthcare supply chain</p>
           <div className="landing-marquee">
             <div className="landing-marquee-track">
               {[0, 1].map((copy) => (
                 <div className="landing-marquee-group" key={copy} aria-hidden={copy === 1 || undefined}>
-                  {partnerNames.map((partner, index) => (
-                    <span key={partner} className={`landing-logo landing-logo-${index + 1}`}>{partner}</span>
+                  {networkRoles.map((role, index) => (
+                    <span key={role} className={`landing-logo landing-logo-${index + 1}`}>{role}</span>
                   ))}
                 </div>
               ))}
             </div>
           </div>
-          <p className="landing-logos-note">Illustrative network — the live partner directory ships with early access.</p>
+          <p className="landing-logos-note">Buyer, supplier, finance, warehouse, and logistics teams stay on the same order trail.</p>
         </div>
       </section>
 
-      <section className="landing-stats" aria-label="Platform figures from the product demo">
+      <section className="landing-stats" aria-label="EaseMed workflow principles">
         <div className="landing-stats-inner" data-animate>
           {heroStats.map((stat) => (
             <div key={stat.label} className="landing-stat">
@@ -779,46 +763,40 @@ export default function LandingPage() {
 
       <section className="landing-section landing-testimonials" id="customers">
         <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">Customer voices</p>
-          <h2>Less chasing. More decisions made on time.</h2>
+          <p className="landing-section-eyebrow">What changes</p>
+          <h2>A cleaner handoff at every step.</h2>
+          <p className="landing-section-intro">
+            EaseMed is designed to remove the gaps between a request, a supplier decision, and the teams that finish the order.
+          </p>
         </div>
 
         <div className="landing-wrap">
           <div className="landing-testimonial-columns">
-            {testimonials.map((testimonial, index) => (
-              <figure
-                className={`landing-testimonial-card tone-${index % 3}`}
-                key={testimonial.name}
+            {outcomeStories.map((story, index) => (
+              <article
+                className={`landing-testimonial-card landing-outcome-card tone-${index % 3}`}
+                key={story.title}
                 data-animate
                 style={{ transitionDelay: `${(index % 3) * 80}ms` }}
               >
-                <blockquote>{testimonial.quote}</blockquote>
-                <figcaption>
-                  <span className={`landing-testimonial-avatar tone-${index % 3}`} aria-hidden="true">
-                    {testimonial.name.split(" ").map((part) => part[0]).join("")}
-                  </span>
-                  <span className="landing-testimonial-meta">
-                    <strong>{testimonial.name}</strong>
-                    <small>{testimonial.role}</small>
-                  </span>
-                  <span className="landing-testimonial-tag">{testimonial.tag}</span>
-                </figcaption>
-              </figure>
+                <span className="landing-results-icon"><Icon name={story.icon} size={22} /></span>
+                <p className="landing-role-eyebrow">{story.eyebrow}</p>
+                <h3>{story.title}</h3>
+                <p className="landing-outcome-copy">{story.text}</p>
+                <span className="landing-testimonial-tag">{story.foot}</span>
+              </article>
             ))}
           </div>
-          <p className="landing-testimonials-note">
-            Perspectives shown are illustrative design-partner voices ahead of public launch.
-          </p>
         </div>
       </section>
 
       <section className="landing-section landing-results" id="results">
         <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">Early results</p>
-          <h2>It&apos;s working where it&apos;s deployed.</h2>
+          <p className="landing-section-eyebrow">Designed for the real workflow</p>
+          <h2>Fewer systems to chase. More context at the decision.</h2>
           <p className="landing-section-intro">
-            Numbers from our design-partner pilots, measured against each team&apos;s previous
-            process.
+            The demo focuses on the work that usually gets scattered across inboxes, spreadsheets,
+            finance threads, and shipment trackers.
           </p>
         </div>
 
@@ -826,21 +804,21 @@ export default function LandingPage() {
           <div className="landing-results-grid">
             <article className="landing-results-card tone-teal" data-animate>
               <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
-              <strong>11 days → 3</strong>
-              <span>Average purchase cycle at a regional hospital group</span>
+              <strong>One brief</strong>
+              <span>A structured requirement replaces repeated clarification across teams.</span>
             </article>
             <article className="landing-results-card tone-green" data-animate style={{ transitionDelay: "90ms" }}>
               <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
-              <strong>4×</strong>
-              <span>More supplier quotations sent per week at MedSupply Partners</span>
+              <strong>One shortlist</strong>
+              <span>Supplier options arrive ranked on the same decision criteria.</span>
             </article>
             <article className="landing-results-card tone-blue" data-animate style={{ transitionDelay: "180ms" }}>
               <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
-              <strong>100%</strong>
-              <span>Audit packs accepted without a single follow-up at Northstar Care</span>
+              <strong>One trail</strong>
+              <span>Approvals, order status, and delivery handoffs stay connected.</span>
             </article>
           </div>
-          <p className="landing-results-note">Illustrative pilot metrics ahead of public launch.</p>
+          <p className="landing-results-note">Explore the live product demo to see the complete buyer and operations flow.</p>
         </div>
       </section>
 

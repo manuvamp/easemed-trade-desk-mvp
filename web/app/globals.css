@@ -2984,7 +2984,7 @@ h2 {
   position: relative;
   background: var(--lp-navy);
   color: #ffffff;
-  padding: 64px 0 80px;
+  padding: 72px 0 92px;
   overflow: hidden;
 }
 
@@ -3014,16 +3014,16 @@ h2 {
 .landing-hero-inner {
   position: relative;
   z-index: 1;
-  width: min(880px, calc(100% - 48px));
+  width: min(940px, calc(100% - 48px));
   margin-inline: auto;
   text-align: center;
 }
 
 .landing-hero-inner h1 {
   color: #ffffff;
-  font-size: clamp(40px, 6.2vw, 64px);
-  letter-spacing: -0.015em;
-  margin: 0 0 18px;
+  font-size: clamp(44px, 6.6vw, 72px);
+  letter-spacing: -0.035em;
+  margin: 0 0 20px;
   text-wrap: wrap;
 }
 
@@ -3033,11 +3033,11 @@ h2 {
 }
 
 .landing-hero-description {
-  max-width: 620px;
-  margin: 0 auto 30px;
+  max-width: 700px;
+  margin: 0 auto 32px;
   font-size: clamp(16px, 1.9vw, 19px);
   line-height: 1.6;
-  color: #adaad8;
+  color: #c3c0e6;
 }
 
 .landing-hero-actions {
@@ -3058,28 +3058,28 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 24px 64px;
+  gap: 18px 44px;
   flex-wrap: wrap;
-  margin: 40px auto 0;
+  margin: 42px auto 0;
 }
 
 .landing-hero-callouts b {
   display: block;
-  font-size: 30px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.12em;
   line-height: 1.1;
-  color: #ffffff;
+  color: #918dd4;
 }
 
 .landing-hero-callouts span {
   display: block;
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 11.5px;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 /* ---------- Console ---------- */
@@ -3106,9 +3106,9 @@ h2 {
   z-index: 1;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--lp-ring);
-  border-radius: 16px;
+  border-radius: 20px;
   background: #ffffff;
-  box-shadow: 0 48px 110px -44px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 52px 120px -44px rgba(0, 0, 0, 0.82), 0 0 0 1px rgba(255, 255, 255, 0.035);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -4540,6 +4540,33 @@ h2 {
   text-align: center;
   font-size: 12.5px;
   color: var(--lp-faint);
+}
+
+.landing-outcome-card {
+  min-height: 300px;
+  justify-content: flex-start;
+}
+
+.landing-outcome-card .landing-results-icon {
+  margin-bottom: 10px;
+}
+
+.landing-outcome-card h3 {
+  font-size: 21px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.landing-outcome-copy {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--lp-muted);
+}
+
+.landing-outcome-card .landing-testimonial-tag {
+  margin: auto 0 0;
+  align-self: flex-start;
 }
 
 /* ---------- Results ---------- */
