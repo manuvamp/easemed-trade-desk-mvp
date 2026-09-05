@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 const navLinks = [
   { href: "#platform", label: "Platform" },
   { href: "#how-it-works", label: "How it works" },
@@ -15,11 +17,19 @@ const networkRoles = [
   "Logistics partners",
 ];
 
+const tickerEvents = [
+  "Requirement structured — surgical gloves, 12,000 units",
+  "Shortlist ready — 3 suppliers scored on 4 dimensions",
+  "Approval routed — CFO sign-off requested",
+  "PO released — GulfMed Supplies at $0.38/unit",
+  "Shipment in transit — ETA Thursday",
+];
+
 const heroStats = [
-  { value: "1 intake", label: "For every purchase request" },
-  { value: "4-way", label: "Supplier matching score" },
-  { value: "Human", label: "Approval before release" },
-  { value: "End-to-end", label: "Decision and delivery trail" },
+  { value: "1", count: "1", suffix: "", label: "Intake per purchase request" },
+  { value: "4-way", count: "4", suffix: "-way", label: "Supplier scoring, fully visible" },
+  { value: "100%", count: "100", suffix: "%", label: "Human-approved before release" },
+  { value: "0", count: "0", suffix: "", label: "Context resets between handoffs" },
 ];
 
 const journeyNodes = [
@@ -288,6 +298,12 @@ const complianceBadges = [
   { icon: "zap", label: "Human-approved" },
 ];
 
+const outcomeShifts = [
+  { before: "Scattered inbox threads", after: "One structured brief" },
+  { before: "Gut-feel supplier picks", after: "Four-way scored comparison" },
+  { before: "Handoffs that lose the story", after: "One connected decision trail" },
+];
+
 const outcomeStories = [
   {
     icon: "file",
@@ -345,6 +361,8 @@ const faqs = [
   },
 ];
 
+type CSSVars = React.CSSProperties & Record<string, string | number>;
+
 function Logo({ size = 30 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -365,6 +383,24 @@ function Brand() {
         EaseMed<span className="landing-brand-muted">.ai</span>
       </span>
     </a>
+  );
+}
+
+function Words({ text, start = 0 }: { text: string; start?: number }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, i) => (
+        <Fragment key={`${word}-${i}`}>
+          <span className="w-mask" aria-hidden="true">
+            <span className="w" style={{ "--i": start + i } as CSSVars}>
+              {word}
+            </span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </>
   );
 }
 
@@ -458,6 +494,7 @@ function Icon({ name, size = 20 }: { name: string; size?: number }) {
 
 const revealScript = `(function(){
   document.documentElement.classList.add('js');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   try {
     var els = document.querySelectorAll('[data-animate]');
     if ('IntersectionObserver' in window) {
@@ -470,12 +507,97 @@ const revealScript = `(function(){
     } else {
       els.forEach(function(el){ el.classList.add('in-view'); });
     }
+
     var nav = document.querySelector('.landing-nav');
-    if (nav) {
-      var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 8); };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
+    var progress = document.querySelector('.nav-progress');
+    var onScroll = function(){
+      if (nav) nav.classList.toggle('scrolled', window.scrollY > 8);
+      if (progress) {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        var p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+        progress.style.transform = 'scaleX(' + p + ')';
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    var ticker = document.querySelector('[data-ticker]');
+    if (ticker && !reduceMotion) {
+      var items = ticker.querySelectorAll('.hero-ticker-item');
+      if (items.length > 1) {
+        var tIndex = 0;
+        setInterval(function(){
+          items[tIndex].classList.remove('is-current');
+          tIndex = (tIndex + 1) % items.length;
+          items[tIndex].classList.add('is-current');
+        }, 3400);
+      }
     }
+
+    var runCount = function(el){
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var suffix = el.getAttribute('data-count-suffix') || '';
+      if (isNaN(target) || reduceMotion || target === 0) return;
+      var duration = 1200;
+      var start = null;
+      var step = function(ts){
+        if (!start) start = ts;
+        var t = Math.min(1, (ts - start) / duration);
+        var eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+      setTimeout(function(){
+        el.textContent = target + suffix;
+      }, duration + 400);
+    };
+    var counters = document.querySelectorAll('[data-count]');
+    if ('IntersectionObserver' in window && counters.length) {
+      var cio = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) { runCount(entry.target); cio.unobserve(entry.target); }
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(function(el){ cio.observe(el); });
+    }
+
+    var approvalState = document.querySelector('[data-approval-loop] strong');
+    if (approvalState && !reduceMotion) {
+      setInterval(function(){
+        approvalState.classList.add('is-approved');
+        approvalState.textContent = 'Approved';
+        setTimeout(function(){
+          approvalState.classList.remove('is-approved');
+          approvalState.textContent = 'Pending';
+        }, 2600);
+      }, 6400);
+    }
+
+    var feedText = document.querySelector('[data-feed-text]');
+    if (feedText && !reduceMotion) {
+      var feedMessages = [
+        'Requirement structured · just now',
+        'Shortlist scored · 1 min ago',
+        'Approval routed · 2 min ago',
+        'Payment linked · 4 min ago'
+      ];
+      var feedIndex = 0;
+      setInterval(function(){
+        feedIndex = (feedIndex + 1) % feedMessages.length;
+        feedText.textContent = feedMessages[feedIndex];
+      }, 4600);
+    }
+
+    document.querySelectorAll('[data-faq]').forEach(function(item){
+      var button = item.querySelector('.faq-q');
+      if (!button) return;
+      button.addEventListener('click', function(){
+        var open = item.classList.toggle('is-open');
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
 
     var decisionRoot = document.querySelector('[data-decision-tabs]');
     if (decisionRoot) {
@@ -526,7 +648,7 @@ const revealScript = `(function(){
       navSections.forEach(function(section){ navIo.observe(section); });
     }
 
-    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (window.matchMedia && window.matchMedia('(pointer:fine)').matches && !reduceMotion) {
       document.querySelectorAll('[data-spotlight]').forEach(function(card){
         card.addEventListener('pointermove', function(event){
           var rect = card.getBoundingClientRect();
@@ -554,6 +676,14 @@ const revealScript = `(function(){
 export default function LandingPage() {
   return (
     <main className="landing-page">
+      <div className="landing-announce">
+        <div className="landing-announce-inner">
+          <span className="announce-pill">Private beta</span>
+          <p>Early-access cohort open for health systems and supplier partners</p>
+          <a href="#cta">Request access <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
       <header className="landing-nav">
         <div className="landing-nav-inner">
           <Brand />
@@ -575,6 +705,7 @@ export default function LandingPage() {
             </a>
           </div>
         </div>
+        <span className="nav-progress" aria-hidden="true" />
       </header>
 
       <section className="landing-hero" id="top">
@@ -583,10 +714,14 @@ export default function LandingPage() {
             <span className="status-live"><i />Private beta</span>
             <span>Healthcare procurement control tower</span>
           </div>
-          <h1>
-            Move every medical purchase
+          <h1 aria-label="Move every medical purchase from request to delivery.">
+            <span className="h1-line">
+              <Words text="Move every medical purchase" start={0} />
+            </span>
             <br />
-            <em>from request to delivery.</em>
+            <span className="h1-line">
+              <em><Words text="from request to delivery." start={4} /></em>
+            </span>
           </h1>
           <p className="landing-hero-description">
             EaseMed turns a buying request into a structured requirement, ranks the right suppliers,
@@ -599,6 +734,16 @@ export default function LandingPage() {
             <a className="landing-button landing-button-ghost" href="#cta">
               Request early access
             </a>
+          </div>
+          <div className="hero-ticker" data-ticker>
+            <span className="hero-ticker-label"><i aria-hidden="true" />Demo workspace</span>
+            <span className="hero-ticker-view">
+              {tickerEvents.map((event, index) => (
+                <span key={event} className={`hero-ticker-item${index === 0 ? " is-current" : ""}`}>
+                  {event}
+                </span>
+              ))}
+            </span>
           </div>
           <div className="landing-hero-callouts">
             <div><b>01</b><span>Structure the request</span></div>
@@ -644,7 +789,7 @@ export default function LandingPage() {
                     <span>Supplier match</span>
                     <b className="console-chip">Tier-1</b>
                   </div>
-                  <div className="console-match-number">97<span>/100 sample</span></div>
+                  <div className="console-match-number"><b data-count="97">97</b><span>/100 sample</span></div>
                   <p>Example supplier A · best fit in this sample</p>
                   <div className="console-bars" aria-hidden="true">
                     <span style={{ width: "97%" }} /><span style={{ width: "88%" }} /><span style={{ width: "91%" }} />
@@ -663,7 +808,11 @@ export default function LandingPage() {
                     <b className="console-chip">$0.38/unit</b>
                   </div>
                   <h3>Release to warehouse</h3>
-                  <div className="console-approval-row"><span className="console-avatar">CFO</span><span>Finance approval</span><strong>Pending</strong></div>
+                  <div className="console-approval-row" data-approval-loop>
+                    <span className="console-avatar">CFO</span>
+                    <span>Finance approval</span>
+                    <strong>Pending</strong>
+                  </div>
                   <div className="console-approval-row"><span className="console-avatar">16</span><span>Audit events recorded</span><strong className="is-done">Complete</strong></div>
                   <div className="console-approval-row"><span className="console-avatar">W</span><span>Warehouse notified</span><strong className="is-done">Queued</strong></div>
                   <button type="button" className="console-review-button">Review decision</button>
@@ -678,7 +827,7 @@ export default function LandingPage() {
               </div>
 
               <div className="console-footer">
-                <span><i /> AI-assisted, human-approved</span>
+                <span className="console-feed"><i /> <span data-feed-text>Requirement structured · just now</span></span>
                 <span>Last synced just now</span>
               </div>
             </div>
@@ -708,7 +857,7 @@ export default function LandingPage() {
         <div className="landing-stats-inner" data-animate>
           {heroStats.map((stat) => (
             <div key={stat.label} className="landing-stat">
-              <strong>{stat.value}</strong>
+              <strong data-count={stat.count} data-count-suffix={stat.suffix}>{stat.value}</strong>
               <span>{stat.label}</span>
             </div>
           ))}
@@ -1022,7 +1171,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="landing-section landing-testimonials" id="customers">
+      <section className="landing-section landing-outcomes" id="outcomes">
         <div className="landing-section-heading landing-centered" data-animate>
           <p className="landing-section-eyebrow">What changes</p>
           <h2>A cleaner handoff at every step.</h2>
@@ -1032,6 +1181,22 @@ export default function LandingPage() {
         </div>
 
         <div className="landing-wrap">
+          <div className="outcome-shifts" data-animate>
+            {outcomeShifts.map((shift, index) => (
+              <div className="shift-row" key={shift.after} style={{ transitionDelay: `${index * 110}ms` }}>
+                <span className="shift-before">{shift.before}</span>
+                <span className="shift-arrow" aria-hidden="true">
+                  <i />
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+                <span className="shift-after">{shift.after}</span>
+              </div>
+            ))}
+          </div>
+
           <div className="landing-testimonial-columns">
             {outcomeStories.map((story, index) => (
               <article
@@ -1048,38 +1213,6 @@ export default function LandingPage() {
               </article>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="landing-section landing-results" id="results">
-        <div className="landing-section-heading landing-centered" data-animate>
-          <p className="landing-section-eyebrow">Designed for the real workflow</p>
-          <h2>Fewer systems to chase. More context at the decision.</h2>
-          <p className="landing-section-intro">
-            The demo focuses on the work that usually gets scattered across inboxes, spreadsheets,
-            finance threads, and shipment trackers.
-          </p>
-        </div>
-
-        <div className="landing-wrap">
-          <div className="landing-results-grid">
-            <article className="landing-results-card tone-teal" data-animate>
-              <span className="landing-results-icon"><Icon name="clock" size={24} /></span>
-              <strong>One brief</strong>
-              <span>A structured requirement replaces repeated clarification across teams.</span>
-            </article>
-            <article className="landing-results-card tone-green" data-animate style={{ transitionDelay: "90ms" }}>
-              <span className="landing-results-icon"><Icon name="trend" size={24} /></span>
-              <strong>One shortlist</strong>
-              <span>Supplier options arrive ranked on the same decision criteria.</span>
-            </article>
-            <article className="landing-results-card tone-blue" data-animate style={{ transitionDelay: "180ms" }}>
-              <span className="landing-results-icon"><Icon name="shield" size={24} /></span>
-              <strong>One trail</strong>
-              <span>Approvals, order status, and delivery handoffs stay connected.</span>
-            </article>
-          </div>
-          <p className="landing-results-note">Explore the live product demo to see the complete buyer and operations flow.</p>
         </div>
       </section>
 
@@ -1133,13 +1266,28 @@ export default function LandingPage() {
         <div className="landing-wrap">
           <div className="landing-faq-list">
             {faqs.map((faq, index) => (
-              <details key={faq.question} data-animate style={{ transitionDelay: `${Math.min(index, 3) * 60}ms` }}>
-                <summary>
+              <div key={faq.question} className={`faq-item${index === 0 ? " is-open" : ""}`} data-faq data-animate style={{ transitionDelay: `${Math.min(index, 3) * 60}ms` }}>
+                <button
+                  type="button"
+                  className="faq-q"
+                  aria-expanded={index === 0 ? "true" : "false"}
+                  aria-controls={`faq-a-${index}`}
+                  id={`faq-q-${index}`}
+                >
                   {faq.question}
-                  <span aria-hidden="true">+</span>
-                </summary>
-                <p>{faq.answer}</p>
-              </details>
+                  <span className="faq-x" aria-hidden="true" />
+                </button>
+                <div
+                  className="faq-a"
+                  id={`faq-a-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-q-${index}`}
+                >
+                  <div className="faq-a-inner">
+                    <p>{faq.answer}</p>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
